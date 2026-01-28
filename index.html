@@ -2,135 +2,44 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>СайтСотика - Прямой эфир на Twitch</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Статистика Twitch</title>
+    <style>
+        body {
+            background: #0d0d0d;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            padding: 40px;
+        }
+        .info-block {
+            margin-bottom: 20px;
+            padding: 20px;
+            background: #1a1a1a;
+            border-radius: 10px;
+            width: 300px;
+        }
+        .info-title {
+            font-size: 20px;
+            margin-bottom: 5px;
+            color: #888;
+        }
+        .info-value, .followers-value {
+            font-size: 36px;
+            font-weight: bold;
+            color: #00ff88;
+        }
+    </style>
 </head>
 <body>
-<div class="container">
 
-    <header class="header">
-        <div class="logo">
-            <div class="logo-icon">SS</div>
-            <div class="logo-text">
-                <h1>СайтСотик</h1>
-                <p>Официальный сайт стримера</p>
-            </div>
-        </div>
+    <div class="info-block">
+        <div class="info-title">Зрители</div>
+        <div class="info-value">0</div>
+    </div>
 
-        <div class="stream-info">
-            <div class="info-item">
-                <div class="info-value">0</div>
-                <div class="info-label">Зрителей</div>
-            </div>
-            <div class="info-item">
-                <div class="info-value">3,421</div>
-                <div class="info-label">Подписчиков</div>
-            </div>
-            <div class="info-item">
-                <div class="info-value">02:34:15</div>
-                <div class="info-label">В эфире</div>
-            </div>
-            <div class="live-badge">
-                <div class="live-dot"></div>
-                LIVE
-            </div>
-        </div>
-    </header>
+    <div class="info-block">
+        <div class="info-title">Подписчики</div>
+        <div class="followers-value">3</div>
+    </div>
 
-    <main class="main-content">
-
-        <section class="player-section">
-            <div class="player-container">
-                <iframe
-                    src="https://player.twitch.tv/?channel=fsbsotik&parent=sotikdima1975-star.github.io&autoplay=true"
-                    allowfullscreen>
-                </iframe>
-            </div>
-
-            <div class="player-info">
-                <h2 class="stream-title">Прямой эфир СайтСотика</h2>
-
-                <div class="stream-game">
-                    🎮 Игра: Forza Motorsport 7 — Rivals (Соперники)
-                </div>
-
-                <p class="stream-description">
-                    Добро пожаловать на стрим! Сегодня катаем в Forza Motorsport 7,
-                    режим Rivals — Соперники. Боремся за лучшее время круга,
-                    общаемся с чатом и улучшаем навыки вождения.
-                </p>
-
-                <div class="stream-schedule">
-                    📅 Завтра в 21:00 — Forza Motorsport 7, режим Rivals (Соперники)
-                </div>
-            </div>
-        </section>
-
-        <section class="chat-section">
-            <div class="chat-header">
-                <h2>Twitch Chat</h2>
-                <div class="chat-viewers">👥 1.2K онлайн</div>
-            </div>
-
-            <div class="chat-container">
-                <iframe
-                    src="https://www.twitch.tv/embed/fsbsotik/chat?parent=sotikdima1975-star.github.io&darkpopout"
-                    scrolling="yes">
-                </iframe>
-            </div>
-
-            <div class="chat-instructions">
-                💬 Чтобы писать в чат, необходимо авторизоваться через Twitch
-            </div>
-        </section>
-
-    </main>
-
-    <section class="channel-info">
-        <div class="channel-header">
-            <div class="channel-avatar">
-                <img src="https://static-cdn.jtvnw.net/jtv_user_pictures/fsbsotik-profile_image.png" alt="СайтСотика">
-            </div>
-
-            <div class="channel-details">
-                <h3>СайтСотика</h3>
-
-                <div class="channel-stats">
-                    <div class="stat">
-                        <div class="stat-value">89</div>
-                        <div class="stat-label">Подписок</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-value">1.2M</div>
-                        <div class="stat-label">Просмотров</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-value">2020</div>
-                        <div class="stat-label">На Twitch</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <p class="channel-bio">
-            Привет! Я СайтСотика — стример, который любит гонки, скорость и честную борьбу.
-            На моих стримах — Forza Motorsport 7, Rivals, онлайн‑заезды и общение с комьюнити.
-            Присоединяйся, будет жарко! 🚗🔥
-        </p>
-
-    </section>
-
-    <footer class="footer">
-        <p>© 2026 СайтСотика. Все права защищены.</p>
-        <p>Это неофициальный фанатский сайт. Все торговые марки принадлежат их владельцам.</p>
-        <p style="margin-top: 10px; font-size: 12px; color: #666;">
-            Для работы плеера и чата Twitch необходимо добавить ваш домен в настройках Twitch Dashboard
-        </p>
-    </footer>
-
-</div>
-
-<script src="script.js"></script>
 </body>
 </html>
