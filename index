@@ -402,7 +402,7 @@
                 <!-- ВСТАВЬТЕ СВОЙ TWITCH КАНАЛ ЗДЕСЬ -->
                 <!-- Замените "sotikchannel" на ваш реальный никнейм Twitch -->
                 <iframe
-                        src="https://player.twitch.tv/?channel=fsbsotik&parent=localhost&autoplay=true"
+                        src="https://player.twitch.tv/?channel=fsbsotik&parent=sotikdima1975-star.github.io&autoplay=true"
                         allowfullscreen>
                 </iframe>
             </div>
@@ -427,7 +427,7 @@
                 <!-- ВСТАВЬТЕ СВОЙ TWITCH ЧАТ ЗДЕСЬ -->
                 <!-- Замените "sotikchannel" на ваш реальный никнейм Twitch -->
                 <iframe
-                        src="https://www.twitch.tv/embed/fsbsotik/chat?parent=localhost&darkpopout"
+                        src="https://www.twitch.tv/embed/fsbsotik/chat?parent=sotikdima1975-star.github.io&darkpopout"
                         scrolling="yes">
                 </iframe>
             </div>
