@@ -55,7 +55,6 @@ def update_html(viewers):
         print("Файл index.html не найден.")
         sys.exit(1)
 
-    # Ищем ПЕРВОЕ вхождение <div class="info-value">...</div>
     start_tag = '<div class="info-value">'
     end_tag = '</div>'
 
@@ -71,7 +70,6 @@ def update_html(viewers):
         print("Не найден закрывающий </div>.")
         sys.exit(1)
 
-    # Собираем новый HTML
     new_html = html[:start_index] + str(viewers) + html[end_index:]
 
     with open(HTML_FILE, "w", encoding="utf-8") as f:
@@ -81,6 +79,17 @@ def update_html(viewers):
 
 
 def git_push():
+    # Проверяем, есть ли изменения
+    status = subprocess.run(
+        ["git", "status", "--porcelain"],
+        capture_output=True,
+        text=True
+    )
+
+    if status.stdout.strip() == "":
+        print("Изменений нет — пропускаю commit/push.")
+        return
+
     subprocess.run(["git", "add", HTML_FILE], check=True)
     subprocess.run(["git", "commit", "-m", "Auto update viewers"], check=True)
     subprocess.run(["git", "push"], check=True)
