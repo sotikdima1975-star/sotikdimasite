@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>СайтСотик - Прямой эфир на Twitch</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0e0e23 0%, #1a1a2e 100%);
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1820px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Шапка */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 2px solid #9146FF;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #9146FF, #BF94FF);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .logo-text h1 {
+            font-size: 28px;
+            background: linear-gradient(45deg, #9146FF, #BF94FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo-text p {
+            color: #8A8A9E;
+            font-size: 14px;
+        }
+
+        .stream-info {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .info-item {
+            text-align: center;
+        }
+
+        .info-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .info-label {
+            font-size: 12px;
+            color: #8A8A9E;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .live-badge {
+            background: #FF0000;
+            padding: 8px 20px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        .live-dot {
+            width: 10px;
+            height: 10px;
+            background: #fff;
+            border-radius: 50%;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* Основной контент */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 30px;
+        }
+
+        /* Плеер Twitch */
+        .player-section {
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .player-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 соотношение */
+            height: 0;
+        }
+
+        .player-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .player-info {
+            padding: 20px;
+            background: #18181B;
+        }
+
+        .stream-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .stream-game {
+            color: #9146FF;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .stream-description {
+            color: #ADADB8;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* Чат Twitch */
+        .chat-section {
+            display: flex;
+            flex-direction: column;
+            background: #18181B;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .chat-header {
+            background: #9146FF;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .chat-header h2 {
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .chat-header h2::before {
+            content: "💬";
+            font-size: 20px;
+        }
+
+        .chat-viewers {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 14px;
+        }
+
+        .chat-container {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            max-height: 600px;
+        }
+
+        .chat-container iframe {
+            width: 100%;
+            height: 600px;
+            border: none;
+            border-radius: 8px;
+        }
+
+        .chat-instructions {
+            padding: 20px;
+            background: #0E0E10;
+            border-top: 1px solid #2D2D35;
+            font-size: 12px;
+            color: #8A8A9E;
+            text-align: center;
+        }
+
+        /* Информация о канале */
+        .channel-info {
+            margin-top: 30px;
+            background: #18181B;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .channel-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .channel-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #9146FF, #BF94FF);
+            overflow: hidden;
+            border: 3px solid #9146FF;
+        }
+
+        .channel-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .channel-details h3 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .channel-stats {
+            display: flex;
+            gap: 30px;
+            margin-top: 10px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #8A8A9E;
+            text-transform: uppercase;
+        }
+
+        .channel-bio {
+            color: #ADADB8;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-link {
+            padding: 10px 20px;
+            background: #2D2D35;
+            border-radius: 6px;
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.3s;
+        }
+
+        .social-link:hover {
+            background: #9146FF;
+        }
+
+        /* Футер */
+        .footer {
+            margin-top: 50px;
+            padding: 30px 0;
+            border-top: 1px solid #2D2D35;
+            text-align: center;
+            color: #8A8A9E;
+            font-size: 14px;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 1200px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .chat-section {
+                height: 500px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+
+            .stream-info {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .channel-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .channel-stats {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- Шапка -->
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">SS</div>
+            <div class="logo-text">
+                <h1>СайтСотик</h1>
+                <p>Официальный сайт стримера</p>
+            </div>
+        </div>
+
+        <div class="stream-info">
+            <div class="info-item">
+                <div class="info-value">1,254</div>
+                <div class="info-label">Зрителей</div>
+            </div>
+            <div class="info-item">
+                <div class="info-value">3,421</div>
+                <div class="info-label">Подписчиков</div>
+            </div>
+            <div class="info-item">
+                <div class="info-value">02:34:15</div>
+                <div class="info-label">В эфире</div>
+            </div>
+            <div class="live-badge">
+                <div class="live-dot"></div>
+                LIVE
+            </div>
+        </div>
+    </header>
+
+    <!-- Основной контент -->
+    <main class="main-content">
+        <!-- Плеер Twitch -->
+        <section class="player-section">
+            <div class="player-container">
+                <!-- ВСТАВЬТЕ СВОЙ TWITCH КАНАЛ ЗДЕСЬ -->
+                <!-- Замените "sotikchannel" на ваш реальный никнейм Twitch -->
+                <iframe
+                        src="https://player.twitch.tv/?channel=fsbsotik&parent=localhost&autoplay=true"
+                        allowfullscreen>
+                </iframe>
+            </div>
+            <div class="player-info">
+                <h2 class="stream-title">Прямой эфир СайтСотика</h2>
+                <div class="stream-game">🎮 Игра: VALORANT</div>
+                <p class="stream-description">
+                    Добро пожаловать на стрим! Сегодня играем в VALORANT, общаемся с чатом
+                    и весело проводим время. Не забывайте ставить лайки, подписываться и
+                    включать уведомления!
+                </p>
+            </div>
+        </section>
+
+        <!-- Чат Twitch -->
+        <section class="chat-section">
+            <div class="chat-header">
+                <h2>Twitch Chat</h2>
+                <div class="chat-viewers">👥 1.2K онлайн</div>
+            </div>
+            <div class="chat-container">
+                <!-- ВСТАВЬТЕ СВОЙ TWITCH ЧАТ ЗДЕСЬ -->
+                <!-- Замените "sotikchannel" на ваш реальный никнейм Twitch -->
+                <iframe
+                        src="https://www.twitch.tv/embed/fsbsotik/chat?parent=localhost&darkpopout"
+                        scrolling="yes">
+                </iframe>
+            </div>
+            <div class="chat-instructions">
+                💬 Чтобы писать в чат, необходимо авторизоваться через Twitch
+            </div>
+        </section>
+    </main>
+
+    <!-- Информация о канале -->
+    <section class="channel-info">
+        <div class="channel-header">
+            <div class="channel-avatar">
+                <!-- Замените на ссылку на ваш аватар -->
+                <img src="https://static-cdn.jtvnw.net/jtv_user_pictures/fsbsotik-profile_image.png" alt="СайтСотик">
+            </div>
+            <div class="channel-details">
+                <h3>СайтСотик</h3>
+                <div class="channel-stats">
+                    <div class="stat">
+                        <div class="stat-value">89</div>
+                        <div class="stat-label">Подписок</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">1.2M</div>
+                        <div class="stat-label">Просмотров</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">2020</div>
+                        <div class="stat-label">На Twitch</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <p class="channel-bio">
+            Привет! Я СайтСотик - стример, который любит играть в игры и общаться с комьюнити.
+            Стримлю регулярно, играю в разные игры, но особенно люблю шутеры и стратегии.
+            Присоединяйся к стримам, будет весело! 🎮
+        </p>
+
+        <div class="social-links">
+            <a href="https://twitch.tv/fsbsotik" class="social-link" target="_blank">
+                📺 Twitch
+            </a>
+            <a href="https://twitter.com/fsbsotik" class="social-link" target="_blank">
+                🐦 Twitter
+            </a>
+            <a href="https://discord.gg/fsbsotik" class="social-link" target="_blank">
+                💬 Discord
+            </a>
+            <a href="https://youtube.com/fsbsotik" class="social-link" target="_blank">
+                ▶️ YouTube
+            </a>
+        </div>
+    </section>
+
+    <!-- Футер -->
+    <footer class="footer">
+        <p>© 2026 СайтСотик. Все права защищены.</p>
+        <p>Это неофициальный фанатский сайт. Все торговые марки принадлежат их владельцам.</p>
+        <p style="margin-top: 10px; font-size: 12px; color: #666;">
+            Для работы плеера и чата Twitch необходимо добавить ваш домен в настройках Twitch Dashboard
+        </p>
+    </footer>
+</div>
+
+<script>
+    // Обновление времени стрима
+    function updateStreamTime() {
+        const infoItems = document.querySelectorAll('.info-item');
+        const timeElement = infoItems[2].querySelector('.info-value');
+        let [hours, minutes, seconds] = timeElement.textContent.split(':').map(Number);
+
+        seconds++;
+        if (seconds >= 60) {
+            seconds = 0;
+            minutes++;
+        }
+        if (minutes >= 60) {
+            minutes = 0;
+            hours++;
+        }
+
+        timeElement.textContent =
+            `${hours.toString().padStart(2, '0')}:` +
+            `${minutes.toString().padStart(2, '0')}:` +
+            `${seconds.toString().padStart(2, '0')}`;
+    }
+
+    setInterval(updateStreamTime, 1000);
+
+    // Имитация изменения количества зрителей
+    setInterval(() => {
+        const infoItems = document.querySelectorAll('.info-item');
+        const viewersElement = infoItems[0].querySelector('.info-value');
+        let viewers = parseInt(viewersElement.textContent.replace(',', ''));
+        const change = Math.random() > 0.5 ? 1 : -1;
+        viewers = Math.max(100, viewers + change);
+        viewersElement.textContent = viewers.toLocaleString();
+    }, 30000);
+
+    // Инструкция по настройке
+    console.log(`
+    ============================================
+    ИНСТРУКЦИЯ ПО НАСТРОЙКЕ TWITCH ПЛЕЕРА И ЧАТА:
+
+    1. ЗАМЕНИТЕ "sotikchannel" на ваш реальный никнейм Twitch:
+       - В iframe плеера (строка 176)
+       - В iframe чата (строка 196)
+       - В ссылках социальных сетей (строки 252-258)
+
+    2. ДОБАВЬТЕ ВАШ ДОМЕН в Twitch Dashboard:
+       - Зайдите в Twitch Developer Console
+       - Ваше приложение → Настройки
+       - В поле "Domain" добавьте ваш домен (например: sait-sotik.ru)
+       - Также добавьте localhost для тестирования
+
+    3. ОБНОВИТЕ АВАТАР И ИНФОРМАЦИЮ:
+       - Замените ссылку на аватар (строка 225)
+       - Обновите описание канала
+       - Обновите социальные ссылки
+
+    ============================================
+    `);
+</script>
+</body>
+</html>
