@@ -1316,3 +1316,525 @@
         </main>
 
         <!-- === ЧАСТЬ 2: СТРАНИЦЫ stats / vods / about + JS НИЖЕ === -->
+        <!-- =================================================================
+             СТРАНИЦА "СТАТИСТИКА"
+             ================================================================= -->
+        <main id="page-stats" style="display:none;">
+            <section class="section-block">
+                <div class="section-title">Общая статистика канала</div>
+                <div class="section-subtitle">
+                    Каркас под реальные данные из Twitch API и твоего backend’а.
+                </div>
+
+                <div class="section-columns-3">
+                    <div>
+                        <div class="equipment-item">
+                            <div class="equipment-label">Всего фолловеров</div>
+                            <div class="equipment-value" id="stats-total-followers">0</div>
+                        </div>
+                        <div class="equipment-item">
+                            <div class="equipment-label">Всего подписок</div>
+                            <div class="equipment-value" id="stats-total-subs">0</div>
+                        </div>
+                        <div class="equipment-item">
+                            <div class="equipment-label">Всего просмотров</div>
+                            <div class="equipment-value" id="stats-total-views">0</div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="equipment-item">
+                            <div class="equipment-label">Эфиров за месяц</div>
+                            <div class="equipment-value" id="stats-month-streams">0</div>
+                        </div>
+                        <div class="equipment-item">
+                            <div class="equipment-label">Средний онлайн (месяц)</div>
+                            <div class="equipment-value" id="stats-month-avg">0</div>
+                        </div>
+                        <div class="equipment-item">
+                            <div class="equipment-label">Пик онлайна (месяц)</div>
+                            <div class="equipment-value" id="stats-month-peak">0</div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="equipment-item">
+                            <div class="equipment-label">Эфиров за всё время</div>
+                            <div class="equipment-value" id="stats-all-streams">0</div>
+                        </div>
+                        <div class="equipment-item">
+                            <div class="equipment-label">Средний онлайн (всё время)</div>
+                            <div class="equipment-value" id="stats-all-avg">0</div>
+                        </div>
+                        <div class="equipment-item">
+                            <div class="equipment-label">Пик онлайна (всё время)</div>
+                            <div class="equipment-value" id="stats-all-peak">0</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section-block">
+                <div class="section-title">Динамика онлайна</div>
+                <div class="section-subtitle">
+                    Каркас под график. Можно будет подключить canvas / SVG и рисовать реальные данные.
+                </div>
+
+                <div class="section-columns-2">
+                    <div>
+                        <p class="panel-section-text">
+                            Здесь можно будет отрисовать график онлайна по дням/эфирам.
+                            Сейчас — только контейнер, без фейковых точек.
+                        </p>
+                        <p class="panel-section-text mt-8">
+                            Источник данных — твой backend, который агрегирует статистику с Twitch API.
+                        </p>
+                    </div>
+                    <div>
+                        <div id="stats-chart-placeholder"
+                             style="height:220px;border-radius:12px;border:1px dashed #2f2f3a;display:flex;align-items:center;justify-content:center;color:#666;">
+                            График онлайна (подключается через JS и реальные данные)
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section-block">
+                <div class="section-title">Последние эфиры</div>
+                <div class="section-subtitle">
+                    Структура под список последних стримов. Данные — из твоего сервиса или Twitch API.
+                </div>
+
+                <table class="record-table" id="stats-streams-table">
+                    <thead>
+                    <tr>
+                        <th>Дата</th>
+                        <th>Игра</th>
+                        <th>Режим</th>
+                        <th>Средний онлайн</th>
+                        <th>Пик</th>
+                        <th>Ссылка</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- ПРИМЕР СТРОКИ (МОЖНО ДУБЛИРОВАТЬ ПОД РЕАЛЬНЫЕ ДАННЫЕ) -->
+                    <tr>
+                        <td>2026‑01‑29</td>
+                        <td>Forza Motorsport 7</td>
+                        <td>Rivals</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>под реальный VOD</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
+        </main>
+
+        <!-- =================================================================
+             СТРАНИЦА "АРХИВ"
+             ================================================================= -->
+        <main id="page-vods" style="display:none;">
+            <section class="section-block">
+                <div class="section-title">Архив стримов</div>
+                <div class="section-subtitle">
+                    Каркас под список VOD’ов. Можно будет подцепить JSON с твоего backend’а.
+                </div>
+
+                <div class="section-columns-3" id="vods-list">
+                    <div>
+                        <p class="section-subtitle">Структура записи</p>
+                        <ul class="track-list">
+                            <li>
+                                <span class="track-name">Дата</span><br>
+                                <span class="track-note">2026‑01‑29</span>
+                            </li>
+                            <li>
+                                <span class="track-name">Игра</span><br>
+                                <span class="track-note">Forza Motorsport 7</span>
+                            </li>
+                            <li>
+                                <span class="track-name">Режим</span><br>
+                                <span class="track-note">Rivals / Онлайн</span>
+                            </li>
+                            <li>
+                                <span class="track-name">Ссылка</span><br>
+                                <span class="track-note">под реальный VOD</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <p class="section-subtitle">Фильтры</p>
+                        <p class="panel-section-text">
+                            Можно будет добавить фильтрацию по игре, режиму, дате.
+                            Сейчас — только текстовый блок.
+                        </p>
+                    </div>
+                    <div>
+                        <p class="section-subtitle">Будущая логика</p>
+                        <p class="panel-section-text">
+                            JS‑код может запрашивать `/api/vods` и отрисовывать карточки стримов.
+                            Здесь уже есть контейнер `#vods-list` под эти карточки.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section-block">
+                <div class="section-title">Избранные моменты</div>
+                <div class="section-subtitle">
+                    Каркас под клипы и хайлайты. Без фейковых ссылок.
+                </div>
+
+                <div class="section-columns-2">
+                    <div>
+                        <p class="panel-section-text">
+                            Здесь можно будет выводить список клипов: сейвы, фейлы, жёсткие круги.
+                            Каждый клип — карточка с названием, датой и ссылкой.
+                        </p>
+                    </div>
+                    <div>
+                        <div id="clips-placeholder"
+                             style="height:180px;border-radius:12px;border:1px dashed #2f2f3a;display:flex;align-items:center;justify-content:center;color:#666;">
+                            Каркас под клипы (подключается к твоему API)
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- =================================================================
+             СТРАНИЦА "О КАНАЛЕ"
+             ================================================================= -->
+        <main id="page-about" style="display:none;">
+            <section class="section-block">
+                <div class="section-title">О канале</div>
+                <div class="section-subtitle">
+                    Структура под твой текст, без воды и фейков.
+                </div>
+
+                <div class="section-columns-2">
+                    <div>
+                        <p class="panel-section-text">
+                            Здесь ты можешь расписать, кто ты, откуда, почему именно гонки и почему
+                            именно такой подход к стримам. Сейчас — только каркас, без попытки
+                            придумать за тебя биографию.
+                        </p>
+                        <p class="panel-section-text mt-8">
+                            Можно разбить на блоки: «Кто я», «Во что играю», «Какой подход к чату»,
+                            «Что жду от зрителей».
+                        </p>
+                    </div>
+                    <div>
+                        <p class="panel-section-text">
+                            Отдельно можно описать философию Rivals: почему важен каждый круг,
+                            почему нет смысла в казуале, почему важен разбор ошибок.
+                        </p>
+                        <p class="panel-section-text mt-8">
+                            Всё это — твой текст. Верстка уже готова, остаётся только заменить
+                            содержимое на своё.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section-block">
+                <div class="section-title">Поддержка</div>
+                <div class="section-subtitle">
+                    Каркас под ссылки на донаты, подписки и прочее.
+                </div>
+
+                <div class="section-columns-3">
+                    <div>
+                        <p class="section-subtitle">Подписка на Twitch</p>
+                        <p class="panel-section-text">
+                            Здесь можно описать, что даёт подписка: эмоции, значки, участие в ивентах.
+                            Без фейковых «преимуществ», только то, что реально есть.
+                        </p>
+                    </div>
+                    <div>
+                        <p class="section-subtitle">Донаты</p>
+                        <p class="panel-section-text">
+                            Можно добавить ссылку на донат‑сервис и коротко описать, на что идут донаты:
+                            железо, улучшение качества стрима, время на контент.
+                        </p>
+                    </div>
+                    <div>
+                        <p class="section-subtitle">Прочее</p>
+                        <p class="panel-section-text">
+                            Любые другие способы поддержки: Patreon, Boosty, спонсорство.
+                            Всё — под реальные ссылки, без заглушек.
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- =================================================================
+             FOOTER
+             ================================================================= -->
+        <footer class="footer">
+            <div class="footer-main">
+                <p>© 2026 СайтСотика. Все права защищены.</p>
+                <p>Это неофициальный фанатский сайт. Все торговые марки принадлежат их владельцам.</p>
+            </div>
+            <div class="footer-note">
+                Для работы плеера и чата Twitch домен должен быть добавлен в Twitch Dashboard
+                в список разрешённых для встраивания.
+            </div>
+        </footer>
+
+    </div>
+</div>
+
+<!-- ВНЕШНИЙ JS (МОЖЕТ БЫТЬ ПУСТЫМ) -->
+<script src="script.js"></script>
+
+<!-- РЕАЛЬНЫЙ JS -->
+<script>
+    // ========================================================================
+    // ПЕРЕКЛЮЧЕНИЕ СТРАНИЦ (ЭФИР / СТАТИСТИКА / АРХИВ / О КАНАЛЕ)
+    // ========================================================================
+    (function () {
+        const navButtons = document.querySelectorAll(".nav-pill");
+        const pages = {
+            live: document.getElementById("page-live"),
+            stats: document.getElementById("page-stats"),
+            vods: document.getElementById("page-vods"),
+            about: document.getElementById("page-about")
+        };
+
+        function showPage(key) {
+            Object.keys(pages).forEach(k => {
+                if (!pages[k]) return;
+                pages[k].style.display = (k === key) ? "block" : "none";
+            });
+        }
+
+        navButtons.forEach(btn => {
+            btn.addEventListener("click", () => {
+                const page = btn.getAttribute("data-page");
+                navButtons.forEach(b => b.classList.remove("nav-pill-active"));
+                btn.classList.add("nav-pill-active");
+                showPage(page);
+            });
+        });
+
+        showPage("live");
+    })();
+
+    // ========================================================================
+    // ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК ЧАТА
+    // ========================================================================
+    (function () {
+        const tabs = document.querySelectorAll(".chat-tab");
+        const panes = {
+            embed: document.getElementById("chat-pane-embed"),
+            mirror: document.getElementById("chat-pane-mirror")
+        };
+
+        tabs.forEach(tab => {
+            tab.addEventListener("click", () => {
+                const target = tab.getAttribute("data-tab");
+
+                tabs.forEach(t => t.classList.remove("chat-tab-active"));
+                tab.classList.add("chat-tab-active");
+
+                Object.keys(panes).forEach(key => {
+                    panes[key].classList.remove("chat-pane-active");
+                });
+
+                if (panes[target]) {
+                    panes[target].classList.add("chat-pane-active");
+                }
+            });
+        });
+    })();
+
+    // ========================================================================
+    // КАРКАС ПОД ЗЕРКАЛО ЧАТА (БЕЗ ФЕЙКОВЫХ СООБЩЕНИЙ)
+    // ========================================================================
+    const ChatMirror = (function () {
+        const container = document.getElementById("chat-messages");
+
+        function appendRealMessage(payload) {
+            if (!container || !payload) return;
+
+            const user = String(payload.user || "").trim();
+            const text = String(payload.text || "").trim();
+            const color = payload.color || "#ffffff";
+
+            if (!user || !text) return;
+
+            const row = document.createElement("div");
+            row.style.color = color;
+            row.style.fontSize = "13px";
+            row.style.lineHeight = "1.4";
+            row.textContent = user + ": " + text;
+
+            container.appendChild(row);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function clear() {
+            if (!container) return;
+            container.innerHTML = "";
+        }
+
+        return {
+            append: appendRealMessage,
+            clear: clear
+        };
+    })();
+
+    // ========================================================================
+    // КАРКАС ПОД TWITCH API (РЕАЛЬНЫЕ ДАННЫЕ, НО БЕЗ ТОКЕНОВ)
+    // ========================================================================
+    const TwitchStats = (function () {
+        const viewersEl = document.getElementById("stat-viewers");
+        const followersEl = document.getElementById("stat-followers");
+        const subsEl = document.getElementById("stat-subs");
+        const uptimeEl = document.getElementById("stat-uptime");
+        const liveLabelEl = document.getElementById("stat-live-label");
+        const liveIndicatorEl = document.getElementById("live-indicator");
+        const chatViewersEl = document.getElementById("chat-viewers-count");
+        const channelFollowersEl = document.getElementById("channel-followers");
+        const channelViewsEl = document.getElementById("channel-views");
+
+        const CONFIG = {
+            clientId: "ТВОЙ_CLIENT_ID",
+            token: "ТВОЙ_OAUTH_TOKEN",
+            channelLogin: "fsbsotik",
+            channelId: "ТВОЙ_CHANNEL_ID"
+        };
+
+        function setTextSafe(el, value) {
+            if (!el) return;
+            el.textContent = value;
+        }
+
+        function setLiveState(isLive) {
+            if (!liveIndicatorEl || !liveLabelEl) return;
+            if (isLive) {
+                liveIndicatorEl.style.background = "#ff0033";
+                liveIndicatorEl.style.opacity = "1";
+                liveLabelEl.textContent = "Онлайн";
+            } else {
+                liveIndicatorEl.style.background = "#444";
+                liveIndicatorEl.style.opacity = "0.6";
+                liveLabelEl.textContent = "Офлайн";
+            }
+        }
+
+        async function fetchJSON(url, headers) {
+            try {
+                const res = await fetch(url, { headers });
+                if (!res.ok) return null;
+                return await res.json();
+            } catch (e) {
+                return null;
+            }
+        }
+
+        async function updateStream() {
+            if (!CONFIG.clientId || !CONFIG.token) return;
+
+            const headers = {
+                "Client-ID": CONFIG.clientId,
+                "Authorization": "Bearer " + CONFIG.token
+            };
+
+            const streamData = await fetchJSON(
+                "https://api.twitch.tv/helix/streams?user_login=" + encodeURIComponent(CONFIG.channelLogin),
+                headers
+            );
+
+            if (!streamData || !Array.isArray(streamData.data)) {
+                setLiveState(false);
+                return;
+            }
+
+            if (streamData.data.length === 0) {
+                setLiveState(false);
+                setTextSafe(viewersEl, "0");
+                setTextSafe(chatViewersEl, "0");
+                return;
+            }
+
+            const stream = streamData.data[0];
+            setLiveState(true);
+
+            setTextSafe(viewersEl, String(stream.viewer_count || 0));
+            setTextSafe(chatViewersEl, String(stream.viewer_count || 0));
+
+            if (stream.started_at) {
+                try {
+                    const started = new Date(stream.started_at);
+                    const now = new Date();
+                    const diffMs = now - started;
+                    const totalSec = Math.floor(diffMs / 1000);
+                    const h = String(Math.floor(totalSec / 3600)).padStart(2, "0");
+                    const m = String(Math.floor((totalSec % 3600) / 60)).padStart(2, "0");
+                    const s = String(totalSec % 60).padStart(2, "0");
+                    setTextSafe(uptimeEl, h + ":" + m + ":" + s);
+                } catch (e) {}
+            }
+        }
+
+        async function updateChannel() {
+            if (!CONFIG.clientId || !CONFIG.token || !CONFIG.channelId) return;
+
+            const headers = {
+                "Client-ID": CONFIG.clientId,
+                "Authorization": "Bearer " + CONFIG.token
+            };
+
+            const follows = await fetchJSON(
+                "https://api.twitch.tv/helix/users/follows?to_id=" + encodeURIComponent(CONFIG.channelId),
+                headers
+            );
+
+            if (follows && typeof follows.total === "number") {
+                setTextSafe(followersEl, String(follows.total));
+                setTextSafe(channelFollowersEl, String(follows.total));
+            }
+
+            const users = await fetchJSON(
+                "https://api.twitch.tv/helix/users?id=" + encodeURIComponent(CONFIG.channelId),
+                headers
+            );
+
+            if (users && Array.isArray(users.data) && users.data[0]) {
+                const u = users.data[0];
+                if (typeof u.view_count === "number") {
+                    setTextSafe(channelViewsEl, String(u.view_count));
+                }
+            }
+        }
+
+        async function updateAll() {
+            await updateStream();
+            await updateChannel();
+        }
+
+        function start() {
+            updateAll();
+            setInterval(updateAll, 30000);
+        }
+
+        return {
+            start: start
+        };
+    })();
+
+    // ========================================================================
+    // ИНИЦИАЛИЗАЦИЯ
+    // ========================================================================
+    (function () {
+        try {
+            TwitchStats.start();
+        } catch (e) {
+            // тихо, без спама в консоль
+        }
+    })();
+</script>
+</body>
+</html>
