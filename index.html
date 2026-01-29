@@ -1,185 +1,264 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <title>FSB SOTIK — Панель Twitch</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>FSB SOTIK — Stream Panel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
 </head>
-<body class="app-body">
+<body>
 
-    <div id="app-root" class="app-root">
+<div class="app-root">
 
-        <!-- Верхняя панель -->
-        <header class="app-header">
-            <div class="header-left">
-                <div class="brand">
-                    <span class="brand-tag">FSB</span>
-                    <span class="brand-name">SOTIK</span>
-                </div>
-                <div class="header-status">
-                    <span class="status-dot status-offline" id="status-dot"></span>
-                    <span class="status-text" id="status-text">Оффлайн</span>
-                </div>
-            </div>
-            <div class="header-right">
-                <div class="header-clock" id="header-clock"></div>
-            </div>
+  <header class="app-header">
+    <div class="header-left">
+      <div class="brand">
+        <span class="brand-tag">FSB</span>
+        <span class="brand-name">SOTIK</span>
+      </div>
+      <div class="stream-status">
+        <span id="status-dot" class="status-dot status-offline"></span>
+        <span id="status-text" class="status-text">Оффлайн</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <div id="header-clock" class="header-clock"></div>
+    </div>
+  </header>
+
+  <main class="main-layout">
+
+    <!-- ЛЕВАЯ ПАНЕЛЬ -->
+    <section class="left-panel">
+
+      <!-- ПЛЕЕР: 3 СТРОКИ -->
+      <section class="block block-player">
+
+        <!-- СТРОКА 1 — НАЗВАНИЕ СТРИМА -->
+        <div class="player-row player-title-row">
+          <div id="stream-title" class="player-title">Название стрима: —</div>
+        </div>
+
+        <!-- СТРОКА 2 — ПЛЕЕР -->
+        <div class="player-row player-video-row">
+          <div class="player-frame">
+            <iframe
+                    src="https://player.twitch.tv/?channel=fsbsotik&parent=localhost"
+                    allowfullscreen="true"
+                    frameborder="0">
+            </iframe>
+          </div>
+        </div>
+
+        <!-- СТРОКА 3 — ПОДРОБНОСТИ -->
+        <div class="player-row player-details-row">
+
+          <div class="detail-item">
+            <span class="detail-label">Игра:</span>
+            <span id="detail-game" class="detail-value">—</span>
+          </div>
+
+          <div class="detail-item">
+            <span class="detail-label">Зрители:</span>
+            <span id="detail-viewers" class="detail-value">—</span>
+          </div>
+
+          <div class="detail-item">
+            <span class="detail-label">Статус:</span>
+            <span id="detail-status" class="detail-value">—</span>
+          </div>
+
+          <div class="detail-item">
+            <span class="detail-label">Начало:</span>
+            <span id="detail-started" class="detail-value">—</span>
+          </div>
+
+          <div class="detail-item">
+            <span class="detail-label">Длительность:</span>
+            <span id="detail-duration" class="detail-value">—</span>
+          </div>
+
+          <div class="detail-item">
+            <span class="detail-label">Язык:</span>
+            <span id="detail-language" class="detail-value">—</span>
+          </div>
+
+          <div class="detail-item">
+            <span class="detail-label">Категория ID:</span>
+            <span id="detail-game-id" class="detail-value">—</span>
+          </div>
+
+          <div class="detail-item">
+            <span class="detail-label">Stream ID:</span>
+            <span id="detail-stream-id" class="detail-value">—</span>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ВИДЖЕТЫ -->
+      <section class="block block-widgets">
+        <header class="block-header">
+          <h2 class="block-title">Виджеты</h2>
+          <div class="block-meta">
+            <span class="block-meta-item">Панель стрима</span>
+          </div>
         </header>
 
-        <!-- Основная зона -->
-        <main class="app-main">
+        <div class="block-body widgets-grid">
 
-            <!-- Левая колонка: виджеты (скрываемые панели) -->
-            <aside class="widgets-panel">
-
-                <div class="widget widget-stats" data-widget="stats">
-                    <div class="widget-header">
-                        <span class="widget-title">Статистика</span>
-                    </div>
-                    <div class="widget-body">
-
-                        <div class="stat-row">
-                            <div class="stat-label">Зрители</div>
-                            <div class="stat-value info-value" id="viewers-value">0</div>
-                        </div>
-
-                        <div class="stat-row">
-                            <div class="stat-label">Подписчики</div>
-                            <div class="stat-value followers-value" id="followers-value">0</div>
-                        </div>
-
-                        <div class="stat-row">
-                            <div class="stat-label">Сессия</div>
-                            <div class="stat-value" id="session-duration">00:00:00</div>
-                        </div>
-
-                        <div class="stat-row">
-                            <div class="stat-label">Игра</div>
-                            <div class="stat-value" id="game-title">Не указано</div>
-                        </div>
-
-                        <div class="stat-row">
-                            <div class="stat-label">Название стрима</div>
-                            <div class="stat-value" id="stream-title">—</div>
-                        </div>
-
-                    </div>
-                </div>
-
-                <div class="widget widget-events" data-widget="events">
-                    <div class="widget-header">
-                        <span class="widget-title">События</span>
-                    </div>
-                    <div class="widget-body">
-
-                        <div class="event-row">
-                            <div class="event-label">Последний фолловер</div>
-                            <div class="event-value" id="last-follower">—</div>
-                        </div>
-
-                        <div class="event-row">
-                            <div class="event-label">Последний донат</div>
-                            <div class="event-value" id="last-donation">—</div>
-                        </div>
-
-                        <div class="event-row">
-                            <div class="event-label">Топ донат</div>
-                            <div class="event-value" id="top-donation">—</div>
-                        </div>
-
-                        <div class="event-row">
-                            <div class="event-label">Последний саб</div>
-                            <div class="event-value" id="last-sub">—</div>
-                        </div>
-
-                    </div>
-                </div>
-
-                <div class="widget widget-chat" data-widget="chat">
-                    <div class="widget-header">
-                        <span class="widget-title">Чат</span>
-                    </div>
-                    <div class="widget-body widget-body-scroll">
-                        <div class="chat-placeholder">
-                            Встраивание чата / логов — сюда.
-                        </div>
-                    </div>
-                </div>
-
-            </aside>
-
-            <!-- Центральная зона: плеер Twitch + кнопки -->
-            <section class="player-section">
-
-                <div class="player-container">
-                    <!-- Здесь iframe плеера Twitch -->
-                    <div class="player-frame">
-                        <div class="player-placeholder">
-                            TWITCH PLAYER
-                        </div>
-                        <!-- Если захочешь — сюда вставишь реальный iframe -->
-                        <!--
-                        <iframe
-                            src="https://player.twitch.tv/?channel=fsbsotik&parent=example.com"
-                            frameborder="0"
-                            allowfullscreen="true"
-                            scrolling="no"
-                            class="player-iframe">
-                        </iframe>
-                        -->
-                    </div>
-
-                    <!-- Кнопки поверх плеера -->
-                    <div class="player-controls">
-
-                        <button class="player-btn" data-toggle-widget="stats">
-                            Статистика
-                        </button>
-
-                        <button class="player-btn" data-toggle-widget="events">
-                            События
-                        </button>
-
-                        <button class="player-btn" data-toggle-widget="chat">
-                            Чат
-                        </button>
-
-                    </div>
-                </div>
-
-            </section>
-
-            <!-- Правая колонка: резерв под будущие виджеты -->
-            <aside class="side-panel">
-                <div class="side-card">
-                    <div class="side-card-header">
-                        <span class="side-card-title">Резерв</span>
-                    </div>
-                    <div class="side-card-body">
-                        Здесь можно будет добавить любые дополнительные виджеты:
-                        графики, статистику игр, расписание, и т.д.
-                    </div>
-                </div>
-            </aside>
-
-        </main>
-
-        <!-- Нижняя панель -->
-        <footer class="app-footer">
-            <div class="footer-left">
-                <span class="footer-label">FSB SOTIK</span>
-                <span class="footer-separator">/</span>
-                <span class="footer-text">Панель Twitch</span>
+          <article class="widget" id="widget-stats">
+            <header class="widget-header">
+              <h3 class="widget-title">Статистика</h3>
+            </header>
+            <div class="widget-body">
+              <div class="widget-row">
+                <span class="widget-label">Зрители</span>
+                <span id="viewers-value" class="widget-value">0</span>
+              </div>
+              <div class="widget-row">
+                <span class="widget-label">Подписчики</span>
+                <span id="followers-value" class="widget-value">0</span>
+              </div>
             </div>
-            <div class="footer-right">
-                <span class="footer-text">Live Dashboard</span>
-            </div>
-        </footer>
+          </article>
 
+          <article class="widget" id="widget-events">
+            <header class="widget-header">
+              <h3 class="widget-title">События</h3>
+            </header>
+            <div class="widget-body">
+              <div class="widget-row">
+                <span class="widget-label">Последний фолловер</span>
+                <span id="last-follower" class="widget-value">—</span>
+              </div>
+              <div class="widget-row">
+                <span class="widget-label">Последний донат</span>
+                <span id="last-donation" class="widget-value">—</span>
+              </div>
+              <div class="widget-row">
+                <span class="widget-label">Топ донат</span>
+                <span id="top-donation" class="widget-value">—</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="widget" id="widget-session">
+            <header class="widget-header">
+              <h3 class="widget-title">Сессия</h3>
+            </header>
+            <div class="widget-body">
+              <div class="widget-row">
+                <span class="widget-label">Длительность</span>
+                <span id="session-duration" class="widget-value">00:00:00</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="widget" id="widget-goals">
+            <header class="widget-header">
+              <h3 class="widget-title">Цели</h3>
+            </header>
+            <div class="widget-body">
+              <div class="widget-row">
+                <span class="widget-label">Текущая цель</span>
+                <span id="goal-title" class="widget-value">—</span>
+              </div>
+              <div class="widget-row">
+                <span class="widget-label">Прогресс</span>
+                <span id="goal-progress" class="widget-value">0%</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="widget" id="widget-donations">
+            <header class="widget-header">
+              <h3 class="widget-title">Донаты</h3>
+            </header>
+            <div class="widget-body">
+              <div class="widget-row">
+                <span class="widget-label">За сессию</span>
+                <span id="donation-session-sum" class="widget-value">0</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="widget" id="widget-top">
+            <header class="widget-header">
+              <h3 class="widget-title">Топ донаторы</h3>
+            </header>
+            <div class="widget-body">
+              <ul class="top-list" id="top-donators-list">
+                <li class="top-item">
+                  <span class="top-name">—</span>
+                  <span class="top-amount">0</span>
+                </li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="widget" id="widget-log">
+            <header class="widget-header">
+              <h3 class="widget-title">Лог донатов</h3>
+            </header>
+            <div class="widget-body">
+              <div class="donation-log" id="donation-log">
+                <div class="donation-log-row">
+                  <span class="donation-log-name">—</span>
+                  <span class="donation-log-amount">0</span>
+                  <span class="donation-log-message">—</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+    </section>
+
+    <!-- ПРАВАЯ ПАНЕЛЬ — НАШ ЧАТ -->
+    <aside class="right-panel">
+
+      <section class="block block-chat">
+        <header class="block-header">
+          <h2 class="block-title">Чат</h2>
+          <div class="block-meta">
+            <span class="block-meta-item">Twitch чат (кастом)</span>
+          </div>
+        </header>
+
+        <div class="block-body">
+          <div class="chat-frame">
+
+            <div id="chat-messages" class="chat-messages"></div>
+
+            <div class="chat-input-bar">
+              <input id="chat-input" class="chat-input" type="text" placeholder="Отправить сообщение в Twitch">
+              <button id="chat-send" class="btn btn-small">Отправить</button>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+    </aside>
+
+  </main>
+
+  <footer class="app-footer">
+    <div class="footer-left">
+      <span class="footer-label">FSB SOTIK</span>
+      <span class="footer-text">Stream Panel</span>
     </div>
+    <div class="footer-right">
+      <span class="footer-text">Live Dashboard</span>
+    </div>
+  </footer>
 
-    <script src="script.js"></script>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
