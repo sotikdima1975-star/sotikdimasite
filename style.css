@@ -1,3 +1,32 @@
+/* ============================================
+   КАСТОМНАЯ ПОЛОСА ПРОКРУТКИ ТОЛЬКО ДЛЯ СТРАНИЦЫ
+   ШИРИНА: 20px
+   ============================================ */
+
+html {
+    overflow-y: scroll !important;
+}
+
+html::-webkit-scrollbar {
+    width: 20px !important;
+    background: rgba(0, 0, 0, 0.35) !important;
+}
+
+html::-webkit-scrollbar-thumb {
+    background: #00ff88 !important;
+    border-radius: 10px !important;
+    border: 3px solid #000 !important;
+    box-shadow: 0 0 10px #00ff88 !important;
+}
+
+html::-webkit-scrollbar-thumb:hover {
+    background: #00cc66 !important;
+}
+
+/* ============================================
+   БАЗОВЫЕ СБРОСЫ
+   ============================================ */
+
 * {
     margin: 0;
     padding: 0;
@@ -5,351 +34,264 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #0e0e23 0%, #1a1a2e 100%);
+    background: #0b0b0b;
     color: #fff;
+    font-family: Arial, sans-serif;
+    overflow-x: hidden;
+}
+
+.app-root {
+    display: flex;
+    flex-direction: column;
     min-height: 100vh;
 }
 
-.container {
-    max-width: 1820px;
-    margin: 0 auto;
-    padding: 20px;
-}
+/* ============================================
+   ХЕДЕР
+   ============================================ */
 
-/* Шапка */
-.header {
+.app-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 0;
-    border-bottom: 2px solid #9146FF;
-    margin-bottom: 30px;
+    padding: 14px 20px;
+    background: #111;
+    border-bottom: 2px solid #222;
 }
 
-.logo {
+.brand {
     display: flex;
-    align-items: center;
-    gap: 15px;
+    align-items: baseline;
+    gap: 6px;
 }
 
-.logo-icon {
-    width: 60px;
-    height: 60px;
-    background: linear-gradient(45deg, #9146FF, #BF94FF);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
+.brand-tag {
+    font-size: 20px;
+    font-weight: bold;
+    color: #00ff88;
+}
+
+.brand-name {
+    font-size: 22px;
     font-weight: bold;
 }
 
-.logo-text h1 {
-    font-size: 28px;
-    background: linear-gradient(45deg, #9146FF, #BF94FF);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.logo-text p {
-    color: #8A8A9E;
-    font-size: 14px;
-}
-
-.stream-info {
-    display: flex;
-    gap: 30px;
-    align-items: center;
-}
-
-.info-item {
-    text-align: center;
-}
-
-.info-value {
-    font-size: 24px;
-    font-weight: bold;
-    color: #fff;
-}
-
-.info-label {
-    font-size: 12px;
-    color: #8A8A9E;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.live-badge {
-    background: #FF0000;
-    padding: 8px 20px;
-    border-radius: 20px;
+.stream-status {
     display: flex;
     align-items: center;
     gap: 8px;
-    font-weight: bold;
-    animation: pulse 2s infinite;
 }
 
-@keyframes pulse {
-    0% { opacity: 1; }
-    50% { opacity: 0.7; }
-    100% { opacity: 1; }
-}
-
-.live-dot {
-    width: 10px;
-    height: 10px;
-    background: #fff;
+.status-dot {
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
-    animation: blink 1s infinite;
 }
 
-@keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
+.status-offline {
+    background: #444;
 }
 
-/* Основной контент */
-.main-content {
+.status-online {
+    background: #00ff88;
+}
+
+.header-clock {
+    font-size: 18px;
+}
+
+/* ============================================
+   ОСНОВНОЙ ЛЕЙАУТ
+   ============================================ */
+
+.main-layout {
+    flex: 1;
     display: grid;
-    grid-template-columns: 1fr 400px;
-    gap: 30px;
-}
-
-/* Плеер Twitch */
-.player-section {
-    background: #000;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-}
-
-.player-container {
-    position: relative;
-    padding-bottom: 56.25%; /* 16:9 соотношение */
-    height: 0;
-}
-
-.player-container iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: none;
-}
-
-.player-info {
+    grid-template-columns: 1fr 380px;
+    gap: 20px;
     padding: 20px;
-    background: #18181B;
 }
 
-.stream-title {
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 10px;
-    color: #fff;
-}
+/* ============================================
+   ЛЕВАЯ ПАНЕЛЬ
+   ============================================ */
 
-.stream-game {
-    color: #9146FF;
-    font-size: 14px;
-    margin-bottom: 15px;
-}
-
-.stream-description {
-    color: #ADADB8;
-    font-size: 14px;
-    line-height: 1.5;
-}
-
-/* Чат Twitch */
-.chat-section {
+.left-panel {
     display: flex;
     flex-direction: column;
-    background: #18181B;
-    border-radius: 12px;
+    gap: 20px;
+}
+
+/* ============================================
+   БЛОКИ
+   ============================================ */
+
+.block {
+    background: #111;
+    border: 2px solid #222;
+    border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
-.chat-header {
-    background: #9146FF;
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+.block-header {
+    padding: 12px 16px;
+    border-bottom: 2px solid #222;
+    background: #151515;
 }
 
-.chat-header h2 {
-    font-size: 18px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.chat-header h2::before {
-    content: "💬";
+.block-title {
     font-size: 20px;
+    font-weight: bold;
 }
 
-.chat-viewers {
-    background: rgba(0, 0, 0, 0.2);
-    padding: 5px 15px;
-    border-radius: 15px;
-    font-size: 14px;
+.block-body {
+    padding: 16px;
 }
 
-.chat-container {
-    flex: 1;
-    padding: 20px;
-    overflow-y: auto;
-    max-height: 600px;
+/* ============================================
+   ПЛЕЕР
+   ============================================ */
+
+.player-row {
+    padding: 10px 16px;
 }
 
-.chat-container iframe {
-    width: 100%;
+.player-video-row .player-frame {
+    width: calc(100% - 40px);
     height: 600px;
-    border: none;
+    background: #000;
+}
+
+.player-frame iframe {
+    width: 100%;
+    height: 100%;
+}
+
+/* ============================================
+   ДЕТАЛИ СТРИМА — КРАСИВАЯ СЕТКА
+   ============================================ */
+
+.player-details-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px 30px;
+    padding: 14px 16px;
+    background: #0f0f0f;
+    border-top: 2px solid #222;
+}
+
+.detail-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 15px;
+    padding: 6px 10px;
+    background: #151515;
+    border: 1px solid #222;
+    border-radius: 6px;
+}
+
+.detail-label {
+    color: #888;
+    font-weight: bold;
+}
+
+.detail-value {
+    color: #00ff88;
+    font-weight: bold;
+}
+
+/* ============================================
+   ВИДЖЕТЫ
+   ============================================ */
+
+.widgets-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 16px;
+}
+
+.widget {
+    background: #151515;
+    border: 2px solid #222;
     border-radius: 8px;
 }
 
-.chat-instructions {
-    padding: 20px;
-    background: #0E0E10;
-    border-top: 1px solid #2D2D35;
-    font-size: 12px;
-    color: #8A8A9E;
-    text-align: center;
+.widget-header {
+    padding: 10px 14px;
+    border-bottom: 2px solid #222;
 }
 
-/* Информация о канале */
-.channel-info {
-    margin-top: 30px;
-    background: #18181B;
-    border-radius: 12px;
-    padding: 25px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+.widget-body {
+    padding: 14px;
 }
 
-.channel-header {
+.widget-row {
     display: flex;
-    align-items: center;
-    gap: 20px;
-    margin-bottom: 25px;
+    justify-content: space-between;
+    padding: 6px 0;
 }
 
-.channel-avatar {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    background: linear-gradient(45deg, #9146FF, #BF94FF);
-    overflow: hidden;
-    border: 3px solid #9146FF;
-}
+/* ============================================
+   ПРАВАЯ ПАНЕЛЬ (ЧАТ)
+   ============================================ */
 
-.channel-avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.channel-details h3 {
-    font-size: 24px;
-    margin-bottom: 5px;
-}
-
-.channel-stats {
+.right-panel {
     display: flex;
-    gap: 30px;
-    margin-top: 10px;
+    flex-direction: column;
 }
 
-.stat {
-    text-align: center;
+.chat-frame {
+    display: flex;
+    flex-direction: column;
+    height: 740px;
+    border: 2px solid #222;
+    border-radius: 8px;
+    background: #151515;
 }
 
-.stat-value {
-    font-size: 20px;
-    font-weight: bold;
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.chat-input-bar {
+    display: flex;
+    gap: 10px;
+    padding: 12px;
+    border-top: 2px solid #222;
+}
+
+.chat-input {
+    flex: 1;
+    padding: 8px 10px;
+    background: #0f0f0f;
+    border: 2px solid #222;
     color: #fff;
-}
-
-.stat-label {
-    font-size: 12px;
-    color: #8A8A9E;
-    text-transform: uppercase;
-}
-
-.channel-bio {
-    color: #ADADB8;
-    line-height: 1.6;
-    margin-bottom: 20px;
-}
-
-.social-links {
-    display: flex;
-    gap: 15px;
-    margin-top: 20px;
-}
-
-.social-link {
-    padding: 10px 20px;
-    background: #2D2D35;
     border-radius: 6px;
-    color: #fff;
-    text-decoration: none;
+}
+
+.btn {
+    padding: 8px 14px;
+    background: #00ff88;
+    color: #000;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* ============================================
+   ФУТЕР
+   ============================================ */
+
+.app-footer {
+    padding: 14px 20px;
+    background: #111;
+    border-top: 2px solid #222;
     display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: background 0.3s;
-}
-
-.social-link:hover {
-    background: #9146FF;
-}
-
-/* Футер */
-.footer {
-    margin-top: 50px;
-    padding: 30px 0;
-    border-top: 1px solid #2D2D35;
-    text-align: center;
-    color: #8A8A9E;
-    font-size: 14px;
-}
-
-/* Адаптивность */
-@media (max-width: 1200px) {
-    .main-content {
-        grid-template-columns: 1fr;
-    }
-
-    .chat-section {
-        height: 500px;
-    }
-}
-
-@media (max-width: 768px) {
-    .header {
-        flex-direction: column;
-        gap: 20px;
-        text-align: center;
-    }
-
-    .stream-info {
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-
-    .channel-header {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .channel-stats {
-        justify-content: center;
-    }
+    justify-content: space-between;
 }
