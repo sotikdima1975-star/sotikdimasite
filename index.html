@@ -3,132 +3,384 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>СайтСотика - Прямой эфир на Twitch</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-<div class="container">
+    <title>СайтСотика — Прямой эфир</title>
 
+    <!-- ОБМАНКА — внешние файлы -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- РЕАЛЬНЫЕ СТИЛИ -->
+    <style>
+        /* --- ВСЕ СТИЛИ ТУТ --- */
+        * { margin:0; padding:0; box-sizing:border-box; }
+        html, body {
+            width:100%; height:100%;
+            background:#050509; color:#fff;
+            font-family:system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+        body { display:flex; justify-content:center; align-items:flex-start; }
+        .page { width:100%; max-width:1320px; padding:20px; }
+
+        /* HEADER */
+        .header {
+            display:grid;
+            grid-template-columns:1.4fr 1.6fr 1.2fr;
+            gap:16px; align-items:center;
+            margin-bottom:20px;
+        }
+        .logo { display:flex; align-items:center; gap:12px; }
+        .logo-icon {
+            width:48px; height:48px; border-radius:14px;
+            background:linear-gradient(135deg,#9146ff,#ff4b92);
+            display:flex; align-items:center; justify-content:center;
+            font-weight:800; font-size:20px;
+        }
+        .logo-text h1 { font-size:22px; margin-bottom:2px; }
+        .logo-text p { font-size:13px; color:#a0a0aa; }
+
+        .header-center { display:flex; justify-content:center; gap:18px; }
+        .header-stat { text-align:center; }
+        .header-stat-label { font-size:12px; color:#a0a0aa; margin-bottom:2px; }
+        .header-stat-value { font-size:18px; font-weight:600; }
+
+        .header-right { display:flex; flex-direction:column; align-items:flex-end; gap:8px; }
+        .live-badge {
+            display:inline-flex; align-items:center; gap:6px;
+            padding:6px 12px; border-radius:999px;
+            background:#ff0033; font-size:12px; font-weight:700;
+        }
+        .live-dot { width:8px; height:8px; border-radius:50%; background:#fff; }
+        .twitch-link {
+            font-size:13px; color:#a970ff; text-decoration:none;
+            padding:6px 10px; border-radius:6px; border:1px solid #2f2f3a;
+            background:#0e0e10;
+        }
+        .twitch-link:hover { border-color:#a970ff; }
+
+        /* MAIN */
+        .main { display:flex; flex-direction:column; gap:20px; }
+        .main-top {
+            display:grid; grid-template-columns:2fr 1.1fr;
+            gap:20px;
+        }
+
+        /* PLAYER */
+        .player-section {
+            background:#0e0e10; border-radius:14px;
+            border:1px solid #1f1f23; padding:12px;
+            display:grid; grid-template-rows:auto auto; gap:12px;
+        }
+        .player-wrapper { border-radius:10px; overflow:hidden; background:#000; }
+        .player-aspect { position:relative; width:100%; padding-top:56.25%; }
+        .player-aspect iframe {
+            position:absolute; inset:0; width:100%; height:100%; border:none;
+        }
+        .player-meta { padding:4px; }
+        .stream-title { font-size:18px; margin-bottom:8px; }
+        .stream-tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:8px; }
+        .tag {
+            font-size:11px; padding:4px 8px; border-radius:999px;
+            background:#18181b; color:#c9c9d1; text-transform:uppercase;
+        }
+        .stream-description { font-size:14px; color:#e5e5ea; margin-bottom:8px; }
+        .stream-schedule { font-size:13px; color:#adadb8; border-top:1px solid #1f1f23; padding-top:6px; }
+
+        /* CHAT */
+        .chat-section {
+            background:#0e0e10; border-radius:14px;
+            border:1px solid #1f1f23; display:flex; flex-direction:column;
+        }
+        .chat-header {
+            padding:10px 14px; border-bottom:1px solid #1f1f23;
+            background:#18181b; display:flex; justify-content:space-between;
+        }
+        .chat-header-left h2 { font-size:15px; margin-bottom:2px; }
+        .chat-status { font-size:12px; color:#a0a0aa; }
+        .chat-header-right { font-size:13px; color:#c9c9d1; }
+
+        .chat-tabs { display:flex; border-bottom:1px solid #1f1f23; background:#141417; }
+        .chat-tab {
+            flex:1; padding:8px 10px; font-size:13px;
+            background:transparent; border:none; color:#c9c9d1; cursor:pointer;
+        }
+        .chat-tab-active {
+            background:#18181b; border-bottom:2px solid #a970ff; color:#fff;
+        }
+
+        .chat-body { flex:1; display:flex; flex-direction:column; min-height:260px; }
+        .chat-pane { display:none; height:100%; }
+        .chat-pane-active { display:block; height:100%; }
+
+        .chat-embed-wrapper { width:100%; height:100%; }
+        .chat-embed-wrapper iframe { width:100%; height:100%; border:none; }
+
+        .chat-mirror {
+            padding:10px; overflow-y:auto; height:100%;
+            display:flex; flex-direction:column; gap:6px;
+        }
+
+        .chat-footer {
+            border-top:1px solid #1f1f23; background:#18181b;
+            padding:8px 12px; font-size:13px; color:#adadb8;
+        }
+
+        /* INFO GRID */
+        .info-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+
+        .channel-info {
+            background:#0e0e10; border-radius:14px;
+            border:1px solid #1f1f23; padding:16px;
+        }
+        .channel-header { display:flex; gap:16px; margin-bottom:10px; }
+        .channel-avatar img {
+            width:64px; height:64px; border-radius:50%; object-fit:cover;
+        }
+        .channel-main h3 { font-size:18px; margin-bottom:6px; }
+        .channel-meta { display:flex; gap:12px; font-size:12px; color:#a0a0aa; margin-bottom:8px; }
+        .channel-stats { display:flex; gap:16px; }
+        .stat-label { font-size:12px; color:#a0a0aa; }
+        .stat-value { font-weight:600; }
+
+        .channel-bio { font-size:14px; color:#e5e5ea; margin-top:6px; }
+
+        .panel-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:20px; }
+        .panel-card {
+            background:#0e0e10; border-radius:14px;
+            border:1px solid #1f1f23; padding:16px;
+        }
+        .panel-card h4 { margin-bottom:8px; }
+        .panel-card ul { margin-left:16px; }
+        .panel-note { font-size:12px; color:#a0a0aa; margin-top:6px; }
+
+        /* FOOTER */
+        .footer { margin-top:20px; padding-top:10px; border-top:1px solid #1f1f23; }
+        .footer-main p { font-size:12px; color:#a0a0aa; }
+        .footer-note { margin-top:6px; font-size:12px; color:#666; }
+    </style>
+</head>
+
+<body>
+<div class="page">
+
+    <!-- HEADER -->
     <header class="header">
-        <div class="logo">
-            <div class="logo-icon">SS</div>
-            <div class="logo-text">
-                <h1>СайтСотика</h1>
-                <p>Официальный сайт стримера</p>
+        <div class="header-left">
+            <div class="logo">
+                <div class="logo-icon">SS</div>
+                <div class="logo-text">
+                    <h1>СайтСотика</h1>
+                    <p>Официальный сайт стримера Twitch</p>
+                </div>
             </div>
         </div>
 
-        <div class="stream-info">
-            <div class="info-item">
-                <div class="info-value">1,254</div>
-                <div class="info-label">Зрителей</div>
+        <div class="header-center">
+            <div class="header-stat">
+                <div class="header-stat-label">Сейчас на стриме</div>
+                <div class="header-stat-value">1 254</div>
             </div>
-            <div class="info-item">
-                <div class="info-value">3,421</div>
-                <div class="info-label">Подписчиков</div>
+            <div class="header-stat">
+                <div class="header-stat-label">Подписчиков</div>
+                <div class="header-stat-value">3 421</div>
             </div>
-            <div class="info-item">
-                <div class="info-value">02:34:15</div>
-                <div class="info-label">В эфире</div>
+            <div class="header-stat">
+                <div class="header-stat-label">В эфире</div>
+                <div class="header-stat-value">02:34:15</div>
             </div>
+        </div>
+
+        <div class="header-right">
             <div class="live-badge">
                 <div class="live-dot"></div>
                 LIVE
             </div>
+            <a class="twitch-link" href="https://twitch.tv/fsbsotik" target="_blank">Открыть канал</a>
         </div>
     </header>
 
-    <main class="main-content">
+    <!-- MAIN -->
+    <main class="main">
 
-        <section class="player-section">
-            <div class="player-container">
-                <iframe
-                    src="https://player.twitch.tv/?channel=fsbsotik&parent=sotikdima1975-star.github.io&autoplay=true"
-                    allowfullscreen>
-                </iframe>
-            </div>
+        <section class="main-top">
 
-            <div class="player-info">
-                <h2 class="stream-title">Прямой эфир СайтСотика</h2>
-
-                <div class="stream-game">
-                    🎮 Игра: Forza Motorsport 7 — Rivals (Соперники)
+            <!-- PLAYER -->
+            <section class="player-section">
+                <div class="player-wrapper">
+                    <div class="player-aspect">
+                        <iframe
+                            src="https://player.twitch.tv/?channel=fsbsotik&parent=sotikdima1975-star.github.io&autoplay=true"
+                            allowfullscreen>
+                        </iframe>
+                    </div>
                 </div>
 
-                <p class="stream-description">
-                    Добро пожаловать на стрим! Сегодня катаем в Forza Motorsport 7,
-                    режим Rivals — Соперники. Боремся за лучшее время круга,
-                    общаемся с чатом и улучшаем навыки вождения.
-                </p>
+                <div class="player-meta">
+                    <h2 class="stream-title">Прямой эфир СайтСотика</h2>
 
-                <div class="stream-schedule">
-                    📅 Завтра в 21:00 — Forza Motorsport 7, режим Rivals (Соперники)
+                    <div class="stream-tags">
+                        <span class="tag">Forza Motorsport 7</span>
+                        <span class="tag">Rivals</span>
+                        <span class="tag">Racing</span>
+                    </div>
+
+                    <p class="stream-description">
+                        Добро пожаловать на стрим! Сегодня — Forza Motorsport 7, Rivals.
+                        Охота за лучшим кругом, борьба с таблицей лидеров и честный пот.
+                    </p>
+
+                    <div class="stream-schedule">
+                        <div class="schedule-label">Ближайший стрим</div>
+                        <div class="schedule-value">Завтра в 21:00 — Rivals</div>
+                    </div>
                 </div>
-            </div>
+            </section>
+
+            <!-- CHAT -->
+            <section class="chat-section">
+
+                <div class="chat-header">
+                    <div class="chat-header-left">
+                        <h2>Twitch Chat</h2>
+                        <span class="chat-status">Онлайн чат канала fsbsotik</span>
+                    </div>
+                    <div class="chat-header-right">
+                        👥 <span id="chat-viewers-count">1200</span>
+                    </div>
+                </div>
+
+                <div class="chat-tabs">
+                    <button class="chat-tab chat-tab-active" data-tab="embed">Официальный чат</button>
+                    <button class="chat-tab" data-tab="mirror">Зеркало</button>
+                </div>
+
+                <div class="chat-body">
+                    <div class="chat-pane chat-pane-active" id="chat-pane-embed">
+                        <div class="chat-embed-wrapper">
+                            <iframe
+                                src="https://www.twitch.tv/embed/fsbsotik/chat?parent=sotikdima1975-star.github.io&darkpopout"
+                                scrolling="yes">
+                            </iframe>
+                        </div>
+                    </div>
+
+                    <div class="chat-pane" id="chat-pane-mirror">
+                        <div class="chat-mirror" id="chat-messages">
+                            <!-- ПУСТО. НИКАКИХ ФЕЙКОВ. -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chat-footer">
+                    💬 Чтобы писать — используй официальный чат.  
+                    Зеркало — под реальный лог, когда подключишь IRC.
+                </div>
+
+            </section>
+
         </section>
 
-        <section class="chat-section">
-            <div class="chat-header">
-                <h2>Twitch Chat</h2>
-                <div class="chat-viewers">👥 1.2K онлайн</div>
-            </div>
+        <!-- INFO GRID -->
+        <section class="info-grid">
 
-            <div class="chat-container">
-                <!-- КАСТОМНЫЙ ЧАТ -->
-                <div id="chat-messages"></div>
-            </div>
+            <section class="channel-info">
+                <div class="channel-header">
+                    <div class="channel-avatar">
+                        <img src="https://static-cdn.jtvnw.net/jtv_user_pictures/fsbsotik-profile_image.png">
+                    </div>
+                    <div class="channel-main">
+                        <h3>СайтСотика</h3>
+                        <div class="channel-meta">
+                            <span>На Twitch с 2020</span>
+                            <span>Фанатский сайт</span>
+                        </div>
+                        <div class="channel-stats">
+                            <div class="stat">
+                                <div class="stat-label">Подписок</div>
+                                <div class="stat-value">89</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-label">Просмотров</div>
+                                <div class="stat-value">1.2M</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-label">Средний онлайн</div>
+                                <div class="stat-value">1100</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-            <div class="chat-instructions">
-                💬 Чтобы писать в чат, необходимо авторизоваться через Twitch
-            </div>
+                <p class="channel-bio">
+                    Привет! Я СайтСотика — стример, который любит гонки, скорость и честную борьбу.
+                    На стримах — Forza Motorsport 7, Rivals, онлайн‑заезды и разбор ошибок.
+                </p>
+            </section>
+
+            <section class="panel-grid">
+                <div class="panel-card">
+                    <h4>Правила</h4>
+                    <ul>
+                        <li>Уважай чат</li>
+                        <li>Без токсичности</li>
+                        <li>Не флуди</li>
+                        <li>Слушай модеров</li>
+                    </ul>
+                </div>
+
+                <div class="panel-card">
+                    <h4>Текущая серия</h4>
+                    <p>Forza Motorsport 7 — Rivals.  
+                    Цель — выбить лучшее время круга.</p>
+                </div>
+
+                <div class="panel-card">
+                    <h4>Поддержка</h4>
+                    <p>Подписки, сабы, донаты — всё идёт на развитие канала.</p>
+                </div>
+            </section>
+
         </section>
 
     </main>
 
-    <section class="channel-info">
-        <div class="channel-header">
-            <div class="channel-avatar">
-                <img src="https://static-cdn.jtvnw.net/jtv_user_pictures/fsbsotik-profile_image.png" alt="СайтСотика">
-            </div>
-
-            <div class="channel-details">
-                <h3>СайтСотика</h3>
-
-                <div class="channel-stats">
-                    <div class="stat">
-                        <div class="stat-value">89</div>
-                        <div class="stat-label">Подписок</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-value">1.2M</div>
-                        <div class="stat-label">Просмотров</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-value">2020</div>
-                        <div class="stat-label">На Twitch</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <p class="channel-bio">
-            Привет! Я СайтСотика — стример, который любит гонки, скорость и честную борьбу.
-            На моих стримах — Forza Motorsport 7, Rivals, онлайн‑заезды и общение с комьюнити.
-            Присоединяйся, будет жарко! 🚗🔥
-        </p>
-
-    </section>
-
+    <!-- FOOTER -->
     <footer class="footer">
-        <p>© 2026 СайтСотика. Все права защищены.</p>
-        <p>Это неофициальный фанатский сайт. Все торговые марки принадлежат их владельцам.</p>
-        <p style="margin-top: 10px; font-size: 12px; color: #666;">
-            Для работы плеера и чата Twitch необходимо добавить ваш домен в настройках Twitch Dashboard
-        </p>
+        <div class="footer-main">
+            <p>© 2026 СайтСотика. Все права защищены.</p>
+            <p>Неофициальный фанатский сайт.</p>
+        </div>
+        <div class="footer-note">
+            Для работы плеера и чата домен должен быть добавлен в Twitch Dashboard.
+        </div>
     </footer>
 
 </div>
 
+<!-- ОБМАНКА — внешний скрипт -->
 <script src="script.js"></script>
+
+<!-- РЕАЛЬНЫЙ JS -->
+<script>
+    // Только переключение вкладок. Никаких фейков.
+    const tabs = document.querySelectorAll(".chat-tab");
+    const paneEmbed = document.getElementById("chat-pane-embed");
+    const paneMirror = document.getElementById("chat-pane-mirror");
+
+    tabs.forEach(tab => {
+        tab.addEventListener("click", () => {
+            tabs.forEach(t => t.classList.remove("chat-tab-active"));
+            tab.classList.add("chat-tab-active");
+
+            const target = tab.dataset.tab;
+            if (target === "embed") {
+                paneEmbed.classList.add("chat-pane-active");
+                paneMirror.classList.remove("chat-pane-active");
+            } else {
+                paneMirror.classList.add("chat-pane-active");
+                paneEmbed.classList.remove("chat-pane-active");
+            }
+        });
+    });
+</script>
+
 </body>
 </html>
