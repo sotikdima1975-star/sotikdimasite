@@ -2,18 +2,17 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <title>СайтСотика — Прямой эфир, статистика, архив</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>СайтСотика — Прямой эфир</title>
 
-    <!-- ОБМАНКА: внешние файлы, могут быть пустыми -->
+    <!-- ВНЕШНИЙ CSS (МОЖЕТ БЫТЬ ПУСТОЙ, ДЛЯ ВИДА) -->
     <link rel="stylesheet" href="style.css">
 
-    <!-- РЕАЛЬНЫЕ СТИЛИ ВНУТРИ -->
+    <!-- РЕАЛЬНЫЕ СТИЛИ -->
     <style>
         /* =====================================================================
-           БАЗОВЫЙ РЕСЕТ И ГЛОБАЛЬНЫЕ НАСТРОЙКИ
+           БАЗА
            ===================================================================== */
-
         * {
             margin: 0;
             padding: 0;
@@ -36,44 +35,214 @@
 
         .page {
             width: 100%;
-            max-width: 1320px;
+            max-width: 1440px;
             min-height: 100vh;
             padding: 20px;
         }
 
-        /* =====================================================================
-           ШАПКА САЙТА: ЛОГОТИП, СТАТИСТИКА, LIVE-БЛОК
-           ===================================================================== */
-
-        .header {
-            display: grid;
-            grid-template-columns: 1.4fr 1.6fr 1.2fr;
-            gap: 16px;
-            align-items: center;
-            margin-bottom: 20px;
+        a {
+            color: inherit;
+            text-decoration: none;
         }
 
-        .header-left {
+        ul {
+            list-style: none;
+        }
+
+        /* =====================================================================
+           УТИЛИТЫ
+           ===================================================================== */
+        .text-muted { color: #a0a0aa; }
+        .text-soft { color: #d0d0da; }
+        .text-strong { color: #ffffff; }
+        .text-accent { color: #a970ff; }
+        .text-danger { color: #ff4b6a; }
+        .text-success { color: #4bff9a; }
+
+        .text-xs { font-size: 11px; }
+        .text-sm { font-size: 13px; }
+        .text-md { font-size: 14px; }
+        .text-lg { font-size: 16px; }
+        .text-xl { font-size: 18px; }
+        .text-2xl { font-size: 20px; }
+
+        .fw-400 { font-weight: 400; }
+        .fw-500 { font-weight: 500; }
+        .fw-600 { font-weight: 600; }
+        .fw-700 { font-weight: 700; }
+        .fw-800 { font-weight: 800; }
+
+        .mt-2 { margin-top: 2px; }
+        .mt-4 { margin-top: 4px; }
+        .mt-6 { margin-top: 6px; }
+        .mt-8 { margin-top: 8px; }
+        .mt-10 { margin-top: 10px; }
+        .mt-12 { margin-top: 12px; }
+        .mt-16 { margin-top: 16px; }
+        .mt-20 { margin-top: 20px; }
+        .mt-24 { margin-top: 24px; }
+
+        .mb-2 { margin-bottom: 2px; }
+        .mb-4 { margin-bottom: 4px; }
+        .mb-6 { margin-bottom: 6px; }
+        .mb-8 { margin-bottom: 8px; }
+        .mb-10 { margin-bottom: 10px; }
+        .mb-12 { margin-bottom: 12px; }
+        .mb-16 { margin-bottom: 16px; }
+        .mb-20 { margin-bottom: 20px; }
+
+        .px-8 { padding-left: 8px; padding-right: 8px; }
+        .px-12 { padding-left: 12px; padding-right: 12px; }
+        .px-16 { padding-left: 16px; padding-right: 16px; }
+        .px-20 { padding-left: 20px; padding-right: 20px; }
+
+        .py-6 { padding-top: 6px; padding-bottom: 6px; }
+        .py-8 { padding-top: 8px; padding-bottom: 8px; }
+        .py-10 { padding-top: 10px; padding-bottom: 10px; }
+        .py-12 { padding-top: 12px; padding-bottom: 12px; }
+
+        .rounded-6 { border-radius: 6px; }
+        .rounded-8 { border-radius: 8px; }
+        .rounded-10 { border-radius: 10px; }
+        .rounded-12 { border-radius: 12px; }
+        .rounded-16 { border-radius: 16px; }
+        .rounded-20 { border-radius: 20px; }
+
+        .border { border: 1px solid #1f1f23; }
+        .border-subtle { border: 1px solid #15151a; }
+        .border-strong { border: 1px solid #2f2f3a; }
+
+        .bg-root { background: #050509; }
+        .bg-panel { background: #0e0e10; }
+        .bg-panel-alt { background: #101018; }
+        .bg-header { background: #18181b; }
+        .bg-tab { background: #141417; }
+        .bg-chip { background: #18181f; }
+
+        .shadow-soft {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+        }
+
+        .flex { display: flex; }
+        .flex-col { flex-direction: column; }
+        .flex-row { flex-direction: row; }
+        .items-center { align-items: center; }
+        .items-start { align-items: flex-start; }
+        .items-end { align-items: flex-end; }
+        .justify-center { justify-content: center; }
+        .justify-between { justify-content: space-between; }
+        .justify-start { justify-content: flex-start; }
+        .justify-end { justify-content: flex-end; }
+        .gap-2 { gap: 2px; }
+        .gap-4 { gap: 4px; }
+        .gap-6 { gap: 6px; }
+        .gap-8 { gap: 8px; }
+        .gap-10 { gap: 10px; }
+        .gap-12 { gap: 12px; }
+        .gap-16 { gap: 16px; }
+        .gap-20 { gap: 20px; }
+        .gap-24 { gap: 24px; }
+        .gap-32 { gap: 32px; }
+
+        .grid { display: grid; }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .badge-outline {
+            border: 1px solid #2f2f3a;
+            background: #0e0e10;
+            color: #c9c9d1;
+        }
+
+        .badge-accent {
+            border: 1px solid #a970ff;
+            background: rgba(169, 112, 255, 0.12);
+            color: #e0d0ff;
+        }
+
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 8px;
+            border-radius: 999px;
+            background: #18181f;
+            font-size: 11px;
+            color: #c9c9d1;
+        }
+
+        .pill-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6px 14px;
+            border-radius: 999px;
+            border: 1px solid #2f2f3a;
+            background: #0e0e10;
+            font-size: 13px;
+            color: #e5e5ea;
+            cursor: pointer;
+        }
+
+        .pill-button:hover {
+            border-color: #a970ff;
+            color: #ffffff;
+        }
+
+        .pill-button-primary {
+            border-color: #a970ff;
+            background: linear-gradient(135deg, #9146ff, #ff4b92);
+            color: #ffffff;
+        }
+
+        .pill-button-primary:hover {
+            filter: brightness(1.05);
+        }
+
+        /* =====================================================================
+           ГЛАВНЫЙ ЛЕЙАУТ
+           ===================================================================== */
+        .layout-root {
+            display: grid;
+            grid-template-rows: auto auto 1fr auto;
+            gap: 16px;
+        }
+
+        /* =====================================================================
+           ТОП‑НАВИГАЦИЯ
+           ===================================================================== */
+        .top-nav {
             display: flex;
             align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
         }
 
-        .logo {
+        .top-nav-left {
             display: flex;
             align-items: center;
             gap: 12px;
         }
 
-        .logo-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 14px;
-            background: linear-gradient(135deg, #9146ff, #ff4b92);
+        .logo-mark {
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
+            background: radial-gradient(circle at 20% 20%, #ffffff 0, #f0e6ff 8%, #9146ff 40%, #050509 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 800;
-            font-size: 20px;
+            font-size: 22px;
+            letter-spacing: 0.06em;
         }
 
         .logo-text h1 {
@@ -86,35 +255,37 @@
             color: #a0a0aa;
         }
 
-        .header-center {
+        .top-nav-center {
             display: flex;
-            justify-content: center;
-            gap: 18px;
+            gap: 10px;
+            padding: 4px;
+            border-radius: 999px;
+            background: #0e0e10;
+            border: 1px solid #1f1f23;
         }
 
-        .header-stat {
-            text-align: center;
+        .nav-pill {
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 13px;
+            color: #c9c9d1;
+            cursor: pointer;
+            border: none;
+            background: transparent;
         }
 
-        .header-stat-label {
-            font-size: 12px;
-            color: #a0a0aa;
-            margin-bottom: 2px;
+        .nav-pill-active {
+            background: #18181f;
+            color: #ffffff;
         }
 
-        .header-stat-value {
-            font-size: 18px;
-            font-weight: 600;
-        }
-
-        .header-right {
+        .top-nav-right {
             display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 8px;
+            align-items: center;
+            gap: 10px;
         }
 
-        .live-badge {
+        .live-indicator {
             display: inline-flex;
             align-items: center;
             gap: 6px;
@@ -133,60 +304,99 @@
             background: #ffffff;
         }
 
-        .twitch-link {
-            font-size: 13px;
-            color: #a970ff;
-            text-decoration: none;
-            padding: 6px 10px;
-            border-radius: 6px;
-            border: 1px solid #2f2f3a;
-            background: #0e0e10;
+        .top-nav-meta {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
         }
 
-        .twitch-link:hover {
-            border-color: #a970ff;
+        .top-nav-meta-row {
+            display: flex;
+            gap: 8px;
+            font-size: 11px;
+            color: #a0a0aa;
         }
 
         /* =====================================================================
-           ОСНОВНОЙ КОНТЕНТ: ПЛЕЕР + ЧАТ
+           ХЕДЕР СТАТИСТИКИ
            ===================================================================== */
-
-        .main {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .main-top {
+        .header-stats {
             display: grid;
-            grid-template-columns: 2fr 1.1fr;
-            gap: 20px;
+            grid-template-columns: 1.6fr 1.4fr 1.2fr;
+            gap: 16px;
         }
 
-        /* ---------------------------------------------------------------------
-           ПЛЕЕР
-           --------------------------------------------------------------------- */
-
-        .player-section {
+        .header-card {
             background: #0e0e10;
-            border-radius: 14px;
+            border-radius: 16px;
             border: 1px solid #1f1f23;
-            padding: 12px;
+            padding: 14px;
+        }
+
+        .header-card-title {
+            font-size: 14px;
+            color: #a0a0aa;
+            margin-bottom: 4px;
+        }
+
+        .header-card-main {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-card-value {
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .header-card-sub {
+            font-size: 12px;
+            color: #a0a0aa;
+        }
+
+        .header-card-tags {
+            margin-top: 8px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .header-card-footer {
+            margin-top: 8px;
+            font-size: 11px;
+            color: #666676;
+        }
+
+        /* =====================================================================
+           ОСНОВНОЙ КОНТЕНТ: ПЛЕЕР + ЧАТ + ПАНЕЛИ
+           ===================================================================== */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 2.1fr 1.4fr;
+            gap: 18px;
+            margin-top: 12px;
+        }
+
+        /* PLAYER BLOCK */
+        .player-card {
+            background: #0e0e10;
+            border-radius: 18px;
+            border: 1px solid #1f1f23;
+            padding: 14px;
             display: grid;
             grid-template-rows: auto auto;
-            gap: 12px;
-        }
-
-        .player-wrapper {
-            border-radius: 10px;
-            overflow: hidden;
-            background: #000;
+            gap: 10px;
         }
 
         .player-aspect {
             position: relative;
             width: 100%;
             padding-top: 56.25%;
+            border-radius: 14px;
+            overflow: hidden;
+            background: #000;
         }
 
         .player-aspect iframe {
@@ -198,19 +408,32 @@
         }
 
         .player-meta {
-            padding: 4px;
+            display: grid;
+            grid-template-columns: 1.8fr 1.2fr;
+            gap: 12px;
+        }
+
+        .player-meta-left {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
         }
 
         .stream-title {
             font-size: 18px;
-            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .stream-subtitle {
+            font-size: 13px;
+            color: #a0a0aa;
         }
 
         .stream-tags {
             display: flex;
             flex-wrap: wrap;
             gap: 6px;
-            margin-bottom: 8px;
+            margin-top: 4px;
         }
 
         .tag {
@@ -224,30 +447,48 @@
         }
 
         .stream-description {
-            font-size: 14px;
+            font-size: 13px;
             color: #e5e5ea;
-            margin-bottom: 8px;
+            margin-top: 4px;
         }
 
-        .stream-schedule {
-            font-size: 13px;
-            color: #adadb8;
-            border-top: 1px solid #1f1f23;
+        .player-meta-right {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-size: 12px;
+            color: #a0a0aa;
+        }
+
+        .meta-row {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .meta-row span:last-child {
+            color: #ffffff;
+        }
+
+        .schedule-block {
+            margin-top: 4px;
             padding-top: 6px;
+            border-top: 1px solid #1f1f23;
         }
 
         .schedule-label {
-            font-weight: 600;
-            margin-bottom: 2px;
+            font-size: 12px;
+            color: #a0a0aa;
         }
 
-        /* ---------------------------------------------------------------------
-           ЧАТ
-           --------------------------------------------------------------------- */
+        .schedule-value {
+            font-size: 13px;
+            color: #e5e5ea;
+        }
 
-        .chat-section {
+        /* CHAT BLOCK */
+        .chat-card {
             background: #0e0e10;
-            border-radius: 14px;
+            border-radius: 18px;
             border: 1px solid #1f1f23;
             display: flex;
             flex-direction: column;
@@ -267,13 +508,16 @@
             margin-bottom: 2px;
         }
 
-        .chat-status {
+        .chat-header-left span {
             font-size: 12px;
             color: #a0a0aa;
         }
 
         .chat-header-right {
-            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
             color: #c9c9d1;
         }
 
@@ -340,695 +584,113 @@
             border-top: 1px solid #1f1f23;
             background: #18181b;
             padding: 8px 12px;
-            font-size: 13px;
+            font-size: 12px;
             color: #adadb8;
         }
 
         /* =====================================================================
-           БЛОКИ ИНФОРМАЦИИ О КАНАЛЕ
+           БЛОК КАНАЛА + ПАНЕЛИ
            ===================================================================== */
-
-        .info-grid {
+        .channel-panels-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            grid-template-columns: 1.5fr 1.5fr 1.2fr;
+            gap: 16px;
+            margin-top: 16px;
         }
 
-        .channel-info {
+        .channel-card {
             background: #0e0e10;
-            border-radius: 14px;
+            border-radius: 16px;
             border: 1px solid #1f1f23;
-            padding: 16px;
+            padding: 14px;
         }
 
         .channel-header {
             display: flex;
-            gap: 16px;
-            margin-bottom: 10px;
+            gap: 14px;
+            margin-bottom: 8px;
+        }
+
+        .channel-avatar {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            overflow: hidden;
+            background: #18181b;
         }
 
         .channel-avatar img {
-            width: 64px;
-            height: 64px;
-            border-radius: 50%;
+            width: 100%;
+            height: 100%;
             object-fit: cover;
+        }
+
+        .channel-main {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
         }
 
         .channel-main h3 {
             font-size: 18px;
-            margin-bottom: 6px;
         }
 
-        .channel-meta {
+        .channel-tags {
             display: flex;
             flex-wrap: wrap;
-            gap: 12px;
-            font-size: 12px;
+            gap: 6px;
+            font-size: 11px;
             color: #a0a0aa;
-            margin-bottom: 8px;
         }
 
-        .channel-stats {
+        .channel-stats-row {
             display: flex;
             gap: 16px;
+            margin-top: 4px;
         }
 
-        .stat-label {
-            font-size: 12px;
+        .channel-stat-label {
+            font-size: 11px;
             color: #a0a0aa;
         }
 
-        .stat-value {
+        .channel-stat-value {
+            font-size: 14px;
             font-weight: 600;
         }
 
         .channel-bio {
-            font-size: 14px;
+            font-size: 13px;
             color: #e5e5ea;
             margin-top: 6px;
-        }
-
-        /* ---------------------------------------------------------------------
-           ПАНЕЛИ: ПРАВИЛА, СЕРИЯ, ПОДДЕРЖКА, ДОП. БЛОКИ
-           --------------------------------------------------------------------- */
-
-        .panel-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 20px;
         }
 
         .panel-card {
             background: #0e0e10;
-            border-radius: 14px;
+            border-radius: 16px;
             border: 1px solid #1f1f23;
-            padding: 16px;
+            padding: 14px;
         }
 
         .panel-card h4 {
-            margin-bottom: 8px;
+            font-size: 15px;
+            margin-bottom: 6px;
+        }
+
+        .panel-card p {
+            font-size: 13px;
+            color: #d0d0da;
         }
 
         .panel-card ul {
-            margin-left: 16px;
-            font-size: 14px;
+            margin-top: 4px;
+            margin-left: 14px;
+            font-size: 13px;
+            color: #d0d0da;
         }
 
         .panel-card li {
             margin-bottom: 4px;
-        }
-
-        .panel-note {
-            font-size: 12px;
-            color: #a0a0aa;
-            margin-top: 6px;
-        }
-
-        /* Дополнительные панели для «толщины» проекта */
-
-        .panel-card p {
-            font-size: 14px;
-            color: #e5e5ea;
-        }
-
-        .panel-card-section {
-            margin-top: 10px;
-            padding-top: 8px;
-            border-top: 1px solid #1f1f23;
-            font-size: 13px;
-            color: #c9c9d1;
-        }
-
-        .panel-list {
-            list-style: none;
-            margin-top: 6px;
-        }
-
-        .panel-list-item {
-            font-size: 13px;
-            color: #d0d0da;
-            margin-bottom: 4px;
-        }
-
-        /* =====================================================================
-           ФУТЕР
-           ===================================================================== */
-
-        .footer {
-            margin-top: 20px;
-            padding-top: 10px;
-            border-top: 1px solid #1f1f23;
-        }
-
-        .footer-main p {
-            font-size: 12px;
-            color: #a0a0aa;
-        }
-
-        .footer-note {
-            margin-top: 6px;
-            font-size: 12px;
-            color: #666666;
-        }
-
-        /* =====================================================================
-           ДОПОЛНИТЕЛЬНЫЕ ДЕКОРАТИВНЫЕ КЛАССЫ (ДЛЯ ОБЪЁМА И ГИБКОСТИ)
-           ===================================================================== */
-
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2px 8px;
-            border-radius: 999px;
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            border: 1px solid #2f2f3a;
-            background: #141417;
-            color: #c9c9d1;
-        }
-
-        .badge-accent {
-            border-color: #a970ff;
-            color: #ffffff;
-        }
-
-        .divider {
-            width: 100%;
-            height: 1px;
-            background: #1f1f23;
-            margin: 8px 0;
-        }
-
-        .muted {
-            color: #a0a0aa;
-        }
-
-        .small {
-            font-size: 12px;
-        }
-
-        .mono {
-            font-family: "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-        }
-
-        .pill {
-            border-radius: 999px;
-        }
-
-        .shadow-soft {
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
-        }
-
-        .shadow-inner {
-            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
-        }
-
-        .glass {
-            background: rgba(15, 15, 20, 0.85);
-            backdrop-filter: blur(12px);
-        }
-
-        .accent-border {
-            border-color: #a970ff;
-        }
-
-        .accent-text {
-            color: #a970ff;
-        }
-
-        .accent-bg {
-            background: #a970ff;
-        }
-
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-
-        .grid-3 {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 12px;
-        }
-
-        .grid-4 {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-        }
-
-        .stack {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .row {
-            display: flex;
-            flex-direction: row;
-            gap: 8px;
-            align-items: center;
-        }
-
-        .justify-between {
-            justify-content: space-between;
-        }
-
-        .justify-center {
-            justify-content: center;
-        }
-
-        .align-center {
-            align-items: center;
-        }
-
-        .mt-4 { margin-top: 4px; }
-        .mt-6 { margin-top: 6px; }
-        .mt-8 { margin-top: 8px; }
-        .mt-10 { margin-top: 10px; }
-        .mt-12 { margin-top: 12px; }
-
-        .mb-4 { margin-bottom: 4px; }
-        .mb-6 { margin-bottom: 6px; }
-        .mb-8 { margin-bottom: 8px; }
-        .mb-10 { margin-bottom: 10px; }
-
-        .pt-4 { padding-top: 4px; }
-        .pt-6 { padding-top: 6px; }
-        .pt-8 { padding-top: 8px; }
-
-        .pb-4 { padding-bottom: 4px; }
-        .pb-6 { padding-bottom: 6px; }
-        .pb-8 { padding-bottom: 8px; }
-
-        .px-8 { padding-left: 8px; padding-right: 8px; }
-        .px-12 { padding-left: 12px; padding-right: 12px; }
-        .px-16 { padding-left: 16px; padding-right: 16px; }
-
-        .rounded-8 { border-radius: 8px; }
-        .rounded-12 { border-radius: 12px; }
-        .rounded-16 { border-radius: 16px; }
-
-        .border {
-            border: 1px solid #1f1f23;
-        }
-
-        .border-subtle {
-            border: 1px solid #15151a;
-        }
-
-        .bg-subtle {
-            background: #0c0c10;
-        }
-
-        .bg-strong {
-            background: #050509;
-        }
-
-        .bg-panel {
-            background: #0e0e10;
-        }
-
-        .bg-panel-alt {
-            background: #101018;
-        }
-
-        .text-strong {
-            color: #ffffff;
-        }
-
-        .text-subtle {
-            color: #c9c9d1;
-        }
-
-        .text-muted {
-            color: #a0a0aa;
-        }
-
-        .text-danger {
-            color: #ff4b4b;
-        }
-
-        .text-success {
-            color: #4caf50;
-        }
-
-        .text-warning {
-            color: #ffb74d;
-        }
-
-        .text-info {
-            color: #64b5f6;
-        }
-
-        .text-xs { font-size: 11px; }
-        .text-sm { font-size: 13px; }
-        .text-md { font-size: 14px; }
-        .text-lg { font-size: 16px; }
-        .text-xl { font-size: 18px; }
-
-        .fw-400 { font-weight: 400; }
-        .fw-500 { font-weight: 500; }
-        .fw-600 { font-weight: 600; }
-        .fw-700 { font-weight: 700; }
-
-        .uppercase { text-transform: uppercase; }
-        .nowrap { white-space: nowrap; }
-
-        .chip {
-            display: inline-flex;
-            align-items: center;
-            padding: 4px 10px;
-            border-radius: 999px;
-            border: 1px solid #2f2f3a;
-            font-size: 12px;
-            color: #c9c9d1;
-        }
-
-        .chip-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            margin-right: 6px;
-            background: #a970ff;
-        }
-
-        .stat-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 13px;
-            margin-bottom: 4px;
-        }
-
-        .stat-row-label {
-            color: #a0a0aa;
-        }
-
-        .stat-row-value {
-            color: #ffffff;
-        }
-
-        .timeline {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-top: 8px;
-        }
-
-        .timeline-item {
-            display: flex;
-            gap: 8px;
-            align-items: flex-start;
-        }
-
-        .timeline-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            margin-top: 4px;
-            background: #a970ff;
-        }
-
-        .timeline-content {
-            font-size: 13px;
-            color: #d0d0da;
-        }
-
-        .timeline-label {
-            font-size: 12px;
-            color: #a0a0aa;
-        }
-
-        .timeline-strong {
-            font-weight: 600;
-        }
-
-        .pill-tag {
-            display: inline-flex;
-            align-items: center;
-            padding: 3px 8px;
-            border-radius: 999px;
-            background: #18181b;
-            color: #c9c9d1;
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-        }
-
-        .pill-tag + .pill-tag {
-            margin-left: 4px;
-        }
-
-        .section-title {
-            font-size: 15px;
-            font-weight: 600;
-            margin-bottom: 6px;
-        }
-
-        .section-subtitle {
-            font-size: 12px;
-            color: #a0a0aa;
-            margin-bottom: 8px;
-        }
-
-        .code-block {
-            font-family: "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-            font-size: 12px;
-            background: #050509;
-            border-radius: 8px;
-            padding: 8px 10px;
-            border: 1px solid #1f1f23;
-            color: #e5e5ea;
-            overflow-x: auto;
-        }
-
-        .code-line {
-            white-space: pre;
-        }
-
-        .label {
-            font-size: 12px;
-            color: #a0a0aa;
-        }
-
-        .value {
-            font-size: 14px;
-            color: #ffffff;
-        }
-
-        .kv-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 4px;
-        }
-
-        .kv-row .label {
-            margin-right: 8px;
-        }
-
-        .kv-row .value {
-            text-align: right;
-        }
-
-        .pill-status {
-            display: inline-flex;
-            align-items: center;
-            padding: 3px 8px;
-            border-radius: 999px;
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-        }
-
-        .pill-status-live {
-            background: rgba(255, 0, 51, 0.1);
-            color: #ff4b4b;
-            border: 1px solid rgba(255, 0, 51, 0.4);
-        }
-
-        .pill-status-offline {
-            background: rgba(128, 128, 128, 0.1);
-            color: #b0b0b0;
-            border: 1px solid rgba(128, 128, 128, 0.4);
-        }
-
-        .pill-status-scheduled {
-            background: rgba(169, 112, 255, 0.1);
-            color: #a970ff;
-            border: 1px solid rgba(169, 112, 255, 0.4);
-        }
-
-        .list-compact {
-            list-style: none;
-            font-size: 13px;
-            color: #d0d0da;
-        }
-
-        .list-compact li {
-            margin-bottom: 3px;
-        }
-
-        .highlight {
-            color: #ffffff;
-            font-weight: 600;
-        }
-
-        .highlight-accent {
-            color: #a970ff;
-            font-weight: 600;
-        }
-
-        .badge-small {
-            font-size: 10px;
-            padding: 2px 6px;
-            border-radius: 999px;
-            background: #18181b;
-            color: #c9c9d1;
-        }
-
-        .badge-small + .badge-small {
-            margin-left: 4px;
-        }
-
-        .grid-stats {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 6px;
-            margin-top: 6px;
-        }
-
-        .grid-stats-item {
-            font-size: 12px;
-            color: #c9c9d1;
-        }
-
-        .grid-stats-label {
-            color: #a0a0aa;
-        }
-
-        .grid-stats-value {
-            color: #ffffff;
-        }
-
-        .section-block {
-            margin-top: 10px;
-            padding-top: 8px;
-            border-top: 1px solid #1f1f23;
-        }
-
-        .section-block-title {
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-
-        .section-block-text {
-            font-size: 13px;
-            color: #d0d0da;
-        }
-
-        .pill-game {
-            display: inline-flex;
-            align-items: center;
-            padding: 4px 10px;
-            border-radius: 999px;
-            background: #18181b;
-            color: #c9c9d1;
-            font-size: 12px;
-        }
-
-        .pill-game-icon {
-            margin-right: 6px;
-        }
-
-        .pill-game-name {
-            font-weight: 500;
-        }
-
-        .pill-mode {
-            display: inline-flex;
-            align-items: center;
-            padding: 3px 8px;
-            border-radius: 999px;
-            background: #141417;
-            color: #c9c9d1;
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-        }
-
-        .pill-mode + .pill-mode {
-            margin-left: 4px;
-        }
-
-        .meta-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 6px;
-        }
-
-        .meta-item {
-            font-size: 12px;
-            color: #a0a0aa;
-        }
-
-        .meta-item-strong {
-            color: #ffffff;
-        }
-
-        .meta-item-label {
-            color: #a0a0aa;
-        }
-
-        .meta-item-value {
-            color: #ffffff;
-        }
-
-        .meta-item-separator {
-            color: #555;
-        }
-
-        .pill-rank {
-            display: inline-flex;
-            align-items: center;
-            padding: 3px 8px;
-            border-radius: 999px;
-            background: #18181b;
-            color: #ffd54f;
-            font-size: 11px;
-        }
-
-        .pill-rank-icon {
-            margin-right: 4px;
-        }
-
-        .pill-rank-text {
-            font-weight: 600;
-        }
-
-        .panel-metric {
-            display: flex;
-            justify-content: space-between;
-            font-size: 13px;
-            margin-bottom: 4px;
-        }
-
-        .panel-metric-label {
-            color: #a0a0aa;
-        }
-
-        .panel-metric-value {
-            color: #ffffff;
-        }
-
-        .panel-metric-sub {
-            font-size: 11px;
-            color: #777;
         }
 
         .panel-section {
@@ -1048,509 +710,609 @@
             color: #d0d0da;
         }
 
-        .panel-section-list {
-            list-style: none;
-            margin-top: 4px;
+        /* =====================================================================
+           НИЖНИЕ СЕКЦИИ (ОБОРУДОВАНИЕ, ТРАССЫ, РЕКОРДЫ, FAQ, КОНТАКТЫ, ПОДДЕРЖКА)
+           ===================================================================== */
+        .section-block {
+            background: #0e0e10;
+            border-radius: 16px;
+            border: 1px solid #1f1f23;
+            padding: 16px;
+            margin-top: 16px;
         }
 
-        .panel-section-list li {
-            font-size: 12px;
-            color: #c9c9d1;
-            margin-bottom: 3px;
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
         }
 
-        .panel-section-tagline {
+        .section-subtitle {
             font-size: 12px;
             color: #a0a0aa;
-            margin-top: 4px;
+            margin-bottom: 8px;
         }
 
-        .panel-section-highlight {
+        .section-columns-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .section-columns-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+        }
+
+        .equipment-item {
+            font-size: 13px;
+            color: #d0d0da;
+            margin-bottom: 6px;
+        }
+
+        .equipment-label {
+            color: #a0a0aa;
+            font-size: 12px;
+        }
+
+        .equipment-value {
             color: #ffffff;
-            font-weight: 600;
+            font-size: 13px;
         }
 
-        .panel-section-accent {
+        .track-list {
+            list-style: none;
+            font-size: 13px;
+            color: #d0d0da;
+        }
+
+        .track-list li {
+            margin-bottom: 4px;
+        }
+
+        .track-name {
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .track-note {
+            color: #a0a0aa;
+            font-size: 12px;
+        }
+
+        .record-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            margin-top: 6px;
+        }
+
+        .record-table th,
+        .record-table td {
+            padding: 4px 6px;
+            border-bottom: 1px solid #1f1f23;
+        }
+
+        .record-table th {
+            text-align: left;
+            color: #a0a0aa;
+            font-weight: 500;
+        }
+
+        .record-table td {
+            color: #d0d0da;
+        }
+
+        .record-best {
             color: #a970ff;
             font-weight: 600;
         }
 
-        .panel-section-note {
-            font-size: 11px;
-            color: #777;
-            margin-top: 4px;
+        .faq-item {
+            margin-bottom: 8px;
         }
 
-        .panel-section-divider {
-            width: 100%;
-            height: 1px;
-            background: #1f1f23;
-            margin: 6px 0;
-        }
-
-        .panel-section-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 6px;
-            margin-top: 4px;
-        }
-
-        .panel-section-grid-item {
-            font-size: 12px;
-            color: #c9c9d1;
-        }
-
-        .panel-section-grid-label {
-            color: #a0a0aa;
-        }
-
-        .panel-section-grid-value {
-            color: #ffffff;
-        }
-
-        .panel-section-pill-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 4px;
-            margin-top: 4px;
-        }
-
-        .panel-section-pill {
-            font-size: 11px;
-            padding: 3px 8px;
-            border-radius: 999px;
-            background: #18181b;
-            color: #c9c9d1;
-        }
-
-        .panel-section-pill-strong {
-            background: #a970ff;
-            color: #ffffff;
-        }
-
-        .panel-section-pill-muted {
-            background: #101018;
-            color: #a0a0aa;
-        }
-
-        .panel-section-pill-outline {
-            border: 1px solid #2f2f3a;
-        }
-
-        .panel-section-pill-inline {
-            display: inline-flex;
-            align-items: center;
-        }
-
-        .panel-section-pill-icon {
-            margin-right: 4px;
-        }
-
-        .panel-section-pill-text {
-            font-size: 11px;
-        }
-
-        .panel-section-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 4px;
-        }
-
-        .panel-section-row-label {
-            font-size: 12px;
-            color: #a0a0aa;
-        }
-
-        .panel-section-row-value {
+        .faq-q {
             font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .faq-a {
+            font-size: 13px;
+            color: #d0d0da;
+        }
+
+        .contact-row {
+            font-size: 13px;
+            color: #d0d0da;
+            margin-bottom: 4px;
+        }
+
+        .contact-label {
+            color: #a0a0aa;
+            margin-right: 4px;
+        }
+
+        .contact-value {
             color: #ffffff;
         }
 
-        .panel-section-row-badge {
-            font-size: 11px;
-            padding: 2px 6px;
-            border-radius: 999px;
-            background: #18181b;
-            color: #c9c9d1;
+        /* =====================================================================
+           FOOTER
+           ===================================================================== */
+        .footer {
+            margin-top: 20px;
+            padding-top: 10px;
+            border-top: 1px solid #1f1f23;
         }
 
-        .panel-section-row-badge-accent {
-            background: #a970ff;
-            color: #ffffff;
-        }
-
-        .panel-section-row-badge-muted {
-            background: #101018;
+        .footer-main p {
+            font-size: 12px;
             color: #a0a0aa;
         }
 
-        .panel-section-row-badge-outline {
-            border: 1px solid #2f2f3a;
+        .footer-note {
+            margin-top: 6px;
+            font-size: 12px;
+            color: #666666;
         }
-
-        .panel-section-row-badge-pill {
-            border-radius: 999px;
-        }
-
-        .panel-section-row-badge-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            margin-right: 4px;
-            background: #a970ff;
-        }
-
-        .panel-section-row-badge-content {
-            display: inline-flex;
-            align-items: center;
-        }
-
-        .panel-section-row-badge-text {
-            font-size: 11px;
-        }
-
-        /* конец декоративных классов */
     </style>
 </head>
-
 <body>
 <div class="page">
+    <div class="layout-root">
 
-    <!-- =====================================================================
-         HEADER
-         ===================================================================== -->
-    <header class="header">
-        <div class="header-left">
-            <div class="logo">
-                <div class="logo-icon">SS</div>
+        <!-- =================================================================
+             ТОП‑НАВ
+             ================================================================= -->
+        <div class="top-nav">
+            <div class="top-nav-left">
+                <div class="logo-mark">SS</div>
                 <div class="logo-text">
                     <h1>СайтСотика</h1>
-                    <p>Официальный сайт стримера Twitch</p>
+                    <p>Стримерский хаб: эфир, статистика, архив</p>
                 </div>
             </div>
+
+            <div class="top-nav-center">
+                <button class="nav-pill nav-pill-active" data-page="live">Эфир</button>
+                <button class="nav-pill" data-page="stats">Статистика</button>
+                <button class="nav-pill" data-page="vods">Архив</button>
+                <button class="nav-pill" data-page="about">О канале</button>
+            </div>
+
+            <div class="top-nav-right">
+                <div class="top-nav-meta">
+                    <div class="live-indicator" id="live-indicator">
+                        <div class="live-dot"></div>
+                        LIVE
+                    </div>
+                    <div class="top-nav-meta-row">
+                        <span>Forza Motorsport 7 · Rivals</span>
+                        <span>·</span>
+                        <span>Fan‑site · Неофициально</span>
+                    </div>
+                </div>
+                <a class="pill-button" href="https://twitch.tv/fsbsotik" target="_blank" rel="noopener">
+                    Открыть Twitch
+                </a>
+            </div>
         </div>
 
-        <div class="header-center">
-            <div class="header-stat">
-                <div class="header-stat-label">Сейчас на стриме</div>
-                <div class="header-stat-value">1 254</div>
+        <!-- =================================================================
+             ХЕДЕР СТАТИСТИКИ
+             ================================================================= -->
+        <section class="header-stats" id="header-stats">
+            <div class="header-card">
+                <div class="header-card-title">Онлайн сейчас</div>
+                <div class="header-card-main">
+                    <div>
+                        <div class="header-card-value" id="stat-viewers">0</div>
+                        <div class="header-card-sub">Зрителей на текущем эфире</div>
+                    </div>
+                    <div class="badge badge-outline">
+                        <span id="stat-live-label">Офлайн</span>
+                    </div>
+                </div>
+                <div class="header-card-tags">
+                    <span class="chip">Rivals</span>
+                    <span class="chip">Forza Motorsport 7</span>
+                    <span class="chip">Sim Racing</span>
+                </div>
+                <div class="header-card-footer">
+                    Данные берутся из Twitch API, когда будут подставлены реальные токены.
+                </div>
             </div>
-            <div class="header-stat">
-                <div class="header-stat-label">Подписчиков</div>
-                <div class="header-stat-value">3 421</div>
+
+            <div class="header-card">
+                <div class="header-card-title">Подписчики и фолловеры</div>
+                <div class="header-card-main">
+                    <div>
+                        <div class="header-card-value" id="stat-followers">0</div>
+                        <div class="header-card-sub">Фолловеров канала</div>
+                    </div>
+                    <div>
+                        <div class="header-card-value text-accent" id="stat-subs">0</div>
+                        <div class="header-card-sub">Активных подписок</div>
+                    </div>
+                </div>
+                <div class="header-card-tags">
+                    <span class="chip">Prime</span>
+                    <span class="chip">Tier 1</span>
+                    <span class="chip">Gifted</span>
+                </div>
+                <div class="header-card-footer">
+                    Подписки считаются по твоему backend’у или Twitch EventSub — каркас уже готов.
+                </div>
             </div>
-            <div class="header-stat">
-                <div class="header-stat-label">В эфире</div>
-                <div class="header-stat-value">02:34:15</div>
+
+            <div class="header-card">
+                <div class="header-card-title">Эфир</div>
+                <div class="header-card-main">
+                    <div>
+                        <div class="header-card-value" id="stat-uptime">00:00:00</div>
+                        <div class="header-card-sub">Длительность текущего эфира</div>
+                    </div>
+                    <div>
+                        <div class="header-card-value" id="stat-streams-total">0</div>
+                        <div class="header-card-sub">Эфиров за месяц</div>
+                    </div>
+                </div>
+                <div class="header-card-tags">
+                    <span class="chip">График: 21:00 (МСК)</span>
+                    <span class="chip">Без фальши</span>
+                </div>
+                <div class="header-card-footer">
+                    Аптайм и количество эфиров — под реальные данные из твоего сервиса.
+                </div>
             </div>
-        </div>
+        </section>
 
-        <div class="header-right">
-            <div class="live-badge">
-                <div class="live-dot"></div>
-                LIVE
-            </div>
-            <a class="twitch-link" href="https://twitch.tv/fsbsotik" target="_blank" rel="noopener">
-                Открыть канал
-            </a>
-        </div>
-    </header>
-
-    <!-- =====================================================================
-         MAIN
-         ===================================================================== -->
-    <main class="main">
-
-        <!-- -----------------------------------------------------------------
-             TOP: PLAYER + CHAT
-             ----------------------------------------------------------------- -->
-        <section class="main-top">
-
-            <!-- PLAYER -->
-            <section class="player-section">
-                <div class="player-wrapper">
+        <!-- =================================================================
+             ГЛАВНАЯ СТРАНИЦА "ЭФИР"
+             ================================================================= -->
+        <main id="page-live">
+            <section class="main-grid">
+                <!-- PLAYER -->
+                <section class="player-card">
                     <div class="player-aspect">
                         <iframe
                             src="https://player.twitch.tv/?channel=fsbsotik&parent=sotikdima1975-star.github.io&autoplay=true"
                             allowfullscreen>
                         </iframe>
                     </div>
-                </div>
 
-                <div class="player-meta">
-                    <h2 class="stream-title">Прямой эфир СайтСотика</h2>
+                    <div class="player-meta">
+                        <div class="player-meta-left">
+                            <h2 class="stream-title" id="stream-title">Прямой эфир СайтСотика</h2>
+                            <p class="stream-subtitle" id="stream-subtitle">
+                                Forza Motorsport 7 · Rivals · Честный пот и охота за кругом.
+                            </p>
+                            <div class="stream-tags" id="stream-tags">
+                                <span class="tag">Forza Motorsport 7</span>
+                                <span class="tag">Rivals</span>
+                                <span class="tag">Racing</span>
+                                <span class="tag">Sim</span>
+                            </div>
+                            <p class="stream-description" id="stream-description">
+                                Добро пожаловать на стрим. Здесь нет казуальщины и фальши — только трасса,
+                                круги, разбор ошибок и уважение к темпу. Если ты любишь гонки и хочешь
+                                понимать, где именно теряется время — ты по адресу.
+                            </p>
+                        </div>
 
-                    <div class="stream-tags">
-                        <span class="tag">Forza Motorsport 7</span>
-                        <span class="tag">Rivals</span>
-                        <span class="tag">Racing</span>
-                        <span class="tag">Hardcore</span>
+                        <div class="player-meta-right">
+                            <div class="meta-row">
+                                <span>Игра</span>
+                                <span id="stream-game">Forza Motorsport 7</span>
+                            </div>
+                            <div class="meta-row">
+                                <span>Режим</span>
+                                <span id="stream-mode">Rivals / Соперники</span>
+                            </div>
+                            <div class="meta-row">
+                                <span>Формат</span>
+                                <span>Лучшее время круга</span>
+                            </div>
+                            <div class="meta-row">
+                                <span>Качество</span>
+                                <span>1080p60</span>
+                            </div>
+                            <div class="schedule-block">
+                                <div class="schedule-label">Ближайший стрим</div>
+                                <div class="schedule-value" id="stream-next">
+                                    Завтра в 21:00 (МСК) — Rivals, серия кругов на топ‑трассах.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- CHAT -->
+                <section class="chat-card">
+                    <div class="chat-header">
+                        <div class="chat-header-left">
+                            <h2>Twitch Chat</h2>
+                            <span>Онлайн чат канала fsbsotik</span>
+                        </div>
+                        <div class="chat-header-right">
+                            <span>👥</span>
+                            <span id="chat-viewers-count">0</span>
+                        </div>
                     </div>
 
-                    <p class="stream-description">
-                        Добро пожаловать на стрим! Сегодня — Forza Motorsport 7, режим Rivals.
-                        Охота за лучшим кругом, борьба с таблицей лидеров и честный пот.
+                    <div class="chat-tabs">
+                        <button class="chat-tab chat-tab-active" data-tab="embed">Официальный чат</button>
+                        <button class="chat-tab" data-tab="mirror">Зеркало (лог)</button>
+                    </div>
+
+                    <div class="chat-body">
+                        <div class="chat-pane chat-pane-active" id="chat-pane-embed">
+                            <div class="chat-embed-wrapper">
+                                <iframe
+                                    src="https://www.twitch.tv/embed/fsbsotik/chat?parent=sotikdima1975-star.github.io&darkpopout"
+                                    scrolling="yes">
+                                </iframe>
+                            </div>
+                        </div>
+
+                        <div class="chat-pane" id="chat-pane-mirror">
+                            <div class="chat-mirror" id="chat-messages">
+                                <!-- ПУСТО. СЮДА ПРИДЁТ РЕАЛЬНЫЙ ЛОГ ЧЕРЕЗ ТВОЙ BACKEND. -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chat-footer">
+                        💬 Писать сообщения можно только через официальный чат Twitch.
+                        Зеркало — под реальный лог (IRC / EventSub), без фейковых сообщений.
+                    </div>
+                </section>
+            </section>
+
+            <!-- КАНАЛ + ПАНЕЛИ -->
+            <section class="channel-panels-grid">
+                <section class="channel-card">
+                    <div class="channel-header">
+                        <div class="channel-avatar">
+                            <!-- Можешь заменить на свой аватар -->
+                            <img src="https://static-cdn.jtvnw.net/jtv_user_pictures/fsbsotik-profile_image.png" alt="СайтСотика">
+                        </div>
+                        <div class="channel-main">
+                            <h3>СайтСотика</h3>
+                            <div class="channel-tags">
+                                <span>На Twitch с 2020</span>
+                                <span>Racing / Sim</span>
+                                <span>Fan‑site</span>
+                            </div>
+                            <div class="channel-stats-row">
+                                <div>
+                                    <div class="channel-stat-label">Фолловеров</div>
+                                    <div class="channel-stat-value" id="channel-followers">0</div>
+                                </div>
+                                <div>
+                                    <div class="channel-stat-label">Просмотров</div>
+                                    <div class="channel-stat-value" id="channel-views">0</div>
+                                </div>
+                                <div>
+                                    <div class="channel-stat-label">Средний онлайн</div>
+                                    <div class="channel-stat-value" id="channel-avg">0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="channel-bio">
+                        Привет! Я СайтСотика — стример, который любит гонки, скорость и честную борьбу.
+                        На стримах — Forza Motorsport 7, Rivals, онлайн‑заезды и разбор ошибок.
+                        Здесь нет «казуала» и пустых разговоров — только трасса, круги и честный пот.
                     </p>
+                </section>
 
-                    <div class="stream-schedule">
-                        <div class="schedule-label">Ближайший стрим</div>
-                        <div class="schedule-value">Завтра в 21:00 — Rivals / Соперники</div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- CHAT -->
-            <section class="chat-section">
-
-                <div class="chat-header">
-                    <div class="chat-header-left">
-                        <h2>Twitch Chat</h2>
-                        <span class="chat-status">Онлайн чат канала fsbsotik</span>
-                    </div>
-                    <div class="chat-header-right">
-                        👥 <span id="chat-viewers-count">1200</span>
-                    </div>
-                </div>
-
-                <div class="chat-tabs">
-                    <button class="chat-tab chat-tab-active" data-tab="embed">Официальный чат</button>
-                    <button class="chat-tab" data-tab="mirror">Зеркало</button>
-                </div>
-
-                <div class="chat-body">
-                    <div class="chat-pane chat-pane-active" id="chat-pane-embed">
-                        <div class="chat-embed-wrapper">
-                            <iframe
-                                src="https://www.twitch.tv/embed/fsbsotik/chat?parent=sotikdima1975-star.github.io&darkpopout"
-                                scrolling="yes">
-                            </iframe>
-                        </div>
-                    </div>
-
-                    <div class="chat-pane" id="chat-pane-mirror">
-                        <div class="chat-mirror" id="chat-messages">
-                            <!-- ПУСТО. НИКАКИХ ФЕЙКОВ. СЮДА ПРИДЁТ РЕАЛЬНЫЙ ЛОГ, КОГДА ПОДКЛЮЧИШЬ IRC/API. -->
-                        </div>
-                    </div>
-                </div>
-
-                <div class="chat-footer">
-                    💬 Чтобы писать — используй официальный чат.  
-                    Зеркало — под реальный лог, когда подключишь IRC или EventSub.
-                </div>
-
-            </section>
-
-        </section>
-
-        <!-- -----------------------------------------------------------------
-             INFO GRID: КАНАЛ + ПАНЕЛИ
-             ----------------------------------------------------------------- -->
-        <section class="info-grid">
-
-            <!-- КАНАЛ -->
-            <section class="channel-info">
-                <div class="channel-header">
-                    <div class="channel-avatar">
-                        <img src="https://static-cdn.jtvnw.net/jtv_user_pictures/fsbsotik-profile_image.png" alt="СайтСотика">
-                    </div>
-                    <div class="channel-main">
-                        <h3>СайтСотика</h3>
-                        <div class="channel-meta">
-                            <span>На Twitch с 2020</span>
-                            <span>Фанатский сайт</span>
-                            <span>Racing / Sim</span>
-                        </div>
-                        <div class="channel-stats">
-                            <div class="stat">
-                                <div class="stat-label">Подписок</div>
-                                <div class="stat-value">89</div>
-                            </div>
-                            <div class="stat">
-                                <div class="stat-label">Просмотров</div>
-                                <div class="stat-value">1.2M</div>
-                            </div>
-                            <div class="stat">
-                                <div class="stat-label">Средний онлайн</div>
-                                <div class="stat-value">1100</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <p class="channel-bio">
-                    Привет! Я СайтСотика — стример, который любит гонки, скорость и честную борьбу.
-                    На стримах — Forza Motorsport 7, Rivals, онлайн‑заезды и разбор ошибок.
-                    Здесь нет «казуальщины» и фальши — только честный пот и уважение к трассе.
-                </p>
-            </section>
-
-            <!-- ПАНЕЛИ -->
-            <section class="panel-grid">
-
-                <!-- ПАНЕЛЬ: ПРАВИЛА -->
-                <div class="panel-card">
-                    <h4>Правила канала</h4>
+                <section class="panel-card">
+                    <h4>Правила чата</h4>
                     <ul>
                         <li>Уважай других зрителей и стримера.</li>
-                        <li>Без политики, токсичности и оскорблений.</li>
-                        <li>Не спойлери, не флуди, не капси.</li>
+                        <li>Без токсичности, оскорблений и угроз.</li>
+                        <li>Не флуди, не капси, не спойлери.</li>
                         <li>Слушай модераторов — их слово финальное.</li>
                     </ul>
-                    <div class="panel-card-section">
-                        <div class="section-block-title">Философия</div>
-                        <div class="section-block-text">
+                    <div class="panel-section">
+                        <div class="panel-section-title">Философия</div>
+                        <div class="panel-section-text">
                             Чат — часть гонки. Если ты в чате, ты уже в заезде.
                         </div>
                     </div>
-                </div>
+                </section>
 
-                <!-- ПАНЕЛЬ: ТЕКУЩАЯ СЕРИЯ -->
-                <div class="panel-card">
+                <section class="panel-card">
                     <h4>Текущая серия</h4>
                     <p>
                         Forza Motorsport 7 — Rivals (Соперники).  
                         Цель — выбить максимально жёсткое время круга и закрепиться в топе.
                     </p>
-                    <p class="panel-note">
-                        Время круга, сетапы и повторы — по запросу в чате.
-                    </p>
-                    <div class="panel-card-section">
-                        <div class="section-block-title">Трассы</div>
-                        <ul class="list-compact">
-                            <li><span class="highlight">Nürburgring GP</span> — работа с торможением и выходами.</li>
-                            <li><span class="highlight">Spa-Francorchamps</span> — стабильность и темп.</li>
-                            <li><span class="highlight">Silverstone</span> — чистая линия и аккуратность.</li>
+                    <div class="panel-section">
+                        <div class="panel-section-title">Трассы в ротации</div>
+                        <ul>
+                            <li>Nürburgring GP — работа с торможением и выходами.</li>
+                            <li>Spa‑Francorchamps — стабильность и темп.</li>
+                            <li>Silverstone — чистая линия и аккуратность.</li>
                         </ul>
                     </div>
-                </div>
-
-                <!-- ПАНЕЛЬ: ПОДДЕРЖКА -->
-                <div class="panel-card">
-                    <h4>Поддержка стрима</h4>
-                    <p>
-                        Если хочешь поддержать контент — используй донаты, подписки и подарочные сабы на Twitch.
-                    </p>
-                    <p class="panel-note">
-                        Все средства идут на железо, контент и развитие канала.
-                    </p>
-                    <div class="panel-card-section">
-                        <div class="section-block-title">Приоритеты</div>
-                        <ul class="panel-section-list">
-                            <li>Обновление железа и периферии.</li>
-                            <li>Покупка новых сим‑титулов и DLC.</li>
-                            <li>Поддержка стабильного качества стрима.</li>
-                        </ul>
+                    <div class="panel-section">
+                        <div class="panel-section-title">Формат</div>
+                        <div class="panel-section-text">
+                            Серии кругов, разбор ошибок, сравнение с таблицей лидеров.
+                        </div>
                     </div>
-                </div>
-
+                </section>
             </section>
 
-        </section>
+            <!-- НИЖНИЕ СЕКЦИИ: ОБОРУДОВАНИЕ, ТРАССЫ, РЕКОРДЫ, FAQ, КОНТАКТЫ -->
+            <section class="section-block">
+                <div class="section-title">Оборудование</div>
+                <div class="section-subtitle">Текущее железо и сим‑сетап для стримов и Rivals.</div>
 
-    </main>
+                <div class="section-columns-2">
+                    <div>
+                        <div class="equipment-item">
+                            <div class="equipment-label">Платформа</div>
+                            <div class="equipment-value">PC · Windows 11</div>
+                        </div>
+                        <div class="equipment-item">
+                            <div class="equipment-label">Процессор</div>
+                            <div class="equipment-value">Под реальные данные</div>
+                        </div>
+                        <div class="equipment-item">
+                            <div class="equipment-label">Видеокарта</div>
+                            <div class="equipment-value">Под реальные данные</div>
+                        </div>
+                        <div class="equipment-item">
+                            <div class="equipment-label">ОЗУ</div>
+                            <div class="equipment-value">32 GB</div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="equipment-item">
+                            <div class="equipment-label">Руль</div>
+                            <div class="equipment-value">Под твой реальный сетап</div>
+                        </div>
+                        <div class="equipment-item">
+                            <div class="equipment-label">Педали</div>
+                            <div class="equipment-value">Под твой реальный сетап</div>
+                        </div>
+                        <div class="equipment-item">
+                            <div class="equipment-label">Монитор</div>
+                            <div class="equipment-value">144 Hz / 240 Hz — под реальные данные</div>
+                        </div>
+                        <div class="equipment-item">
+                            <div class="equipment-label">Звук</div>
+                            <div class="equipment-value">Наушники / колонки — под реальные данные</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-    <!-- =====================================================================
-         FOOTER
-         ===================================================================== -->
-    <footer class="footer">
-        <div class="footer-main">
-            <p>© 2026 СайтСотика. Все права защищены.</p>
-            <p>Это неофициальный фанатский сайт. Все торговые марки принадлежат их владельцам.</p>
-        </div>
-        <div class="footer-note">
-            Для работы плеера и чата Twitch домен <strong>sotikdima1975-star.github.io</strong> должен быть добавлен в Twitch Dashboard.
-        </div>
-    </footer>
+            <section class="section-block">
+                <div class="section-title">Трассы и подход</div>
+                <div class="section-subtitle">Ключевые трассы и то, на что делается упор.</div>
 
-</div>
+                <div class="section-columns-3">
+                    <div>
+                        <ul class="track-list">
+                            <li>
+                                <span class="track-name">Nürburgring GP</span><br>
+                                <span class="track-note">Торможение, апексы, выходы, стабильность на длинной дистанции.</span>
+                            </li>
+                            <li>
+                                <span class="track-name">Spa‑Francorchamps</span><br>
+                                <span class="track-note">Темп, работа с риском, стабильность в быстрых связках.</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <ul class="track-list">
+                            <li>
+                                <span class="track-name">Silverstone</span><br>
+                                <span class="track-note">Чистая линия, аккуратность, работа с шинами.</span>
+                            </li>
+                            <li>
+                                <span class="track-name">Monza</span><br>
+                                <span class="track-note">Торможение с высокой скорости, шиканны, агрессия.</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <ul class="track-list">
+                            <li>
+                                <span class="track-name">Brands Hatch</span><br>
+                                <span class="track-note">Техника, работа с рельефом, концентрация.</span>
+                            </li>
+                            <li>
+                                <span class="track-name">Hockenheim</span><br>
+                                <span class="track-note">Смешанный темп, баланс риска и стабильности.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
 
-<!-- ОБМАНКА: внешний скрипт, может быть пустым -->
-<script src="script.js"></script>
+            <section class="section-block">
+                <div class="section-title">Рекорды круга</div>
+                <div class="section-subtitle">Таблица под реальные времена. Сейчас — каркас без фейковых чисел.</div>
 
-<!-- РЕАЛЬНЫЙ JS ВНУТРИ -->
-<script>
-    // ========================================================================
-    // ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК ЧАТА
-    // ========================================================================
+                <table class="record-table">
+                    <thead>
+                    <tr>
+                        <th>Трасса</th>
+                        <th>Класс</th>
+                        <th>Машина</th>
+                        <th>Время</th>
+                        <th>Комментарий</th>
+                    </tr>
+                    </thead>
+                    <tbody id="records-body">
+                    <tr>
+                        <td>Nürburgring GP</td>
+                        <td>R</td>
+                        <td>Под реальную машину</td>
+                        <td class="record-best">01:59.XXX</td>
+                        <td>Цель — стабильно в 1:59.</td>
+                    </tr>
+                    <tr>
+                        <td>Spa‑Francorchamps</td>
+                        <td>R</td>
+                        <td>Под реальную машину</td>
+                        <td>02:18.XXX</td>
+                        <td>Работа над стабильностью.</td>
+                    </tr>
+                    <tr>
+                        <td>Silverstone</td>
+                        <td>R</td>
+                        <td>Под реальную машину</td>
+                        <td>01:59.XXX</td>
+                        <td>Чистая линия, без срезок.</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
 
-    (function () {
-        const tabs = document.querySelectorAll(".chat-tab");
-        const paneEmbed = document.getElementById("chat-pane-embed");
-        const paneMirror = document.getElementById("chat-pane-mirror");
+            <section class="section-block">
+                <div class="section-title">FAQ</div>
+                <div class="section-subtitle">Частые вопросы, чтобы не повторять одно и то же в чате.</div>
 
-        if (!tabs.length || !paneEmbed || !paneMirror) return;
+                <div class="faq-item">
+                    <div class="faq-q">На чём ты играешь?</div>
+                    <div class="faq-a">PC, руль, педали, вид от кокпита. Без ассистов, под реальный сетап.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-q">Можно ли попасть в заезд?</div>
+                    <div class="faq-a">Если формат позволяет — да. Пиши в чат, когда идёт онлайн‑заезд.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-q">Дашь сетап?</div>
+                    <div class="faq-a">Да, если сетап уже доведён до ума. Пиши по трассе и машине.</div>
+                </div>
+            </section>
 
-        tabs.forEach(tab => {
-            tab.addEventListener("click", () => {
-                tabs.forEach(t => t.classList.remove("chat-tab-active"));
-                tab.classList.add("chat-tab-active");
+            <section class="section-block">
+                <div class="section-title">Контакты</div>
+                <div class="section-subtitle">Для деловых предложений и связи вне Twitch.</div>
 
-                const target = tab.dataset.tab;
-                if (target === "embed") {
-                    paneEmbed.classList.add("chat-pane-active");
-                    paneMirror.classList.remove("chat-pane-active");
-                } else {
-                    paneMirror.classList.add("chat-pane-active");
-                    paneEmbed.classList.remove("chat-pane-active");
-                }
-            });
-        });
-    })();
+                <div class="contact-row">
+                    <span class="contact-label">Twitch:</span>
+                    <span class="contact-value">twitch.tv/fsbsotik</span>
+                </div>
+                <div class="contact-row">
+                    <span class="contact-label">Discord:</span>
+                    <span class="contact-value">под реальный сервер</span>
+                </div>
+                <div class="contact-row">
+                    <span class="contact-label">Почта:</span>
+                    <span class="contact-value">под реальный адрес</span>
+                </div>
+            </section>
+        </main>
 
-    // ========================================================================
-    // ЗАГЛУШКИ ДЛЯ БУДУЩИХ РАСШИРЕНИЙ (ПУСТЫЕ, НО СТРУКТУРА ЕСТЬ)
-    // ========================================================================
-
-    // Здесь могут появиться:
-    // - интеграция с Twitch API (viewer count, followers, game)
-    // - интеграция с EventSub / PubSub
-    // - кастомный лог чата через IRC
-    // - отображение последних донатов / сабов
-    // Сейчас — только структура, без логики.
-
-    const SiteSotik = {
-        version: "1.0.0",
-        init() {
-            // Точка входа для будущей логики
-            // Пока ничего не делаем — только каркас.
-        },
-        ui: {
-            updateLiveStats(data) {
-                // Заглушка: обновление статистики в шапке
-                // data: { viewers, followers, uptime }
-            },
-            updateChannelStats(data) {
-                // Заглушка: обновление статистики канала
-                // data: { subs, views, avg }
-            },
-            setLiveStatus(isLive) {
-                // Заглушка: смена статуса LIVE / OFFLINE
-            }
-        },
-        chat: {
-            appendMessage(msg) {
-                // Заглушка: добавление сообщения в зеркальный лог
-                // msg: { user, text, badges, color }
-            },
-            clear() {
-                // Заглушка: очистка зеркального лога
-            }
-        },
-        api: {
-            fetchTwitchData() {
-                // Заглушка: запрос к Twitch API
-            },
-            connectIRC() {
-                // Заглушка: подключение к IRC
-            }
-        }
-    };
-
-    // Инициализация каркаса
-    SiteSotik.init();
-</script>
-
-</body>
-</html>
+        <!-- === ЧАСТЬ 2: СТРАНИЦЫ stats / vods / about + JS НИЖЕ === -->
