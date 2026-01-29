@@ -219,3 +219,114 @@ function init() {
 document.addEventListener("DOMContentLoaded", init);
 
 console.log("Twitch OAuth (Implicit) активен, Client ID вставлен.");
+/* ================================
+   TWITCH IRC CHAT (WebSocket)
+   ================================ */
+
+const IRC_URL = "wss://irc-ws.chat.twitch.tv:443";
+let ircSocket = null;
+
+function connectIRC() {
+    const token = getToken();
+    if (!token) {
+        console.warn("Нет токена — чат не подключается.");
+        return;
+    }
+
+    ircSocket = new WebSocket(IRC_URL);
+
+    ircSocket.onopen = () => {
+        console.log("IRC: соединение установлено");
+
+        // Запрашиваем расширенные теги (нужны для донатов/цветов/бэджей)
+        ircSocket.send("CAP REQ :twitch.tv/tags twitch.tv/commands twitch.tv/membership");
+
+        // Авторизация
+        ircSocket.send(`PASS oauth:${token}`);
+        ircSocket.send(`NICK ${TWITCH_USER_LOGIN}`);
+
+        // Подписка на чат канала
+        ircSocket.send(`JOIN #${TWITCH_USER_LOGIN}`);
+    };
+
+    ircSocket.onmessage = (event) => {
+        const msg = event.data.trim();
+
+        // Twitch требует отвечать на PING
+        if (msg.startsWith("PING")) {
+            ircSocket.send("PONG :tmi.twitch.tv");
+            return;
+        }
+
+        // Сообщения чата
+        if (msg.includes("PRIVMSG")) {
+            const parsed = parseIRCMessage(msg);
+            if (parsed) {
+                appendChatMessage(parsed.user, parsed.text);
+            }
+        }
+    };
+
+    ircSocket.onclose = () => {
+        console.warn("IRC: соединение закрыто, переподключение...");
+        setTimeout(connectIRC, 3000);
+    };
+}
+
+/* ================================
+   ПАРСИНГ IRC СООБЩЕНИЙ
+   ================================ */
+
+function parseIRCMessage(raw) {
+    try {
+        // Пример:
+        // @badge-info=;badges=;color=#1E90FF;display-name=Sotik;...
+        // :sotik!sotik@sotik.tmi.twitch.tv PRIVMSG #fsbsotik :Привет
+
+        const tagPart = raw.startsWith("@") ? raw.split(" ")[0] : "";
+        const msgPart = raw.substring(raw.indexOf("PRIVMSG"));
+
+        const user = /display-name=([^;]+)/.exec(tagPart)?.[1] || "Unknown";
+        const text = msgPart.split(" :")[1] || "";
+
+        return { user, text };
+    } catch (e) {
+        console.error("Ошибка парсинга IRC:", e);
+        return null;
+    }
+}
+
+/* ================================
+   ВСТАВКА СООБЩЕНИЯ В ЧАТ
+   ================================ */
+
+function appendChatMessage(user, text) {
+    const row = document.createElement("div");
+    row.className = "chat-message";
+
+    const u = document.createElement("span");
+    u.className = "chat-message-user";
+    u.textContent = user + ":";
+
+    const t = document.createElement("span");
+    t.className = "chat-message-text";
+    t.textContent = " " + text;
+
+    row.appendChild(u);
+    row.appendChild(t);
+
+    const chatMessagesEl = document.getElementById("chat-messages");
+    chatMessagesEl.appendChild(row);
+    chatMessagesEl.scrollTop = chatMessagesEl.scrollHeight;
+}
+
+/* ================================
+   СТАРТ IRC ПОСЛЕ АВТОРИЗАЦИИ
+   ================================ */
+
+document.addEventListener("DOMContentLoaded", () => {
+    const token = getToken();
+    if (token) {
+        connectIRC();
+    }
+});
