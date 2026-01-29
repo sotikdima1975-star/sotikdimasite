@@ -4,7 +4,6 @@
 
 // ТВОЙ PUBLIC CLIENT ID (из панели Twitch)
 const TWITCH_CLIENT_ID = "740trga0mupauu3c4guqnw0i03iocm";
-
 // ДОЛЖЕН СОВПАДАТЬ С OAuth Redirect URL В КОНСОЛИ TWITCH
 const TWITCH_REDIRECT_URI = "https://sotikdima1975-star.github.io
 ";
