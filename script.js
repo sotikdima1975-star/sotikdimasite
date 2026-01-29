@@ -1,57 +1,132 @@
-// Обновление времени стрима
-function updateStreamTime() {
-    const infoItems = document.querySelectorAll('.info-item');
-    const timeElement = infoItems[2].querySelector('.info-value');
-    let [hours, minutes, seconds] = timeElement.textContent.split(':').map(Number);
+/* ================================
+   TWITCH STREAM INFO (TITLE + GAME)
+   ================================ */
 
-    seconds++;
-    if (seconds >= 60) {
-        seconds = 0;
-        minutes++;
-    }
-    if (minutes >= 60) {
-        minutes = 0;
-        hours++;
-    }
+const TWITCH_CLIENT_ID = "ТВОЙ_CLIENT_ID";          /* Client-ID */
+const TWITCH_OAUTH     = "Bearer ТВОЙ_OAUTH_TOKEN"; /* OAuth Token */
+const TWITCH_USER      = "fsbsotik";                /* Канал */
 
-    timeElement.textContent =
-        `${hours.toString().padStart(2, '0')}:` +
-        `${minutes.toString().padStart(2, '0')}:` +
-        `${seconds.toString().padStart(2, '0')}`;
+const streamTitleEl = document.getElementById("stream-title"); /* Элемент названия */
+const gameTitleEl   = document.getElementById("game-title");   /* Элемент игры */
+
+async function loadStreamInfo() {
+    try {
+        const r = await fetch(
+            `https://api.twitch.tv/helix/streams?user_login=${TWITCH_USER}`,
+            {
+                headers: {
+                    "Client-ID": TWITCH_CLIENT_ID,
+                    "Authorization": TWITCH_OAUTH
+                }
+            }
+        );
+
+        const j = await r.json();
+
+        if (!j.data || j.data.length === 0) {
+            streamTitleEl.textContent = "Название стрима: Оффлайн"; /* Оффлайн */
+            gameTitleEl.textContent   = "Игра: —";
+            return;
+        }
+
+        const s = j.data[0]; /* Данные стрима */
+
+        streamTitleEl.textContent = "Название стрима: " + s.title;     /* Название */
+        gameTitleEl.textContent   = "Игра: " + s.game_name;            /* Игра */
+
+    } catch (e) {
+        streamTitleEl.textContent = "Название стрима: Ошибка";
+        gameTitleEl.textContent   = "Игра: —";
+    }
 }
 
-setInterval(updateStreamTime, 1000);
+loadStreamInfo();
+setInterval(loadStreamInfo, 30000); /* Обновление каждые 30 сек */
 
-// Имитация изменения количества зрителей
-setInterval(() => {
-    const infoItems = document.querySelectorAll('.info-item');
-    const viewersElement = infoItems[0].querySelector('.info-value');
-    let viewers = parseInt(viewersElement.textContent.replace(',', ''));
-    const change = Math.random() > 0.5 ? 1 : -1;
-    viewers = Math.max(100, viewers + change);
-    viewersElement.textContent = viewers.toLocaleString();
-}, 30000);
 
-// Инструкция по настройке
-console.log(`
-============================================
-ИНСТРУКЦИЯ ПО НАСТРОЙКЕ TWITCH ПЛЕЕРА И ЧАТА:
+/* ================================
+   КАСТОМНЫЙ TWITCH ЧАТ (WS CLIENT)
+   ================================ */
 
-1. ЗАМЕНИТЕ "fsbsotik" на ваш реальный никнейм Twitch:
-   - В iframe плеера
-   - В iframe чата
-   - В ссылках социальных сетей
+const chatMessagesEl = document.getElementById("chat-messages");
+const chatInputEl    = document.getElementById("chat-input");
+const chatSendBtn    = document.getElementById("chat-send");
 
-2. ДОБАВЬТЕ ВАШ ДОМЕН в Twitch Dashboard:
-   - Зайдите в Twitch Developer Console
-   - Ваше приложение → Настройки
-   - В поле "Domain" добавьте ваш домен
-   - Добавьте sotikdima1975-star.github.io для GitHub Pages
+const CHAT_WS_URL = "ws://localhost:8765"; /* Адрес WS сервера */
 
-3. ОБНОВИТЕ АВАТАР И ИНФОРМАЦИЮ:
-   - Замените ссылку на аватар
-   - Обновите описание канала
-   - Обновите социальные ссылки
+let chatSocket = null;
 
-============================================
-`);
+function connectChat() {
+    chatSocket = new WebSocket(CHAT_WS_URL);
+
+    chatSocket.addEventListener("open", () => {});
+
+    chatSocket.addEventListener("message", (event) => {
+        const d = JSON.parse(event.data);
+
+        if (d.type === "message") {
+            appendChatMessage(d.user, d.text); /* Сообщение */
+        }
+
+        if (d.type === "donation") {
+            appendDonationMessage(d.user, d.amount, d.text); /* Донат */
+        }
+    });
+
+    chatSocket.addEventListener("close", () => {
+        setTimeout(connectChat, 3000); /* Реконнект */
+    });
+}
+
+function appendChatMessage(user, text) {
+    const row = document.createElement("div");
+    row.className = "chat-message";
+
+    const u = document.createElement("span");
+    u.className = "chat-message-user";
+    u.textContent = user + ":";
+
+    const t = document.createElement("span");
+    t.className = "chat-message-text";
+    t.textContent = " " + text;
+
+    row.appendChild(u);
+    row.appendChild(t);
+
+    chatMessagesEl.appendChild(row);
+    chatMessagesEl.scrollTop = chatMessagesEl.scrollHeight;
+}
+
+function appendDonationMessage(user, amount, text) {
+    const row = document.createElement("div");
+    row.className = "chat-message";
+
+    const u = document.createElement("span");
+    u.className = "chat-message-user";
+    u.textContent = `💸 ${user} → ${amount}:`;
+
+    const t = document.createElement("span");
+    t.className = "chat-message-text";
+    t.textContent = " " + text;
+
+    row.appendChild(u);
+    row.appendChild(t);
+
+    chatMessagesEl.appendChild(row);
+    chatMessagesEl.scrollTop = chatMessagesEl.scrollHeight;
+}
+
+function sendChatMessage() {
+    const text = chatInputEl.value.trim();
+    if (!text || !chatSocket || chatSocket.readyState !== WebSocket.OPEN) return;
+
+    chatSocket.send(JSON.stringify({ type: "send", text }));
+    chatInputEl.value = "";
+}
+
+chatSendBtn.addEventListener("click", sendChatMessage);
+chatInputEl.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") sendChatMessage();
+});
+
+connectChat();
