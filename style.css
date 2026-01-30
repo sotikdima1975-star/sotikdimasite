@@ -1,328 +1,439 @@
+/* =====================================================================
+   БАЗОВЫЕ СТИЛИ И СБРОС
+   ===================================================================== */
+
+/* Универсальный box-sizing для всех элементов — чтобы padding и border входили в ширину */
 * {
-    margin: 0;
-    padding: 0;
     box-sizing: border-box;
 }
 
-html, body {
-    width: 100%;
-    height: 100%;
-    background: #050509;
-    color: #ffffff;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-}
-
-/* Контейнер сайта */
-
+/* Обнуляем стандартные отступы у body, задаём фон, цвет текста и шрифт */
 body {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
+    margin: 0;                    /* Убираем внешние отступы */
+    padding: 0;                   /* Убираем внутренние отступы */
+    background: #050608;          /* Глубокий чёрный с тёмным градиентом */
+    color: #e6e6e6;               /* Светлый серый текст — хорошо читается на тёмном фоне */
+    font-family: "Segoe UI", system-ui, sans-serif; /* Современный чистый шрифт */
+    overflow-x: hidden;           /* Отключаем горизонтальную прокрутку */
 }
 
-.container {
-    width: 100%;
-    max-width: 1200px;
-    min-height: 100vh;
-    padding: 20px;
+/* Стили ссылок: убираем подчёркивание, задаём цвет и курсор */
+a {
+    color: #e6e6e6;               /* Цвет текста ссылок */
+    text-decoration: none;        /* Убираем подчёркивание */
+    cursor: pointer;              /* Курсор как у кликабельного элемента */
 }
 
-/* Шапка */
+/* =====================================================================
+   ЦВЕТОВЫЕ КЛАССЫ ДЛЯ ЗОЛОТА (логотип, рамки, акценты)
+   ===================================================================== */
 
+/* Текст золотого цвета — используется для логотипа и акцентов */
+.gold-text {
+    color: #d4af37;               /* Классический золотой цвет */
+}
+
+/* Полупрозрачная золотая рамка — для декоративных блоков */
+.gold-border {
+    border: 1px solid rgba(212,175,55,0.45); /* Золотистая рамка с прозрачностью */
+}
+
+/* Подчёркивание золотого цвета — для акцента на ссылках */
+.gold-underline {
+    border-bottom: 2px solid #d4af37;       /* Двойная нижняя граница золотом */
+}
+
+/* =====================================================================
+   ШАПКА (header) — фиксированная сверху
+   ===================================================================== */
+
+/* Основной контейнер шапки: растянут на всю ширину, с градиентом и рамкой */
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
+    width: 100%;                              /* На всю ширину экрана */
+    background: radial-gradient(circle at top, #151820 0, #050608 55%); /* Градиент сверху вниз */
+    padding: 15px 0;                          /* Вертикальный отступ */
+    border-bottom: 1px solid rgba(212,175,55,0.3); /* Лёгкая золотая полоска снизу */
+    position: relative;                       /* Позволяет позиционировать дочерние элементы */
+    z-index: 50;                              /* Чтобы шапка была поверх других слоёв */
 }
 
+/* Внутренний контейнер шапки — центрирует содержимое */
+.header-frame {
+    width: 92%;                               /* Не доходит до краёв экрана */
+    margin: auto;                             /* Автоматические отступы по бокам */
+    display: flex;                            /* Flexbox для выравнивания */
+    align-items: center;                      /* Выравнивание по вертикали */
+    justify-content: space-between;           /* Элементы по краям */
+    white-space: nowrap;                      /* Текст не переносится */
+    gap: 20px;                                /* Пробел между элементами */
+}
+
+/* Блок с логотипом — фон, закругления, внутренние отступы */
+.logo-box {
+    padding: 10px 20px;                       /* Отступы внутри блока */
+    background: linear-gradient(135deg, rgba(212,175,55,0.18), rgba(0,0,0,0.7)); /* Золотистый градиент */
+    border-radius: 6px;                       /* Слегка скруглённые углы */
+}
+
+/* Стили самого логотипа */
 .logo {
-    display: flex;
+    font-size: 28px;                          /* Размер шрифта */
+    font-weight: 700;                         /* Жирный текст */
+    letter-spacing: 0.08em;                   /* Расстояние между буквами */
+    text-transform: none;                     /* Без преобразования регистра */
+}
+
+/* Бегущая строка — новостная лента */
+.ticker-box {
+    flex: 1;                                  /* Занимает всё свободное пространство */
+    overflow: hidden;                         /* Скрываем то, что выходит за пределы */
+    white-space: nowrap;                      /* Одна строка без переносов */
+    padding: 0 10px;                          /* Небольшие отступы по бокам */
+}
+
+/* Анимация бегущей строки */
+.ticker {
+    display: inline-block;                    /* Чтобы анимация работала */
+    animation: tickerMove 18s linear infinite; /* Бесконечная анимация движения */
+    color: #00eaff;                           /* Яркий голубой цвет */
+    font-size: 14px;                          /* Размер текста */
+    opacity: 0.85;                            /* Лёгкая прозрачность */
+}
+
+/* Ключевые кадры анимации бегущей строки */
+@keyframes tickerMove {
+    0% { transform: translateX(100%); }       /* Начинается справа */
+    100% { transform: translateX(-100%); }    /* Заканчивается слева */
+}
+
+/* Основное меню навигации */
+.menu-box {
+    display: flex;                            /* Flex-расположение */
+    align-items: center;                      /* По центру по вертикали */
+    gap: 25px;                                /* Отступы между пунктами */
+    padding: 10px 20px;                       /* Внутренние отступы */
+    background: rgba(5, 8, 12, 0.96);         /* Полупрозрачный тёмный фон */
+    border-radius: 8px;                       /* Скруглённые углы */
+    box-shadow: 0 0 18px rgba(0,0,0,0.7);     /* Тень для объёма */
+    backdrop-filter: blur(6px);                /* Эффект размытого стекла */
+    position: relative;                       /* Для z-index */
+    z-index: 60;                              /* Выше других слоёв */
+}
+
+/* Ссылки в меню */
+.menu-box > a {
+    font-size: 14px;                          /* Размер шрифта */
+    text-transform: uppercase;                /* Все буквы заглавные */
+    letter-spacing: 0.12em;                   /* Расстояние между буквами */
+    opacity: 0.85;                            /* Прозрачность */
+    transition: 0.18s ease;                   /* Плавная анимация при hover */
+}
+
+/* При наведении — увеличиваем яркость и меняем цвет */
+.menu-box > a:hover {
+    opacity: 1;                               /* Полная непрозрачность */
+    color: #00eaff;                           /* Меняем на голубой */
+}
+
+/* =====================================================================
+   ПОДМЕНЮ: СТРИМ → ЧАТ / ПЛЕЕР / ВИДЖЕТЫ
+   ===================================================================== */
+
+/* Контейнер выпадающего меню "Стрим" */
+.stream-wrapper {
+    position: relative;                       /* Чтобы подменю было позиционировано относительно него */
+    display: inline-flex;                     /* Inline-flex для компактности */
+    align-items: center;                      /* Центрируем по вертикали */
+}
+
+/* Стиль ссылки "Стрим" */
+#btn-stream {
+    font-weight: 600;                         /* Полужирный */
+    text-transform: uppercase;                /* Заглавные буквы */
+    letter-spacing: 0.16em;                   /* Расстояние между буквами */
+}
+
+/* Основное подменю (появляется при клике) */
+.submenu-main {
+    position: absolute;                       /* Позиционируем поверх */
+    top: 100%;                                /* Под меню */
+    left: 0;
+    margin-top: 10px;                         /* Отступ сверху */
+    display: flex;                            /* Горизонтальное расположение */
+    flex-direction: row;                      /* Слева направо */
     align-items: center;
-    gap: 12px;
+    gap: 20px;                                /* Пробелы между пунктами */
+    background: radial-gradient(circle at top, #151b24 0, #050608 60%); /* Градиент */
+    padding: 10px 16px;                       /* Внутренние отступы */
+    border: 1px solid #00eaff;                /* Голубая рамка */
+    border-radius: 6px;                       /* Скругление */
+    white-space: nowrap;                      /* Без переносов */
+    opacity: 0;                               /* По умолчанию невидимо */
+    pointer-events: none;                     /* Не реагирует на клики */
+    transition: opacity 0.18s ease;           /* Плавное появление */
+    box-shadow: 0 0 18px rgba(0,0,0,0.8);     /* Тень */
+    z-index: 70;                              /* Выше других слоёв */
 }
 
-.logo-icon {
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
-    background: linear-gradient(135deg, #9146ff, #ff4b92);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 18px;
+/* Когда подменю открыто — становится видимым и активным */
+.submenu-main.open {
+    opacity: 1;
+    pointer-events: auto;
 }
 
-.logo-text h1 {
-    font-size: 22px;
-    margin-bottom: 2px;
-}
-
-.logo-text p {
+/* Ссылки в основном подменю */
+.submenu-main a {
     font-size: 13px;
-    color: #a0a0aa;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    opacity: 0.9;
+    transition: 0.16s ease;
 }
 
-/* Инфо о стриме в шапке */
+/* При наведении — подсветка */
+.submenu-main a:hover {
+    color: #00eaff;
+    opacity: 1;
+}
 
-.stream-info {
-    display: flex;
+/* Контейнер подменю виджетов */
+.widgets-wrapper {
+    position: relative;
+    display: inline-flex;
     align-items: center;
-    gap: 16px;
 }
 
-.info-item {
-    text-align: right;
-}
-
-.info-value {
-    font-size: 18px;
-    font-weight: 600;
-}
-
-.info-label {
-    font-size: 12px;
-    color: #a0a0aa;
-}
-
-.live-badge {
+/* Подменю "Виджеты" — второе уровневое меню */
+.submenu-widgets {
+    position: absolute;
+    top: 140%;                                /* Ниже основного подменю */
+    right: 0;
+    transform: translateX(-10px);             /* Небольшое смещение */
     display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 6px 10px;
-    border-radius: 999px;
-    background: #ff0033;
+    flex-direction: row-reverse;              /* Справа налево */
+    gap: 18px;
+    background: radial-gradient(circle at top, #141922 0, #050608 70%);
+    padding: 10px 16px;
+    border: 1px solid #00eaff;
+    border-radius: 6px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.18s ease;
+    box-shadow: 0 0 18px rgba(0,0,0,0.85);
+    z-index: 80;
+}
+
+/* Открытое состояние подменю виджетов */
+.submenu-widgets.open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Ссылки в подменю виджетов */
+.submenu-widgets a {
     font-size: 12px;
-    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    opacity: 0.9;
+    transition: 0.16s ease;
+}
+
+/* При наведении — золотой цвет */
+.submenu-widgets a:hover {
+    color: #d4af37;
+    opacity: 1;
+}
+
+/* =====================================================================
+   ОСНОВНОЙ КОНТЕНТ — ОБЛАСТЬ СТРИМА
+   ===================================================================== */
+
+/* Общий контейнер для области стрима */
+.overlay {
+    width: 100%;
+    padding: 40px 0 60px;                     /* Отступы сверху и снизу */
+    display: flex;
+    justify-content: center;                  /* Центрируем по горизонтали */
+}
+
+/* Внутренний блок контента */
+.overlay-inner {
+    width: 92%;                               /* Ширина 92% */
+    padding: 32px 40px 40px;                  /* Внутренние отступы */
+    background: radial-gradient(circle at top, #151922 0, #050608 65%); /* Градиент */
+    border-radius: 10px;                      /* Скруглённые углы */
+    border: 1px solid rgba(0,234,255,0.25);   /* Голубая рамка */
+    box-shadow: 0 0 26px rgba(0,0,0,0.9);     /* Глубокая тень */
+}
+
+/* Заголовок области стрима */
+.overlay-title {
+    font-size: 30px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 24px;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
 }
 
-.live-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #fff;
-}
-
-/* Основной контент */
-
-.main-content {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 20px;
-    margin-bottom: 24px;
-}
-
-/* Плеер и инфо */
-
-.player-section {
-    background: #0e0e10;
-    border-radius: 12px;
-    padding: 12px;
-    display: grid;
-    grid-template-rows: auto auto;
-    gap: 12px;
-    border: 1px solid #1f1f23;
-}
-
-.player-container {
-    border-radius: 10px;
-    overflow: hidden;
-    background: #000;
-}
-
-.player-container iframe {
+/* Основная область: плеер + чат */
+.content-area {
     width: 100%;
-    height: 320px;
-    border: none;
+    height: 650px;
+    position: relative;                       /* Для абсолютного позиционирования iframe */
+    background: radial-gradient(circle at top left, #151922 0, #050608 60%);
+    border-radius: 10px;
+    overflow: hidden;                         /* Обрезаем содержимое за пределами */
+    border: 1px solid rgba(212,175,55,0.45);
+    box-shadow: 0 0 30px rgba(0,0,0,0.95);
+    z-index: 10;
 }
 
-.player-info {
-    padding: 4px 4px 0 4px;
+/* Контейнер плеера Twitch */
+#player-container {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 70%;                               /* Занимает 70% ширины */
+    height: 100%;
+    transition: width 0.3s ease;              /* Плавное изменение ширины */
 }
 
-.stream-title {
-    font-size: 18px;
+/* Контейнер чата Twitch */
+#chat-container {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 30%;                               /* Занимает 30% */
+    height: 100%;
+    transition: width 0.3s ease;
+    border-left: 1px solid rgba(0,234,255,0.25); /* Разделительная линия */
+    background: rgba(3,5,8,0.9);              /* Тёмный фон */
+}
+
+/* Стили iframe — плеер и чат */
+iframe {
+    width: 100%;
+    height: 100%;
+    border: none;                             /* Убираем рамку */
+}
+
+/* =====================================================================
+   ВИДЖЕТЫ — ПОЗИЦИОННЫЕ БЛОКИ ПОВЕРХ КОНТЕНТА
+   ===================================================================== */
+
+/* Контейнер для всех виджетов — поверх плеера */
+#widgets-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;                     /* Пропускает клики сквозь себя */
+    z-index: 20;
+}
+
+/* Базовый стиль для каждого виджета */
+.widget-box {
+    position: absolute;                       /* Абсолютное позиционирование */
+    background: radial-gradient(circle at top, rgba(10,18,28,0.96) 0, rgba(3,5,8,0.96) 60%);
+    padding: 14px 18px 16px;                  /* Внутренние отступы */
+    border-radius: 10px;                      /* Скруглённые углы */
+    border: 1px solid rgba(0,234,255,0.55);   /* Голубая рамка */
+    box-shadow: 0 0 18px rgba(0,0,0,0.9), 0 0 22px rgba(0,234,255,0.25); /* Двойная тень */
+    color: #e6e6e6;                           /* Цвет текста */
+    pointer-events: auto;                     /* Можно кликать по виджету */
+    font-size: 13px;                          /* Размер шрифта */
+    display: none;                            /* По умолчанию скрыт */
+    min-width: 260px;
+    max-width: 320px;
+    overflow: hidden;                         /* Обрезаем переполнение */
+}
+
+/* Заголовок виджета — две части: название и тег */
+.widget-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     margin-bottom: 6px;
 }
 
-.stream-game {
-    font-size: 14px;
-    color: #c9c9d1;
-    margin-bottom: 8px;
+/* Название виджета */
+.widget-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: #d4af37;                           /* Золотой цвет */
+    opacity: 0.95;
 }
 
-.stream-description {
-    font-size: 14px;
-    color: #e5e5ea;
-    margin-bottom: 8px;
+/* Тег (например, "live feed") */
+.widget-tag {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: #00eaff;                           /* Голубой цвет */
+    opacity: 0.8;
 }
 
-.stream-schedule {
-    font-size: 13px;
-    color: #adadb8;
-}
-
-/* Чат — НОВЫЙ КАСТОМНЫЙ */
-
-.chat-section {
-    background: #0e0e10;
-    border-radius: 12px;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    border: 1px solid #1f1f23;
-    overflow: hidden;
-}
-
-/* Заголовок чата */
-
-.chat-header {
-    background: #18181b;
-    padding: 10px 14px;
-    border-bottom: 1px solid #1f1f23;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.chat-header h2 {
+/* Основной текст виджета */
+.widget-main {
     font-size: 15px;
     font-weight: 600;
-    color: #efeff1;
+    margin-bottom: 4px;
 }
 
-.chat-viewers {
-    font-size: 13px;
-    color: #adadb8;
+/* Дополнительный текст */
+.widget-sub {
+    font-size: 11px;
+    opacity: 0.8;
 }
 
-/* Контейнер чата */
-
-.chat-container {
-    flex: 1;
-    padding: 10px;
-    overflow-y: auto;
-    background: #0e0e10;
+/* Прогресс-бар */
+.widget-bar {
+    margin-top: 8px;
+    width: 100%;
+    height: 5px;
+    border-radius: 999px;                     /* Очень скруглённые края */
+    background: rgba(255,255,255,0.06);       /* Тёмный фон полосы */
+    overflow: hidden;
 }
 
-/* Сообщения */
-
-#chat-messages {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+/* Заполняемая часть прогресс-бара */
+.widget-bar-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #d4af37, #00eaff); /* Градиент от золота к голубому */
+    width: 0%;
+    transition: width 0.4s ease;              /* Плавное заполнение */
 }
 
-.chat-message {
+/* Позиционирование конкретных виджетов */
+#w-subs { top: 20px; left: 20px; }
+#w-donates { top: 20px; right: 20px; }
+#w-goal { top: 130px; left: 20px; }
+#w-day { top: 130px; right: 20px; }
+#w-month { bottom: 130px; left: 20px; }
+#w-year { bottom: 130px; right: 130px; }
+
+/* =====================================================================
+   ФИКСИРОВАННЫЙ ЭЛЕМЕНТ НАВЕРХУ ОВЕРЛЕЯ
+   ===================================================================== */
+
+.fixed-overlay-top {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.85);
+    color: #00eaff;
+    padding: 10px 20px;
+    border-radius: 6px;
+    border: 1px solid #00eaff;
+    box-shadow: 0 0 10px rgba(0,234,255,0.5);
+    z-index: 100;
     font-size: 14px;
-    line-height: 1.35;
-    color: #e5e5ea;
-    word-wrap: break-word;
-    padding: 3px 4px;
-    border-radius: 4px;
-    transition: background 0.15s ease;
-}
-
-.chat-message:hover {
-    background: rgba(255, 255, 255, 0.05);
-}
-
-.chat-message-user {
-    font-weight: 600;
-    color: #a970ff;
-    margin-right: 4px;
-}
-
-.chat-message-text {
-    color: #f0f0f5;
-}
-
-/* Инструкция под чатом */
-
-.chat-instructions {
-    padding: 8px 12px;
-    font-size: 13px;
-    color: #adadb8;
-    border-top: 1px solid #1f1f23;
-    background: #18181b;
-}
-
-/* Скроллбар чата */
-
-.chat-container::-webkit-scrollbar {
-    width: 8px;
-}
-
-.chat-container::-webkit-scrollbar-track {
-    background: #0e0e10;
-}
-
-.chat-container::-webkit-scrollbar-thumb {
-    background: #3a3a3d;
-    border-radius: 4px;
-}
-
-.chat-container::-webkit-scrollbar-thumb:hover {
-    background: #4a4a4d;
-}
-
-/* Блок инфы о канале */
-
-.channel-info {
-    background: #0e0e10;
-    border-radius: 12px;
-    padding: 16px;
-    border: 1px solid #1f1f23;
-    margin-bottom: 20px;
-}
-
-.channel-header {
-    display: flex;
-    gap: 16px;
-    margin-bottom: 10px;
-}
-
-.channel-avatar img {
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-.channel-details h3 {
-    font-size: 18px;
-    margin-bottom: 6px;
-}
-
-.channel-stats {
-    display: flex;
-    gap: 16px;
-}
-
-.stat-value {
-    font-weight: 600;
-}
-
-.stat-label {
-    font-size: 12px;
-    color: #a0a0aa;
-}
-
-.channel-bio {
-    font-size: 14px;
-    color: #e5e5ea;
-    margin-top: 6px;
-}
-
-/* Футер */
-
-.footer {
-    font-size: 12px;
-    color: #a0a0aa;
-    text-align: left;
-    border-top: 1px solid #1f1f23;
-    padding-top: 10px;
-    margin-top: 10px;
+    pointer-events: auto;
+    white-space: nowrap;
 }
