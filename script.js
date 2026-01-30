@@ -1,295 +1,147 @@
-/* ================================
-   TWITCH OAUTH (Implicit Flow)
-   ================================ */
+// =====================================================================
+// ИНИЦИАЛИЗАЦИЯ ПОСЛЕ ЗАГРУЗКИ DOM
+// =====================================================================
 
-const TWITCH_CLIENT_ID = "740trga0mupauu3c4guqnw0i03iocm";
-const TWITCH_REDIRECT_URI = "https://sotikdima1975-star.github.io";
-const TWITCH_SCOPES = ["user:read:email"].join(" ");
-const TWITCH_USER_LOGIN = "fsbsotik";
+// Ждём полной загрузки HTML-структуры перед выполнением скриптов
+document.addEventListener('DOMContentLoaded', () => {
+    // =====================================================================
+    // ОСНОВНЫЕ ЭЛЕМЕНТЫ ДЛЯ УПРАВЛЕНИЯ
+    // =====================================================================
 
-/* ================================
-   ПОЛУЧЕНИЕ ТОКЕНА ИЗ URL (#access_token)
-   ================================ */
+    // Получаем контейнеры плеера и чата для изменения их ширины
+    const player = document.getElementById('player-container'); // Основной плеер Twitch
+    const chat = document.getElementById('chat-container');     // Чат Twitch
 
-function extractTokenFromHash() {
-    const hash = window.location.hash.substring(1);
-    const params = new URLSearchParams(hash);
-    const token = params.get("access_token");
-/* ================================
-   TWITCH OAUTH (Implicit Flow)
-   ================================ */
+    // Получаем выпадающие подменю
+    const submenuMain = document.getElementById('submenu-main');     // Основное подменю "Стрим"
+    const submenuWidgets = document.getElementById('submenu-widgets'); // Подменю "Виджеты"
 
-const TWITCH_CLIENT_ID = "740trga0mupauu3c4guqnw0i03iocm";
-const TWITCH_REDIRECT_URI = "https://sotikdima1975-star.github.io";
-const TWITCH_SCOPES = "user:read:email";
-const TWITCH_USER_LOGIN = "fsbsotik";
+    // Кнопки для открытия подменю
+    const btnStream = document.getElementById('btn-stream');         // Кнопка "Стрим"
+    const btnWidgets = document.getElementById('btn-widgets-toggle'); // Кнопка "Виджеты"
 
-/* ================================
-   ПОЛУЧЕНИЕ ТОКЕНА ИЗ URL (#access_token)
-   ================================ */
+    // =====================================================================
+    // ОТКРЫТИЕ/ЗАКРЫТИЕ ПОДМЕНЮ "СТРИМ"
+    // =====================================================================
 
-function extractTokenFromHash() {
-    const hash = window.location.hash.substring(1);
-    const params = new URLSearchParams(hash);
-    const token = params.get("access_token");
+    // Добавляем обработчик клика на кнопку "Стрим"
+    btnStream.addEventListener('click', (e) => {
+        e.stopPropagation(); // Предотвращаем всплытие события, чтобы не закрывалось сразу
 
-    if (token) {
-        localStorage.setItem("twitch_access_token", token);
-        localStorage.setItem("twitch_token_expiry", Date.now() + 3600 * 1000);
+        // Проверяем, открыто ли основное подменю
+        const isOpen = submenuMain.classList.contains('open');
 
-        // Убираем токен из URL
-        window.history.replaceState({}, document.title, window.location.pathname);
-    }
-}
-
-function getToken() {
-    const token = localStorage.getItem("twitch_access_token");
-    const expiry = localStorage.getItem("twitch_token_expiry");
-
-    if (!token || Date.now() > expiry) {
-        return null;
-    }
-    return token;
-}
-
-/* ================================
-   АВТОРИЗАЦИЯ
-   ================================ */
-
-function loginWithTwitch() {
-    const authUrl =
-        `https://id.twitch.tv/oauth2/authorize` +
-        `?client_id=${TWITCH_CLIENT_ID}` +
-        `&redirect_uri=${encodeURIComponent(TWITCH_REDIRECT_URI)}` +
-        `&response_type=token` +
-        `&scope=${encodeURIComponent(TWITCH_SCOPES)}`;
-
-    window.location = authUrl;
-}
-
-/* ================================
-   IRC CHAT (Twitch IRC WebSocket)
-   ================================ */
-
-const IRC_URL = "wss://irc-ws.chat.twitch.tv:443";
-let ircSocket = null;
-
-function connectIRC() {
-    const token = getToken();
-    if (!token) {
-        console.warn("Нет токена — чат не подключается");
-        return;
-    }
-
-    ircSocket = new WebSocket(IRC_URL);
-
-    ircSocket.onopen = () => {
-        console.log("IRC: соединение установлено");
-
-        ircSocket.send("CAP REQ :twitch.tv/tags twitch.tv/commands twitch.tv/membership");
-        ircSocket.send(`PASS oauth:${token}`);
-        ircSocket.send(`NICK ${TWITCH_USER_LOGIN}`);
-        ircSocket.send(`JOIN #${TWITCH_USER_LOGIN}`);
-    };
-
-    ircSocket.onmessage = (event) => {
-        const msg = event.data.trim();
-
-        if (msg.startsWith("PING")) {
-            ircSocket.send("PONG :tmi.twitch.tv");
-            return;
+        if (isOpen) {
+            // Если открыто — закрываем оба меню
+            submenuMain.classList.remove('open');
+            submenuWidgets.classList.remove('open');
+        } else {
+            // Иначе открываем основное подменю
+            submenuMain.classList.add('open');
         }
+    });
 
-        if (msg.includes("PRIVMSG")) {
-            const parsed = parseIRCMessage(msg);
-            if (parsed) appendChatMessage(parsed.user, parsed.text);
+    // =====================================================================
+    // ПЕРЕКЛЮЧЕНИЕ ПОДМЕНЮ "ВИДЖЕТЫ"
+    // =====================================================================
+
+    // Обработчик клика по кнопке "Виджеты"
+    btnWidgets.addEventListener('click', (e) => {
+        e.stopPropagation(); // Не даём событию всплыть к document
+        submenuWidgets.classList.toggle('open'); // Переключаем видимость подменю виджетов
+    });
+
+    // =====================================================================
+    // ЗАКРЫТИЕ МЕНЮ ПРИ КЛИКЕ ВНЕ ЕГО
+    // =====================================================================
+
+    // Закрываем подменю, если клик произошёл вне них
+    document.addEventListener('click', (e) => {
+        // Если клик не по подменю и не по кнопке "Стрим" — закрываем
+        if (!submenuMain.contains(e.target) && e.target !== btnStream) {
+            submenuMain.classList.remove('open');
+            submenuWidgets.classList.remove('open');
         }
+    });
+
+    // =====================================================================
+    // УПРАВЛЕНИЕ ОТОБРАЖЕНИЕМ ПЛЕЕРА И ЧАТА
+    // =====================================================================
+
+    // Клик по пункту "Стрим" → стандартный режим: 70% плеер, 30% чат
+    document.getElementById('btn-stream').onclick = () => {
+        player.style.width = "70%"; // Плеер занимает 70%
+        chat.style.width = "30%";   // Чат — 30%
     };
 
-    ircSocket.onclose = () => {
-        console.warn("IRC: соединение закрыто — переподключение...");
-        setTimeout(connectIRC, 3000);
+    // Клик по "Чат" → показать/скрыть чат
+    document.getElementById('btn-chat').onclick = () => {
+        const chatHidden = chat.style.width === "0%"; // Проверяем, скрыт ли чат
+        chat.style.width = chatHidden ? "30%" : "0%"; // Переключаем ширину
+        player.style.width = chatHidden ? "70%" : "100%"; // Плеер расширяется при скрытии чата
     };
 
-    ircSocket.onerror = (err) => {
-        console.error("IRC: ошибка", err);
-    };
-}
-
-function parseIRCMessage(raw) {
-    try {
-        const tagPart = raw.startsWith("@") ? raw.split(" ")[0] : "";
-        const msgPartIndex = raw.indexOf("PRIVMSG");
-        if (msgPartIndex === -1) return null;
-
-        const msgPart = raw.substring(msgPartIndex);
-        const user = /display-name=([^;]+)/.exec(tagPart)?.[1] || "Unknown";
-        const text = msgPart.split(" :")[1] || "";
-
-        return { user, text };
-    } catch {
-        return null;
-    }
-}
-
-function appendChatMessage(user, text) {
-    const chat = document.getElementById("chat-messages");
-    if (!chat) return;
-
-    const row = document.createElement("div");
-    row.className = "chat-message";
-
-    const u = document.createElement("span");
-    u.className = "chat-message-user";
-    u.textContent = user + ":";
-
-    const t = document.createElement("span");
-    t.className = "chat-message-text";
-    t.textContent = " " + text;
-
-    row.appendChild(u);
-    row.appendChild(t);
-
-    chat.appendChild(row);
-    chat.scrollTop = chat.scrollHeight;
-}
-
-/* ================================
-   СТАРТ ПРИ ЗАГРУЗКЕ
-   ================================ */
-
-document.addEventListener("DOMContentLoaded", () => {
-    extractTokenFromHash();
-
-    const token = getToken();
-    if (token) {
-        console.log("Twitch OAuth активен");
-        connectIRC();
-    } else {
-        console.log("Нет токена — нажмите 'Войти через Twitch'");
-    }
-});
-
-    if (token) {
-        localStorage.setItem("twitch_access_token", token);
-        localStorage.setItem("twitch_token_expiry", Date.now() + 3600 * 1000);
-
-        // Убираем токен из URL
-        window.history.replaceState({}, document.title, window.location.pathname);
-    }
-}
-
-function getToken() {
-    const token = localStorage.getItem("twitch_access_token");
-    const expiry = localStorage.getItem("twitch_token_expiry");
-
-    if (!token || Date.now() > expiry) {
-        return null;
-    }
-    return token;
-}
-
-/* ================================
-   АВТОРИЗАЦИЯ
-   ================================ */
-
-function loginWithTwitch() {
-    const authUrl =
-        `https://id.twitch.tv/oauth2/authorize` +
-        `?client_id=${TWITCH_CLIENT_ID}` +
-        `&redirect_uri=${encodeURIComponent(TWITCH_REDIRECT_URI)}` +
-        `&response_type=token` +
-        `&scope=${encodeURIComponent(TWITCH_SCOPES)}`;
-
-    window.location = authUrl;
-}
-
-/* ================================
-   IRC CHAT (Twitch IRC WebSocket)
-   ================================ */
-
-const IRC_URL = "wss://irc-ws.chat.twitch.tv:443";
-let ircSocket = null;
-
-function connectIRC() {
-    const token = getToken();
-    if (!token) return;
-
-    ircSocket = new WebSocket(IRC_URL);
-
-    ircSocket.onopen = () => {
-        console.log("IRC: соединение установлено");
-
-        ircSocket.send("CAP REQ :twitch.tv/tags twitch.tv/commands twitch.tv/membership");
-        ircSocket.send(`PASS oauth:${token}`);
-        ircSocket.send(`NICK ${TWITCH_USER_LOGIN}`);
-        ircSocket.send(`JOIN #${TWITCH_USER_LOGIN}`);
+    // Клик по "Плеер" → показать/скрыть плеер
+    document.getElementById('btn-player').onclick = () => {
+        const playerHidden = player.style.width === "0%"; // Проверяем, скрыт ли плеер
+        player.style.width = playerHidden ? "70%" : "0%"; // Переключаем
+        chat.style.width = playerHidden ? "30%" : "100%"; // Чат занимает всё место, если плеер скрыт
     };
 
-    ircSocket.onmessage = (event) => {
-        const msg = event.data.trim();
+    // =====================================================================
+    // УПРАВЛЕНИЕ ВИДЖЕТАМИ: ПОКАЗ/СКРЫТИЕ
+    // =====================================================================
 
-        if (msg.startsWith("PING")) {
-            ircSocket.send("PONG :tmi.twitch.tv");
-            return;
-        }
+    // Находим все ссылки в подменю виджетов
+    document.querySelectorAll('.submenu-widgets a').forEach(btn => {
+        // Назначаем каждому обработчик клика
+        btn.onclick = () => {
+            // Формируем ID блока виджета: например, data-widget="subs" → "w-subs"
+            const id = 'w-' + btn.dataset.widget;
+            const el = document.getElementById(id); // Получаем сам элемент виджета
 
-        if (msg.includes("PRIVMSG")) {
-            const parsed = parseIRCMessage(msg);
-            if (parsed) appendChatMessage(parsed.user, parsed.text);
-        }
-    };
+            // Переключаем отображение: если виден — скрываем, иначе показываем
+            el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+        };
+    });
 
-    ircSocket.onclose = () => {
-        console.warn("IRC: соединение закрыто, переподключение...");
-        setTimeout(connectIRC, 3000);
-    };
-}
+    // =====================================================================
+    // АНИМАЦИЯ ПРОГРЕСС-БАРА ЦЕЛИ СТРИМА
+    // =====================================================================
 
-function parseIRCMessage(raw) {
-    try {
-        const tagPart = raw.startsWith("@") ? raw.split(" ")[0] : "";
-        const msgPart = raw.substring(raw.indexOf("PRIVMSG"));
+    // Получаем элементы прогресс-бара, тега и текста
+    const goalBar = document.getElementById('w-goal-bar');   // Сама заполняющаяся полоса
+    const goalTag = document.getElementById('w-goal-tag');   // Текст: "X% выполнено"
+    const goalSub = document.getElementById('w-goal-sub');   // Текст: "Собрано: X₽ / Y₽"
 
-        const user = /display-name=([^;]+)/.exec(tagPart)?.[1] || "Unknown";
-        const text = msgPart.split(" :")[1] || "";
+    let goalPercent = 37; // Начальное значение прогресса (например, 37%)
 
-        return { user, text };
-    } catch {
-        return null;
+    // Функция обновления состояния цели
+    function updateGoal() {
+        // Случайно изменяем процент на ±2 (для имитации динамики)
+        goalPercent += (Math.random() * 4 - 2);
+
+        // Ограничиваем диапазон от 5% до 100%
+        if (goalPercent < 5) goalPercent = 5;
+        if (goalPercent > 100) goalPercent = 100;
+
+        // Обновляем ширину прогресс-бара
+        goalBar.style.width = goalPercent.toFixed(0) + '%';
+
+        // Обновляем текстовое отображение процента
+        goalTag.textContent = goalPercent.toFixed(0) + '% выполнено';
+
+        // Вычисляем сумму на основе процента (цель: 20 000₽)
+        const total = 20000;
+        const current = Math.round(total * goalPercent / 100);
+
+        // Форматируем числа с пробелами (например: 7 400₽)
+        goalSub.textContent = 'Собрано: ' + current.toLocaleString('ru-RU') + '₽ / ' + total.toLocaleString('ru-RU') + '₽';
     }
-}
 
-function appendChatMessage(user, text) {
-    const row = document.createElement("div");
-    row.className = "chat-message";
+    // Выполняем первый вызов функции
+    updateGoal();
 
-    const u = document.createElement("span");
-    u.className = "chat-message-user";
-    u.textContent = user + ":";
-
-    const t = document.createElement("span");
-    t.className = "chat-message-text";
-    t.textContent = " " + text;
-
-    row.appendChild(u);
-    row.appendChild(t);
-
-    const chatMessagesEl = document.getElementById("chat-messages");
-    chatMessagesEl.appendChild(row);
-    chatMessagesEl.scrollTop = chatMessagesEl.scrollHeight;
-}
-
-/* ================================
-   СТАРТ ПРИ ЗАГРУЗКЕ
-   ================================ */
-
-document.addEventListener("DOMContentLoaded", () => {
-    extractTokenFromHash();
-
-    const token = getToken();
-    if (token) {
-        console.log("Twitch OAuth активен");
-        connectIRC();
-    }
+    // Устанавливаем интервал: обновление каждые 5 секунд
+    setInterval(updateGoal, 5000);
 });
