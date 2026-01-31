@@ -1,169 +1,482 @@
 // =====================================================================
-// ИНИЦИАЛИЗАЦИЯ ПОСЛЕ ЗАГРУЗКИ DOM
+// SOTIK FRONTEND – ПОЛНЫЙ СКРИПТ (~500 СТРОК)
+// ПОДКЛЮЧЕН К BACKEND НА /api/*
 // =====================================================================
 
-// Ждём полной загрузки HTML-структуры перед выполнением скриптов
 document.addEventListener('DOMContentLoaded', () => {
-    // =====================================================================
-    // ОСНОВНЫЕ ЭЛЕМЕНТЫ ДЛЯ УПРАВЛЕНИЯ
-    // =====================================================================
-
-    // Получаем контейнеры плеера и чата для изменения их ширины
-    const player = document.getElementById('player-container'); // Основной плеер Twitch
-    const chat = document.getElementById('chat-container');     // Чат Twitch
-
-    // Получаем выпадающие подменю
-    const submenuMain = document.getElementById('submenu-main');     // Основное подменю "Стрим"
-    const submenuWidgets = document.getElementById('submenu-widgets'); // Подменю "Виджеты"
-
-    // Кнопки для открытия подменю
-    const btnStream = document.getElementById('btn-stream');         // Кнопка "Стрим"
-    const btnWidgets = document.getElementById('btn-widgets-toggle'); // Кнопка "Виджеты"
 
     // =====================================================================
-    // ОТКРЫТИЕ/ЗАКРЫТИЕ ПОДМЕНЮ "СТРИМ"
+    // УТИЛИТЫ
     // =====================================================================
 
-    // Добавляем обработчик клика на кнопку "Стрим"
-    btnStream.addEventListener('click', (e) => {
-        e.stopPropagation(); // Предотвращаем всплытие события, чтобы не закрывалось сразу
+    const $ = (sel, scope = document) => scope.querySelector(sel);
+    const $all = (sel, scope = document) => Array.from(scope.querySelectorAll(sel));
 
-        // Проверяем, открыто ли основное подменю
-        const isOpen = submenuMain.classList.contains('open');
+    const formatNumber = num => num.toLocaleString('ru-RU');
 
-        if (isOpen) {
-            // Если открыто — закрываем оба меню
-            submenuMain.classList.remove('open');
-            submenuWidgets.classList.remove('open');
-        } else {
-            // Иначе открываем основное подменю
-            submenuMain.classList.add('open');
-        }
-    });
+    const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
-    // =====================================================================
-    // ПЕРЕКЛЮЧЕНИЕ ПОДМЕНЮ "ВИДЖЕТЫ"
-    // =====================================================================
-
-    // Обработчик клика по кнопке "Виджеты"
-    btnWidgets.addEventListener('click', (e) => {
-        e.stopPropagation(); // Не даём событию всплыть к document
-        submenuWidgets.classList.toggle('open'); // Переключаем видимость подменю виджетов
-    });
-
-    // =====================================================================
-    // ЗАКРЫТИЕ МЕНЮ ПРИ КЛИКЕ ВНЕ ЕГО
-    // =====================================================================
-
-    // Закрываем подменю, если клик произошёл вне них
-    document.addEventListener('click', (e) => {
-        // Если клик не по подменю и не по кнопке "Стрим" — закрываем
-        if (!submenuMain.contains(e.target) && e.target !== btnStream) {
-            submenuMain.classList.remove('open');
-            submenuWidgets.classList.remove('open');
-        }
-    });
-
-    // =====================================================================
-    // УПРАВЛЕНИЕ ОТОБРАЖЕНИЕМ ПЛЕЕРА И ЧАТА
-    // =====================================================================
-
-    // Клик по пункту "Стрим" → стандартный режим: 70% плеер, 30% чат
-    document.getElementById('btn-stream').onclick = () => {
-        player.style.width = "70%"; // Плеер занимает 70%
-        chat.style.width = "30%";   // Чат — 30%
-    };
-
-    // Клик по "Чат" → показать/скрыть чат
-    document.getElementById('btn-chat').onclick = () => {
-        const chatHidden = chat.style.width === "0%"; // Проверяем, скрыт ли чат
-        chat.style.width = chatHidden ? "30%" : "0%"; // Переключаем ширину
-        player.style.width = chatHidden ? "70%" : "100%"; // Плеер расширяется при скрытии чата
-    };
-
-    // Клик по "Плеер" → показать/скрыть плеер
-    document.getElementById('btn-player').onclick = () => {
-        const playerHidden = player.style.width === "0%"; // Проверяем, скрыт ли плеер
-        player.style.width = playerHidden ? "70%" : "0%"; // Переключаем
-        chat.style.width = playerHidden ? "30%" : "100%"; // Чат занимает всё место, если плеер скрыт
-    };
-
-    // =====================================================================
-    // УПРАВЛЕНИЕ ВИДЖЕТАМИ: ПОКАЗ/СКРЫТИЕ
-    // =====================================================================
-
-    // Находим все ссылки в подменю виджетов
-    document.querySelectorAll('.submenu-widgets a').forEach(btn => {
-        // Назначаем каждому обработчик клика
-        btn.onclick = () => {
-            // Формируем ID блока виджета: например, data-widget="subs" → "w-subs"
-            const id = 'w-' + btn.dataset.widget;
-            const el = document.getElementById(id); // Получаем сам элемент виджета
-
-            // Переключаем отображение: если виден — скрываем, иначе показываем
-            el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+    const throttle = (fn, delay) => {
+        let last = 0;
+        return (...args) => {
+            const now = Date.now();
+            if (now - last >= delay) {
+                last = now;
+                fn(...args);
+            }
         };
+    };
+
+    // =====================================================================
+    // ФИКСИРОВАННЫЙ ХЕДЕР ПРИ СКРОЛЛЕ
+    // =====================================================================
+
+    const header = $('header');
+    if (header) {
+        const onScrollHeader = throttle(() => {
+            if (window.scrollY > 40) {
+                header.classList.add('header--scrolled');
+            } else {
+                header.classList.remove('header--scrolled');
+            }
+        }, 50);
+
+        window.addEventListener('scroll', onScrollHeader);
+        onScrollHeader();
+    }
+
+    // =====================================================================
+    // БУРГЕР-МЕНЮ
+    // =====================================================================
+
+    const burger = $('.js-burger');
+    const nav = $('.js-nav');
+
+    if (burger && nav) {
+        burger.addEventListener('click', () => {
+            const isOpen = nav.classList.toggle('nav--open');
+            burger.classList.toggle('burger--open', isOpen);
+            document.body.classList.toggle('no-scroll', isOpen);
+        });
+
+        $all('.js-nav a', nav).forEach(link => {
+            link.addEventListener('click', () => {
+                nav.classList.remove('nav--open');
+                burger.classList.remove('burger--open');
+                document.body.classList.remove('no-scroll');
+            });
+        });
+    }
+
+    // =====================================================================
+    // ПЛАВНЫЙ СКРОЛЛ ПО ЯКОРЯМ
+    // =====================================================================
+
+    $all('a[href^="#"]').forEach(link => {
+        link.addEventListener('click', e => {
+            const targetId = link.getAttribute('href');
+            if (!targetId || targetId === '#') return;
+
+            const target = document.querySelector(targetId);
+            if (!target) return;
+
+            e.preventDefault();
+            const top = target.getBoundingClientRect().top + window.scrollY - 80;
+
+            window.scrollTo({
+                top,
+                behavior: 'smooth'
+            });
+        });
     });
 
     // =====================================================================
-    // ИНТЕГРАЦИЯ ЦЕЛИ СТРИМА С DONATIONALERTS
+    // ТАБЫ (ОБО МНЕ / ПРАВИЛА / КОМАНДЫ и т.п.)
     // =====================================================================
 
-    // Получаем элементы интерфейса цели
-    const goalBar = document.getElementById('w-goal-bar');
-    const goalTag = document.getElementById('w-goal-tag');
-    const goalSub = document.getElementById('w-goal-sub');
+    $all('.js-tabs').forEach(tabsRoot => {
+        const buttons = $all('.js-tabs-btn', tabsRoot);
+        const panels = $all('.js-tabs-panel', tabsRoot);
 
-    const GOAL_AMOUNT = 20000; // Цель в ₽
-
-    // Функция получения суммы донатов
-    async function fetchDonationTotal() {
-        try {
-            const response = await fetch('https://www.donationalerts.com/api/v1/alerts/donations', {
-                method: 'GET',
-                headers: {
-                    'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxNjM1NCIsImp0aSI6ImY4NjAyOTBhMDJhNGRmNjk0YThjNGVhYTczZmZjOWQyYmFhNTcyNTUxNTkwMWQzYzBhZDBlNWFjZWNlODdkOTBmNzFiMDlkNzJiMTQyOTA0IiwiaWF0IjoxNzY5ODI0NTE1LjE3MDUsIm5iZiI6MTc2OTgyNDUxNS4xNzA1LCJleHAiOjE4MDEzNjA1MTUuMTYyNywic3ViIjoiMTMyMDgzOTEiLCJzY29wZXMiOlsib2F1dGgtZG9uYXRpb24taW5kZXgiLCJvYXV0aC1kb25hdGlvbi1zdWJzY3JpYmUiLCJvYXV0aC11c2VyLXNob3ciXX0.nx7EiEiaFGgCFgqsqCfG3Taf49tCcgOFhvaUErBaKoGKKtxV_wI58N7RhEoXanRdYsiY1OQbTFhQ0RKcKUYc0jB-HHK4v7L9_hSW5f9NKSnucEaK8phcyPHIR6TREf2YLgerDxKVCfE4ZWFoEke21BWf8TG8I0yp5CJLMzRr6iQOOxuUQJlM8sdI7jNzwtCGBY-0dluMPO9DBK8qEm5wsVu45rseFUCR35XPbxMYEtpszwuyXIAKTPSjHKsDz1sPsIVcgITR-OVuJeV-s8O9bgCUTAxn6RWAJKZ6IuSa9pesx5aCEbHNOx7kqPunRnjcEd1wAuKpYfOB14g_LfF5iSDpXe6ywiQSoJtfsBCGhhijDvG4BeyOZy34YuX1Jg81PpNjlWFWYsFTvgGTeHp-O-f0iDbqjCMof1uXjAcUEUhZYFOeACEIfGD9_xfTnftbwwsnueYn0QyVFZMoyW_452_IIvuwUYCN9XE1zusiBzqvcX5jtNaynCGNyaBZySsIPRq7mi5XXgqPyRfSQAUAUmpneucGFAaNDcQMQHXeYEHvbgW_SccjfOmFtshqnYBo-Uiqbx4ajC7MR8q282CingaUyOuZ1o253EpDfqIKk7jpSpO4rHjjAUTJru6KkBnnWpMU9vDszLu1bsCE4QrdYrPLg7BtDmE0W9UI_2vv5-Q',
-                    'Content-Type': 'application/json'
-                }
+        const activateTab = id => {
+            buttons.forEach(btn => {
+                btn.classList.toggle('is-active', btn.dataset.tab === id);
             });
+            panels.forEach(panel => {
+                panel.classList.toggle('is-active', panel.dataset.tab === id);
+            });
+        };
 
-            if (!response.ok) throw new Error('Ошибка получения данных');
+        buttons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const id = btn.dataset.tab;
+                if (!id) return;
+                activateTab(id);
+            });
+        });
 
-            const data = await response.json();
+        if (buttons[0] && buttons[0].dataset.tab) {
+            activateTab(buttons[0].dataset.tab);
+        }
+    });
 
-            // Суммируем все донаты
-            const totalRaised = data.data.reduce((sum, donation) => sum + donation.amount, 0);
+    // =====================================================================
+    // МОДАЛКИ (ПРАВИЛА, ОПИСАНИЯ, ПОДСКАЗКИ)
+    // =====================================================================
 
-            // Обновляем интерфейс
-            updateGoalProgress(totalRaised);
-        } catch (error) {
-            console.error('Ошибка загрузки донатов:', error);
-            // При ошибке обновляем с имитацией (на случай оффлайна)
-            updateGoalProgress(7400);
+    const modalOverlay = $('.js-modal-overlay');
+
+    const openModal = id => {
+        const modal = document.getElementById(id);
+        if (!modal || !modalOverlay) return;
+        modalOverlay.classList.add('is-visible');
+        modal.classList.add('is-visible');
+        document.body.classList.add('no-scroll');
+    };
+
+    const closeModal = () => {
+        if (!modalOverlay) return;
+        modalOverlay.classList.remove('is-visible');
+        $all('.js-modal').forEach(m => m.classList.remove('is-visible'));
+        document.body.classList.remove('no-scroll');
+    };
+
+    if (modalOverlay) {
+        modalOverlay.addEventListener('click', e => {
+            if (e.target === modalOverlay || e.target.classList.contains('js-modal-close')) {
+                closeModal();
+            }
+        });
+    }
+
+    $all('[data-modal]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const id = btn.dataset.modal;
+            if (id) openModal(id);
+        });
+    });
+
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') closeModal();
+    });
+
+    // =====================================================================
+    // АНИМАЦИЯ КАРТОЧЕК (ПЕРКИ, БЛОКИ ИНФЫ)
+    // =====================================================================
+
+    $all('.js-card-tilt').forEach(card => {
+        const strength = 10;
+
+        const reset = () => {
+            card.style.transform = '';
+        };
+
+        card.addEventListener('mousemove', e => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+
+            const rotX = clamp(-y / rect.height * strength, -strength, strength);
+            const rotY = clamp(x / rect.width * strength, -strength, strength);
+
+            card.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg) translateZ(4px)`;
+        });
+
+        card.addEventListener('mouseleave', reset);
+        card.addEventListener('blur', reset);
+    });
+
+    // =====================================================================
+    // ЦЕЛЬ СТРИМА – /api/goal
+    // =====================================================================
+
+    const goalBar = $('#w-goal-bar');
+    const goalTag = $('#w-goal-tag');
+    const goalSub = $('#w-goal-sub');
+    const goalTitle = $('#w-goal-title');
+    const donateBtn = $('#w-goal-donate');
+
+    function renderGoal(goal) {
+        if (!goalBar || !goalTag || !goalSub) return;
+
+        if (!goal) {
+            goalBar.style.width = '0%';
+            goalTag.textContent = '0% выполнено';
+            goalSub.textContent = 'Цель не задана';
+            if (goalTitle) goalTitle.textContent = 'Цель стрима';
+            return;
+        }
+
+        const raised = goal.raised_amount || 0;
+        const total = goal.goal_amount || 0;
+        const percent = total > 0 ? Math.min(Math.round((raised / total) * 100), 100) : 0;
+
+        goalBar.style.width = percent + '%';
+        goalTag.textContent = percent + '% выполнено';
+        goalSub.textContent =
+            `Собрано: ${formatNumber(raised)}₽ / ${formatNumber(total)}₽`;
+
+        if (goalTitle && goal.title) {
+            goalTitle.textContent = goal.title;
         }
     }
 
-    // Обновление прогресса цели
-    function updateGoalProgress(currentAmount) {
-        const percent = Math.min((currentAmount / GOAL_AMOUNT) * 100, 100);
+    async function loadGoal() {
+        if (!goalBar || !goalTag || !goalSub) return;
 
-        goalBar.style.width = percent.toFixed(1) + '%';
-        goalTag.textContent = percent.toFixed(1) + '% выполнено';
-        goalSub.textContent = 'Собрано: ' + currentAmount.toLocaleString('ru-RU') + '₽ / ' + GOAL_AMOUNT.toLocaleString('ru-RU') + '₽';
+        try {
+            const res = await fetch('/api/goal');
+            const data = await res.json();
+
+            if (!data.ok) {
+                console.error('Ошибка ответа /api/goal:', data);
+                renderGoal(null);
+                return;
+            }
+
+            renderGoal(data.goal || null);
+
+        } catch (e) {
+            console.error('Ошибка загрузки цели /api/goal:', e);
+            renderGoal(null);
+        }
     }
 
-    // Первичная загрузка
-    fetchDonationTotal();
+    if (goalBar && goalTag && goalSub) {
+        loadGoal();
+        setInterval(loadGoal, 30000);
+    }
 
-    // Обновление каждые 30 секунд
-    setInterval(fetchDonationTotal, 30000);
-
+    if (donateBtn) {
+        donateBtn.addEventListener('click', () => {
+            window.open('https://www.donationalerts.com/r/fsbsotik', '_blank');
+        });
+    }
 
     // =====================================================================
-    // КНОПКА ДОНАТА ВНУТРИ ВИДЖЕТА ЦЕЛИ
+    // ПОСЛЕДНИЙ ДОНАТ – /api/donations/latest
     // =====================================================================
 
-    document.getElementById("w-goal-donate").onclick = () => {
-        window.open("https://www.donationalerts.com/r/fsbsotik", "_blank");
+    const lastDonationBox = $('#last-donation');
+
+    async function loadLatestDonation() {
+        if (!lastDonationBox) return;
+
+        try {
+            const res = await fetch('/api/donations/latest');
+            const data = await res.json();
+
+            if (!data.ok || !data.latest) {
+                lastDonationBox.textContent = 'Пока нет донатов';
+                return;
+            }
+
+            const d = data.latest;
+            const name = d.username || 'Аноним';
+            const amount = d.amount || 0;
+            const msg = d.message || '';
+
+            lastDonationBox.textContent =
+                `${name}: +${formatNumber(amount)}₽${msg ? ' — ' + msg : ''}`;
+
+        } catch (e) {
+            console.error('Ошибка /api/donations/latest:', e);
+            lastDonationBox.textContent = 'Ошибка загрузки донатов';
+        }
+    }
+
+    if (lastDonationBox) {
+        loadLatestDonation();
+        setInterval(loadLatestDonation, 15000);
+    }
+
+    // =====================================================================
+    // СТАТИСТИКА – /api/stats
+    // =====================================================================
+
+    const statDaySum = $('#stat-day-sum');
+    const statDayCount = $('#stat-day-count');
+    const statMonthSum = $('#stat-month-sum');
+    const statYearSum = $('#stat-year-sum');
+
+    async function loadStats() {
+        if (!statDaySum && !statDayCount && !statMonthSum && !statYearSum) return;
+
+        try {
+            const res = await fetch('/api/stats');
+            const data = await res.json();
+
+            if (!data.ok) {
+                console.error('Ошибка ответа /api/stats:', data);
+                return;
+            }
+
+            if (statDaySum) {
+                statDaySum.textContent = formatNumber(data.day.sum || 0) + '₽';
+            }
+            if (statDayCount) {
+                statDayCount.textContent = String(data.day.count || 0);
+            }
+            if (statMonthSum) {
+                statMonthSum.textContent = formatNumber(data.month.sum || 0) + '₽';
+            }
+            if (statYearSum) {
+                statYearSum.textContent = formatNumber(data.year.sum || 0) + '₽';
+            }
+
+        } catch (e) {
+            console.error('Ошибка /api/stats:', e);
+        }
+    }
+
+    if (statDaySum || statDayCount || statMonthSum || statYearSum) {
+        loadStats();
+        setInterval(loadStats, 60000);
+    }
+
+    // =====================================================================
+    // ВИДЖЕТ СПИСКА ДОНАТОВ (ФРОНТ-ИМИТАЦИЯ ИЛИ ПОД /api/*, ЕСЛИ ДОПИШЕШЬ)
+// =====================================================================
+
+    const donationsList = $('.js-donations-list');
+    const donationsEmpty = $('.js-donations-empty');
+
+    async function loadDonationsList() {
+        if (!donationsList) return;
+
+        // Сейчас можно либо:
+        // 1) использовать /api/donations/latest и просто показывать один,
+        // 2) или позже добавить /api/donations/list в backend.
+        // Пока сделаем простую заглушку, чтобы верстка жила.
+
+        donationsList.innerHTML = '';
+        if (donationsEmpty) {
+            donationsEmpty.classList.add('is-visible');
+        }
+    }
+
+    if (donationsList) {
+        loadDonationsList();
+    }
+
+    // =====================================================================
+    // КОПИРОВАНИЕ ССЫЛКИ НА ДОНАТ
+    // =====================================================================
+
+    const copyLinkBtn = $('.js-copy-donate-link');
+    const DONATE_URL = 'https://www.donationalerts.com/r/fsbsotik';
+
+    if (copyLinkBtn) {
+        copyLinkBtn.addEventListener('click', async () => {
+            try {
+                await navigator.clipboard.writeText(DONATE_URL);
+                copyLinkBtn.classList.add('is-copied');
+                copyLinkBtn.textContent = 'Ссылка скопирована';
+                setTimeout(() => {
+                    copyLinkBtn.classList.remove('is-copied');
+                    copyLinkBtn.textContent = 'Скопировать ссылку';
+                }, 2000);
+            } catch (e) {
+                console.error('Не удалось скопировать ссылку:', e);
+            }
+        });
+    }
+
+    // =====================================================================
+    // ТЕМА (СВЕТЛАЯ / ТЁМНАЯ)
+// =====================================================================
+
+    const themeToggle = $('.js-theme-toggle');
+    const THEME_KEY = 'sotik_theme';
+
+    const applyTheme = theme => {
+        document.documentElement.setAttribute('data-theme', theme);
     };
+
+    const loadTheme = () => {
+        const saved = localStorage.getItem(THEME_KEY);
+        if (saved === 'dark' || saved === 'light') {
+            applyTheme(saved);
+        } else {
+            applyTheme('dark');
+        }
+    };
+
+    const toggleTheme = () => {
+        const current = document.documentElement.getAttribute('data-theme') || 'dark';
+        const next = current === 'dark' ? 'light' : 'dark';
+        applyTheme(next);
+        localStorage.setItem(THEME_KEY, next);
+    };
+
+    loadTheme();
+
+    if (themeToggle) {
+        themeToggle.addEventListener('click', toggleTheme);
+    }
+
+    // =====================================================================
+    // СТАТУС СТРИМА (ФЕЙК, МОЖНО ПРИВЯЗАТЬ К BACKEND)
+// =====================================================================
+
+    const statusBadge = $('.js-stream-status');
+
+    async function checkStreamStatus() {
+        if (!statusBadge) return;
+
+        try {
+            // Здесь можно дергать твой backend, если сделаешь эндпоинт /api/stream-status
+            // Пока — имитация по времени
+            const hour = new Date().getHours();
+            const isOnline = hour >= 18 && hour <= 23;
+
+            statusBadge.textContent = isOnline ? 'ОНЛАЙН' : 'ОФФЛАЙН';
+            statusBadge.classList.toggle('is-online', isOnline);
+            statusBadge.classList.toggle('is-offline', !isOnline);
+
+        } catch (e) {
+            console.error('Ошибка проверки статуса стрима:', e);
+        }
+    }
+
+    if (statusBadge) {
+        checkStreamStatus();
+        setInterval(checkStreamStatus, 60000);
+    }
+
+    // =====================================================================
+    // СЧЁТЧИКИ (СТАТИСТИКА КАНАЛА, ПОДПИСЧИКИ И Т.П.)
+// =====================================================================
+
+    $all('.js-counter').forEach(counter => {
+        const target = parseInt(counter.dataset.target || '0', 10);
+        const duration = parseInt(counter.dataset.duration || '1200', 10);
+
+        let start = 0;
+        let startTime = null;
+
+        function animate(timestamp) {
+            if (!startTime) startTime = timestamp;
+            const progress = Math.min((timestamp - startTime) / duration, 1);
+            const value = Math.floor(progress * (target - start) + start);
+
+            counter.textContent = formatNumber(value);
+
+            if (progress < 1) {
+                requestAnimationFrame(animate);
+            }
+        }
+
+        requestAnimationFrame(animate);
+    });
+
+    // =====================================================================
+    // ГОД В ФУТЕРЕ
+    // =====================================================================
+
+    const yearEl = $('.js-year');
+    if (yearEl) {
+        yearEl.textContent = String(new Date().getFullYear());
+    }
+
 });
