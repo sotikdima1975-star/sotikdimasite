@@ -1,4 +1,115 @@
-document.addEventListener('DOMContentLoaded', () => {
+(function() {
+    // Основной скрипт сайта
+    // Этот файл должен быть загружен с основного сервера
+    
+    // DonationAlerts интеграция
+    window.DonationAlerts = {
+        open: function(channel) {
+            // Создаем модальное окно для DonationAlerts
+            const modal = document.createElement('div');
+            modal.style.position = 'fixed';
+            modal.style.top = '0';
+            modal.style.left = '0';
+            modal.style.width = '100%';
+            modal.style.height = '100%';
+            modal.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
+            modal.style.display = 'flex';
+            modal.style.alignItems = 'center';
+            modal.style.justifyContent = 'center';
+            modal.style.zIndex = '1000';
+            modal.style.backdropFilter = 'blur(10px)';
+
+            const content = document.createElement('div');
+            content.style.width = '90%';
+            content.style.height = '90%';
+            content.style.borderRadius = '15px';
+            content.style.overflow = 'hidden';
+            content.style.boxShadow = '0 0 30px rgba(0, 234, 255, 0.5)';
+
+            const iframe = document.createElement('iframe');
+            iframe.src = `https://www.donationalerts.com/r/${channel}`;
+            iframe.setAttribute('frameborder', '0');
+            iframe.setAttribute('allowtransparency', 'true');
+            iframe.setAttribute('scrolling', 'no');
+            iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-popups allow-forms');
+            iframe.style.width = '100%';
+            iframe.style.height = '100%';
+            iframe.style.border = 'none';
+
+            const closeBtn = document.createElement('button');
+            closeBtn.textContent = 'Закрыть';
+            closeBtn.style.position = 'absolute';
+            closeBtn.style.top = '10px';
+            closeBtn.style.right = '10px';
+            closeBtn.style.padding = '8px 16px';
+            closeBtn.style.fontSize = '12px';
+            closeBtn.style.borderRadius = '8px';
+            closeBtn.style.border = '1px solid #d4af37';
+            closeBtn.style.backgroundColor = 'rgba(212, 175, 55, 0.2)';
+            closeBtn.style.color = '#d4af37';
+            closeBtn.style.cursor = 'pointer';
+            closeBtn.style.zIndex = '1001';
+            closeBtn.onclick = () => document.body.removeChild(modal);
+
+            content.appendChild(iframe);
+            modal.appendChild(content);
+            modal.appendChild(closeBtn);
+            document.body.appendChild(modal);
+        }
+    };
+
+    // API для редиректа через dalink.to
+    window.DonationRedirect = {
+        getRedirectUrl: async function(source) {
+            try {
+                const response = await fetch('https://dalink.to/api/redirect/fsbsotik', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        source: source,
+                        timestamp: new Date().toISOString()
+                    })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    return data.url || 'https://dalink.to/fsbsotik';
+                }
+            } catch (error) {
+                console.warn('API redirect failed:', error);
+            }
+            
+            return 'https://dalink.to/fsbsotik';
+        }
+    };
+
+    // Сохраняем оригинальный DOMContentLoaded обработчик
+    const originalDOMContentLoaded = document.addEventListener;
+    
+    // Переопределяем addEventListener для DOMContentLoaded
+    document.addEventListener = function(event, callback) {
+        if (event === 'DOMContentLoaded') {
+            // Вызываем оригинальный обработчик
+            originalDOMContentLoaded.call(this, event, callback);
+        } else {
+            // Для других событий просто вызываем оригинальный метод
+            originalDOMContentLoaded.call(this, event, callback);
+        }
+    };
+
+    // Вызываем оригинальный DOMContentLoaded обработчик
+    document.dispatchEvent(new Event('DOMContentLoaded'));
+})();
+
+// Оригинальный скрипт сайта
+(function() {
+    document.addEventListener('DOMContentLoaded', () => {
+
+// Оригинальный скрипт сайта
+(function() {
+    document.addEventListener('DOMContentLoaded', () => {
 
     // =====================================================================
     // УТИЛИТЫ
