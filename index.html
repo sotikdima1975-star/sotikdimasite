@@ -4,46 +4,41 @@
     <meta charset="UTF-8">
     <title>СайтСотика — Стрим</title>
 
-    <!-- Подключаем внешние стили -->
     <link rel="stylesheet" href="style.css">
-
-    <!-- Подключаем иконку сайта -->
     <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
 
 <body>
 
-    <!-- ШАПКА САЙТА -->
+    <!-- ШАПКА -->
     <header class="header">
         <div class="header-frame">
-            <!-- Логотип -->
+
             <div class="logo-box gold-border">
                 <div class="logo gold-text">СайтСотика</div>
             </div>
 
-            <!-- Бегущая строка -->
             <div class="ticker-box">
                 <div class="ticker">
                     Добро пожаловать на стрим СайтСотика • Скорость • Контроль • Точность • Симрейсинг без компромиссов
                 </div>
             </div>
 
-            <!-- Меню навигации -->
             <nav class="menu-box gold-border">
                 <a href="index.html">Главная</a>
                 <a href="about.html">Обо мне</a>
                 <a href="games.html">Игры</a>
 
-                <!-- Подменю "Стрим" -->
                 <span class="stream-wrapper">
                     <a class="gold-text gold-underline" id="btn-stream">Стрим</a>
+
                     <div class="submenu-main" id="submenu-main">
                         <a id="btn-chat">Чат</a>
                         <a id="btn-player">Плеер</a>
 
-                        <!-- Подменю виджетов -->
                         <span class="widgets-wrapper">
                             <a id="btn-widgets-toggle">Виджеты</a>
+
                             <div class="submenu-widgets" id="submenu-widgets">
                                 <a data-widget="subs">Последние подписчики</a>
                                 <a data-widget="donates">Последние донаты</a>
@@ -62,88 +57,104 @@
         </div>
     </header>
 
-    <!-- ОСНОВНАЯ ОБЛАСТЬ СТРИМА -->
+    <!-- ОСНОВНОЙ БЛОК -->
     <section>
         <div class="overlay">
-            <div class="fixed-overlay-top">Фиксированный элемент сверху</div>
+
             <div class="overlay-inner">
+
                 <div class="overlay-title gold-text">FSB Sotik</div>
+
                 <div class="content-area">
-                    <!-- Плеер Twitch -->
+
+                    <!-- ПЛЕЕР -->
                     <div id="player-container">
                         <iframe src="https://player.twitch.tv/?channel=fsbsotik&parent=localhost&parent=127.0.0.1&parent=sotikdima1975-star.github.io&autoplay=false"></iframe>
 
-                        <!-- Виджеты поверх плеера -->
+                        <!-- ВИДЖЕТЫ -->
                         <div id="widgets-overlay">
+
+                            <!-- ПОСЛЕДНИЕ ПОДПИСЧИКИ -->
                             <div class="widget-box" id="w-subs">
                                 <div class="widget-header">
                                     <div class="widget-title">Последние подписчики</div>
                                     <div class="widget-tag">live feed</div>
                                 </div>
-                                <div class="widget-main" id="w-subs-main">user123</div>
-                                <div class="widget-sub" id="w-subs-sub">Только что подписался</div>
+                                <div class="widget-main" id="w-subs-main"></div>
+                                <div class="widget-sub" id="w-subs-sub"></div>
                             </div>
 
+                            <!-- ПОСЛЕДНИЕ ДОНАТЫ -->
                             <div class="widget-box" id="w-donates">
                                 <div class="widget-header">
                                     <div class="widget-title">Последние донаты</div>
                                     <div class="widget-tag">stream events</div>
                                 </div>
-                                <div class="widget-main" id="w-donates-main">Vasya — 150₽</div>
-                                <div class="widget-sub" id="w-donates-sub">«Удачи на трассе!»</div>
+                                <div class="widget-main" id="w-donates-main"></div>
+                                <div class="widget-sub" id="w-donates-sub"></div>
                             </div>
 
+                            <!-- ЦЕЛЬ СТРИМА -->
                             <div class="widget-box" id="w-goal">
                                 <div class="widget-header">
                                     <div class="widget-title">Цель стрима</div>
-                                    <div class="widget-tag" id="w-goal-tag">37% выполнено</div>
+                                    <div class="widget-tag" id="w-goal-tag"></div>
                                 </div>
-                                <div class="widget-main" id="w-goal-main">Новый руль Fanatec</div>
-                                <div class="widget-sub" id="w-goal-sub">Собрано: 7 400₽ / 20 000₽</div>
+
+                                <div class="widget-main" id="w-goal-main"></div>
+
+                                <div class="widget-sub" id="w-goal-sub"></div>
+
                                 <div class="widget-bar">
                                     <div class="widget-bar-fill" id="w-goal-bar"></div>
                                 </div>
                             </div>
 
+                            <!-- ДОНАТЫ ЗА ДЕНЬ -->
                             <div class="widget-box" id="w-day">
                                 <div class="widget-header">
                                     <div class="widget-title">Донаты за день</div>
                                     <div class="widget-tag">today</div>
                                 </div>
-                                <div class="widget-main" id="w-day-main">1 240₽</div>
-                                <div class="widget-sub" id="w-day-sub">7 транзакций за сегодня</div>
+                                <div class="widget-main" id="w-day-main"></div>
+                                <div class="widget-sub" id="w-day-sub"></div>
                             </div>
 
+                            <!-- ДОНАТЫ ЗА МЕСЯЦ -->
                             <div class="widget-box" id="w-month">
                                 <div class="widget-header">
                                     <div class="widget-title">Донаты за месяц</div>
                                     <div class="widget-tag">this month</div>
                                 </div>
-                                <div class="widget-main" id="w-month-main">8 420₽</div>
-                                <div class="widget-sub" id="w-month-sub">Средний донат: 210₽</div>
+                                <div class="widget-main" id="w-month-main"></div>
+                                <div class="widget-sub" id="w-month-sub"></div>
                             </div>
 
+                            <!-- ДОНАТЫ ЗА ГОД -->
                             <div class="widget-box" id="w-year">
                                 <div class="widget-header">
                                     <div class="widget-title">Донаты за год</div>
                                     <div class="widget-tag">year total</div>
                                 </div>
-                                <div class="widget-main" id="w-year-main">152 300₽</div>
-                                <div class="widget-sub" id="w-year-sub">Поддержка за весь год</div>
+                                <div class="widget-main" id="w-year-main"></div>
+                                <div class="widget-sub" id="w-year-sub"></div>
                             </div>
+
                         </div>
                     </div>
 
-                    <!-- Чат Twitch -->
+                    <!-- ЧАТ -->
                     <div id="chat-container">
                         <iframe src="https://www.twitch.tv/embed/fsbsotik/chat?parent=localhost&parent=127.0.0.1&parent=sotikdima1975-star.github.io&darkpopout"></iframe>
                     </div>
+
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Подключаем JavaScript после загрузки DOM -->
+    <!-- JS -->
     <script src="script.js"></script>
+
 </body>
 </html>
