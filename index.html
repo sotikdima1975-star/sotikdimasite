@@ -533,6 +533,7 @@
             });
         }
 
+        // Проверка существования элемента перед добавлением обработчика
         const btnDonate = $('#btn-donate');
         if (btnDonate) {
             btnDonate.addEventListener('click', () => {
@@ -643,6 +644,7 @@
                         daIframe.setAttribute('frameborder', '0');
                         daIframe.setAttribute('allowtransparency', 'true');
                         daIframe.setAttribute('scrolling', 'no');
+                        daIframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-popups allow-forms');
                         daIframe.style.width = '100%';
                         daIframe.style.height = '100%';
                         daIframe.style.border = 'none';
@@ -695,6 +697,7 @@
                         daIframe.setAttribute('frameborder', '0');
                         daIframe.setAttribute('allowtransparency', 'true');
                         daIframe.setAttribute('scrolling', 'no');
+                        daIframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-popups allow-forms');
                         daIframe.style.width = '100%';
                         daIframe.style.height = '100%';
                         daIframe.style.border = 'none';
