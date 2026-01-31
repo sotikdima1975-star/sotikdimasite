@@ -499,6 +499,7 @@
     </div>
 </section>
 
+<script src="/script.js" defer></script>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const $ = (sel, scope = document) => scope.querySelector(sel);
@@ -592,135 +593,20 @@
                 donateBtn.style.color = '#050608';
                 donateBtn.style.cursor = 'pointer';
                 donateBtn.style.transition = '0.2s';
-                donateBtn.onclick = async () => {
+                donateBtn.onclick = () => {
                     // Закрываем текущее модальное окно
                     document.body.removeChild(modal);
                     
-                    try {
-                        // Делаем API запрос для получения URL
-                        const response = await fetch('https://dalink.to/api/redirect/fsbsotik', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({
-                                source: 'modal_qr_button',
-                                timestamp: new Date().toISOString()
-                            })
+                    // Используем скрипт с основного сервера для открытия DonationAlerts
+                    if (window.DonationRedirect && window.DonationAlerts) {
+                        // Сначала получаем URL через API
+                        window.DonationRedirect.getRedirectUrl('modal_qr_button').then(redirectUrl => {
+                            // Затем открываем DonationAlerts с полученным URL
+                            window.DonationAlerts.open('fsbsotik');
                         });
-                        
-                        let redirectUrl = 'https://dalink.to/fsbsotik';
-                        
-                        if (response.ok) {
-                            const data = await response.json();
-                            if (data.url) {
-                                redirectUrl = data.url;
-                            }
-                        }
-                        
-                        // Создаем новое модальное окно с iframe
-                        const daModal = document.createElement('div');
-                        daModal.style.position = 'fixed';
-                        daModal.style.top = '0';
-                        daModal.style.left = '0';
-                        daModal.style.width = '100%';
-                        daModal.style.height = '100%';
-                        daModal.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
-                        daModal.style.display = 'flex';
-                        daModal.style.alignItems = 'center';
-                        daModal.style.justifyContent = 'center';
-                        daModal.style.zIndex = '1000';
-                        daModal.style.backdropFilter = 'blur(10px)';
-
-                        const daContent = document.createElement('div');
-                        daContent.style.width = '90%';
-                        daContent.style.height = '90%';
-                        daContent.style.borderRadius = '15px';
-                        daContent.style.overflow = 'hidden';
-                        daContent.style.boxShadow = '0 0 30px rgba(0, 234, 255, 0.5)';
-
-                        const daIframe = document.createElement('iframe');
-                        daIframe.src = redirectUrl;
-                        daIframe.setAttribute('frameborder', '0');
-                        daIframe.setAttribute('allowtransparency', 'true');
-                        daIframe.setAttribute('scrolling', 'no');
-                        daIframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-popups allow-forms');
-                        daIframe.style.width = '100%';
-                        daIframe.style.height = '100%';
-                        daIframe.style.border = 'none';
-
-                        const daCloseBtn = document.createElement('button');
-                        daCloseBtn.textContent = 'Закрыть';
-                        daCloseBtn.style.position = 'absolute';
-                        daCloseBtn.style.top = '10px';
-                        daCloseBtn.style.right = '10px';
-                        daCloseBtn.style.padding = '8px 16px';
-                        daCloseBtn.style.fontSize = '12px';
-                        daCloseBtn.style.borderRadius = '8px';
-                        daCloseBtn.style.border = '1px solid #d4af37';
-                        daCloseBtn.style.backgroundColor = 'rgba(212, 175, 55, 0.2)';
-                        daCloseBtn.style.color = '#d4af37';
-                        daCloseBtn.style.cursor = 'pointer';
-                        daCloseBtn.style.zIndex = '1001';
-                        daCloseBtn.onclick = () => document.body.removeChild(daModal);
-
-                        daContent.appendChild(daIframe);
-                        daModal.appendChild(daContent);
-                        daModal.appendChild(daCloseBtn);
-                        document.body.appendChild(daModal);
-                    } catch (error) {
-                        console.warn('API redirect failed, using direct link:', error);
-                        
-                        // Создаем модальное окно с прямой ссылкой
-                        const daModal = document.createElement('div');
-                        daModal.style.position = 'fixed';
-                        daModal.style.top = '0';
-                        daModal.style.left = '0';
-                        daModal.style.width = '100%';
-                        daModal.style.height = '100%';
-                        daModal.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
-                        daModal.style.display = 'flex';
-                        daModal.style.alignItems = 'center';
-                        daModal.style.justifyContent = 'center';
-                        daModal.style.zIndex = '1000';
-                        daModal.style.backdropFilter = 'blur(10px)';
-
-                        const daContent = document.createElement('div');
-                        daContent.style.width = '90%';
-                        daContent.style.height = '90%';
-                        daContent.style.borderRadius = '15px';
-                        daContent.style.overflow = 'hidden';
-                        daContent.style.boxShadow = '0 0 30px rgba(0, 234, 255, 0.5)';
-
-                        const daIframe = document.createElement('iframe');
-                        daIframe.src = 'https://dalink.to/fsbsotik';
-                        daIframe.setAttribute('frameborder', '0');
-                        daIframe.setAttribute('allowtransparency', 'true');
-                        daIframe.setAttribute('scrolling', 'no');
-                        daIframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-popups allow-forms');
-                        daIframe.style.width = '100%';
-                        daIframe.style.height = '100%';
-                        daIframe.style.border = 'none';
-
-                        const daCloseBtn = document.createElement('button');
-                        daCloseBtn.textContent = 'Закрыть';
-                        daCloseBtn.style.position = 'absolute';
-                        daCloseBtn.style.top = '10px';
-                        daCloseBtn.style.right = '10px';
-                        daCloseBtn.style.padding = '8px 16px';
-                        daCloseBtn.style.fontSize = '12px';
-                        daCloseBtn.style.borderRadius = '8px';
-                        daCloseBtn.style.border = '1px solid #d4af37';
-                        daCloseBtn.style.backgroundColor = 'rgba(212, 175, 55, 0.2)';
-                        daCloseBtn.style.color = '#d4af37';
-                        daCloseBtn.style.cursor = 'pointer';
-                        daCloseBtn.style.zIndex = '1001';
-                        daCloseBtn.onclick = () => document.body.removeChild(daModal);
-
-                        daContent.appendChild(daIframe);
-                        daModal.appendChild(daContent);
-                        daModal.appendChild(daCloseBtn);
-                        document.body.appendChild(daModal);
+                    } else {
+                        // Резервный вариант - прямое открытие
+                        window.open('https://dalink.to/fsbsotik', '_blank');
                     }
                 }
 
