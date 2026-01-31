@@ -106,42 +106,64 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // =====================================================================
-    // АНИМАЦИЯ ПРОГРЕСС-БАРА ЦЕЛИ СТРИМА
+    // ИНТЕГРАЦИЯ ЦЕЛИ СТРИМА С DONATIONALERTS
     // =====================================================================
 
-    // Получаем элементы прогресс-бара, тега и текста
-    const goalBar = document.getElementById('w-goal-bar');   // Сама заполняющаяся полоса
-    const goalTag = document.getElementById('w-goal-tag');   // Текст: "X% выполнено"
-    const goalSub = document.getElementById('w-goal-sub');   // Текст: "Собрано: X₽ / Y₽"
+    // Получаем элементы интерфейса цели
+    const goalBar = document.getElementById('w-goal-bar');
+    const goalTag = document.getElementById('w-goal-tag');
+    const goalSub = document.getElementById('w-goal-sub');
 
-    let goalPercent = 37; // Начальное значение прогресса (например, 37%)
+    const GOAL_AMOUNT = 20000; // Цель в ₽
 
-    // Функция обновления состояния цели
-    function updateGoal() {
-        // Случайно изменяем процент на ±2 (для имитации динамики)
-        goalPercent += (Math.random() * 4 - 2);
+    // Функция получения суммы донатов
+    async function fetchDonationTotal() {
+        try {
+            const response = await fetch('https://www.donationalerts.com/api/v1/alerts/donations', {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxNjM1NCIsImp0aSI6ImY4NjAyOTBhMDJhNGRmNjk0YThjNGVhYTczZmZjOWQyYmFhNTcyNTUxNTkwMWQzYzBhZDBlNWFjZWNlODdkOTBmNzFiMDlkNzJiMTQyOTA0IiwiaWF0IjoxNzY5ODI0NTE1LjE3MDUsIm5iZiI6MTc2OTgyNDUxNS4xNzA1LCJleHAiOjE4MDEzNjA1MTUuMTYyNywic3ViIjoiMTMyMDgzOTEiLCJzY29wZXMiOlsib2F1dGgtZG9uYXRpb24taW5kZXgiLCJvYXV0aC1kb25hdGlvbi1zdWJzY3JpYmUiLCJvYXV0aC11c2VyLXNob3ciXX0.nx7EiEiaFGgCFgqsqCfG3Taf49tCcgOFhvaUErBaKoGKKtxV_wI58N7RhEoXanRdYsiY1OQbTFhQ0RKcKUYc0jB-HHK4v7L9_hSW5f9NKSnucEaK8phcyPHIR6TREf2YLgerDxKVCfE4ZWFoEke21BWf8TG8I0yp5CJLMzRr6iQOOxuUQJlM8sdI7jNzwtCGBY-0dluMPO9DBK8qEm5wsVu45rseFUCR35XPbxMYEtpszwuyXIAKTPSjHKsDz1sPsIVcgITR-OVuJeV-s8O9bgCUTAxn6RWAJKZ6IuSa9pesx5aCEbHNOx7kqPunRnjcEd1wAuKpYfOB14g_LfF5iSDpXe6ywiQSoJtfsBCGhhijDvG4BeyOZy34YuX1Jg81PpNjlWFWYsFTvgGTeHp-O-f0iDbqjCMof1uXjAcUEUhZYFOeACEIfGD9_xfTnftbwwsnueYn0QyVFZMoyW_452_IIvuwUYCN9XE1zusiBzqvcX5jtNaynCGNyaBZySsIPRq7mi5XXgqPyRfSQAUAUmpneucGFAaNDcQMQHXeYEHvbgW_SccjfOmFtshqnYBo-Uiqbx4ajC7MR8q282CingaUyOuZ1o253EpDfqIKk7jpSpO4rHjjAUTJru6KkBnnWpMU9vDszLu1bsCE4QrdYrPLg7BtDmE0W9UI_2vv5-Q',
+                    'Content-Type': 'application/json'
+                }
+            });
 
-        // Ограничиваем диапазон от 5% до 100%
-        if (goalPercent < 5) goalPercent = 5;
-        if (goalPercent > 100) goalPercent = 100;
+            if (!response.ok) throw new Error('Ошибка получения данных');
 
-        // Обновляем ширину прогресс-бара
-        goalBar.style.width = goalPercent.toFixed(0) + '%';
+            const data = await response.json();
 
-        // Обновляем текстовое отображение процента
-        goalTag.textContent = goalPercent.toFixed(0) + '% выполнено';
+            // Суммируем все донаты
+            const totalRaised = data.data.reduce((sum, donation) => sum + donation.amount, 0);
 
-        // Вычисляем сумму на основе процента (цель: 20 000₽)
-        const total = 20000;
-        const current = Math.round(total * goalPercent / 100);
-
-        // Форматируем числа с пробелами (например: 7 400₽)
-        goalSub.textContent = 'Собрано: ' + current.toLocaleString('ru-RU') + '₽ / ' + total.toLocaleString('ru-RU') + '₽';
+            // Обновляем интерфейс
+            updateGoalProgress(totalRaised);
+        } catch (error) {
+            console.error('Ошибка загрузки донатов:', error);
+            // При ошибке обновляем с имитацией (на случай оффлайна)
+            updateGoalProgress(7400);
+        }
     }
 
-    // Выполняем первый вызов функции
-    updateGoal();
+    // Обновление прогресса цели
+    function updateGoalProgress(currentAmount) {
+        const percent = Math.min((currentAmount / GOAL_AMOUNT) * 100, 100);
 
-    // Устанавливаем интервал: обновление каждые 5 секунд
-    setInterval(updateGoal, 5000);
+        goalBar.style.width = percent.toFixed(1) + '%';
+        goalTag.textContent = percent.toFixed(1) + '% выполнено';
+        goalSub.textContent = 'Собрано: ' + currentAmount.toLocaleString('ru-RU') + '₽ / ' + GOAL_AMOUNT.toLocaleString('ru-RU') + '₽';
+    }
+
+    // Первичная загрузка
+    fetchDonationTotal();
+
+    // Обновление каждые 30 секунд
+    setInterval(fetchDonationTotal, 30000);
+
+
+    // =====================================================================
+    // КНОПКА ДОНАТА ВНУТРИ ВИДЖЕТА ЦЕЛИ
+    // =====================================================================
+
+    document.getElementById("w-goal-donate").onclick = () => {
+        window.open("https://www.donationalerts.com/r/fsbsotik", "_blank");
+    };
 });
