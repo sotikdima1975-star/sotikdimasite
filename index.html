@@ -371,6 +371,7 @@
 
             <span class="stream-wrapper">
                 <a class="gold-text gold-underline" id="btn-stream">Стрим</a>
+                <a href="/donationalerts.html" class="btn-donate-alt" style="margin-left: 15px;">DonationAlerts</a>
 
                 <div class="submenu-main" id="submenu-main">
                     <a id="btn-chat">Чат</a>
@@ -439,7 +440,6 @@
                             <div class="widget-bar">
                                 <div class="widget-bar-fill" id="w-goal-bar"></div>
                             </div>
-                            <button class="btn-donate" id="btn-donate">Донат</button>
                         </div>
 
                         <div class="widget-box" id="w-day">
@@ -597,17 +597,8 @@
                     // Закрываем текущее модальное окно
                     document.body.removeChild(modal);
                     
-                    // Используем скрипт с основного сервера для открытия DonationAlerts
-                    if (window.DonationRedirect && window.DonationAlerts) {
-                        // Сначала получаем URL через API
-                        window.DonationRedirect.getRedirectUrl('modal_qr_button').then(redirectUrl => {
-                            // Затем открываем DonationAlerts с полученным URL
-                            window.DonationAlerts.open('fsbsotik');
-                        });
-                    } else {
-                        // Резервный вариант - прямое открытие
-                        window.open('https://dalink.to/fsbsotik', '_blank');
-                    }
+                    // Все ссылки на донаты удалены
+                    // Доступ к внешним ресурсам запрещён
                 }
 
                 content.appendChild(qrImg);
@@ -649,11 +640,6 @@
                 renderGoal(null);
             }
         }
-
-        // Обработчик для новой кнопки
-        $('#btn-donate-da').addEventListener('click', () => {
-            window.open('https://www.donationalerts.com/r/fsbsotik', '_blank');
-        });
 
         const dayMain = $('#w-day-main');
         const daySub = $('#w-day-sub');
