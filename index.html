@@ -1,778 +1,487 @@
-<!DOCTYPE html>
-<html lang="ru">
+<!doctype html>
+<html lang="ru" class="h-full">
 <head>
     <meta charset="UTF-8">
-    <title>СайтСотика — Стрим</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>СайтСотика - Игры про гонки</title>
+    <meta name="description" content="СайтСотика - всё о гоночных играх, включая Forza Motorsport и аналоги">
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Custom Styles -->
     <style>
-        * { box-sizing: border-box; }
-        body {
+        body, * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            background: #050608;
-            color: #e6e6e6;
-            font-family: "Segoe UI", system-ui, sans-serif;
-            overflow-x: hidden;
         }
-        a { color: #e6e6e6; text-decoration: none; cursor: pointer; }
 
-        .gold-text { color: #d4af37; }
-        .gold-border { border: 1px solid rgba(212,175,55,0.45); }
-        .gold-underline { border-bottom: 2px solid #d4af37; }
+        .racing-font {
+            font-family: 'Orbitron', sans-serif;
+        }
 
-        .header {
-            width: 100%;
-            background: radial-gradient(circle at top, #151820 0, #050608 55%);
-            padding: 15px 0;
-            border-bottom: 1px solid rgba(212,175,55,0.3);
+        .accent-font {
+            font-family: 'Bebas Neue', cursive;
+        }
+
+        .body-font {
+            font-family: 'Rajdhani', sans-serif;
+        }
+
+        /* Анимации */
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(239, 68, 68, 0.5); }
+            50% { box-shadow: 0 0 40px rgba(239, 68, 68, 0.8); }
+        }
+
+        .animate-slide-in-left {
+            animation: slideInLeft 0.8s ease-out forwards;
+        }
+
+        .animate-slide-in-right {
+            animation: slideInRight 0.8s ease-out forwards;
+        }
+
+        .animate-fade-in-up {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        .pulse-glow {
+            animation: pulseGlow 2s ease-in-out infinite;
+        }
+
+        .delay-1 { animation-delay: 0.1s; opacity: 0; }
+        .delay-2 { animation-delay: 0.2s; opacity: 0; }
+        .delay-3 { animation-delay: 0.3s; opacity: 0; }
+        .delay-4 { animation-delay: 0.4s; opacity: 0; }
+
+        .game-card,
+        .news-card {
+            transition: transform 0.3s ease;
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .news-card:hover {
+            transform: scale(1.02);
+        }
+
+        .gradient-border {
             position: relative;
-            z-index: 50;
-        }
-        .header-frame {
-            width: 92%;
-            margin: auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            white-space: nowrap;
-            gap: 20px;
-        }
-        .logo-box {
-            padding: 10px 20px;
-            background: linear-gradient(135deg, rgba(212,175,55,0.18), rgba(0,0,0,0.7));
-            border-radius: 6px;
-        }
-        .logo {
-            font-size: 28px;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-        }
-        .ticker-box {
-            flex: 1;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            border-radius: 0.75rem;
             overflow: hidden;
-            white-space: nowrap;
-            padding: 0 10px;
-        }
-        .ticker {
-            display: inline-block;
-            animation: tickerMove 18s linear infinite;
-            color: #00eaff;
-            font-size: 14px;
-            opacity: 0.85;
-        }
-        @keyframes tickerMove {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
         }
 
-        .menu-box {
-            display: flex;
-            align-items: center;
-            gap: 25px;
-            padding: 10px 20px;
-            background: rgba(5, 8, 12, 0.96);
-            border-radius: 8px;
-            box-shadow: 0 0 18px rgba(0,0,0,0.7);
-            backdrop-filter: blur(6px);
-            position: relative;
-            z-index: 60;
-        }
-        .menu-box > a {
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
-            opacity: 0.85;
-            transition: 0.18s ease;
-        }
-        .menu-box > a:hover {
-            opacity: 1;
-            color: #00eaff;
-        }
-
-        .stream-wrapper {
-            position: relative;
-            display: inline-flex;
-            align-items: center;
-        }
-        #btn-stream {
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.16em;
-        }
-
-        .submenu-main {
+        .gradient-border::before {
+            content: '';
             position: absolute;
-            top: 100%;
-            left: 0;
-            margin-top: 10px;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            gap: 20px;
-            background: radial-gradient(circle at top, #151b24 0, #050608 60%);
-            padding: 10px 16px;
-            border: 1px solid #00eaff;
-            border-radius: 6px;
-            white-space: nowrap;
-            opacity: 0;
+            inset: 0;
+            padding: 2px;
+            border-radius: inherit;
+            background: linear-gradient(135deg, #ef4444, #f59e0b, #ef4444);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
             pointer-events: none;
-            transition: opacity 0.18s ease;
-            box-shadow: 0 0 18px rgba(0,0,0,0.8);
-            z-index: 70;
-        }
-        .submenu-main.is-open {
-            opacity: 1;
-            pointer-events: auto;
-        }
-        .submenu-main a {
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 0.14em;
-            opacity: 0.9;
-            transition: 0.16s ease;
-        }
-        .submenu-main a:hover {
-            color: #00eaff;
-            opacity: 1;
         }
 
-        .widgets-wrapper {
-            position: relative;
-            display: inline-flex;
-            align-items: center;
-        }
-        .submenu-widgets {
-            position: absolute;
-            top: 140%;
-            right: 0;
-            transform: translateX(-10px);
-            display: flex;
-            flex-direction: row-reverse;
-            gap: 18px;
-            background: radial-gradient(circle at top, #141922 0, #050608 70%);
-            padding: 10px 16px;
-            border: 1px solid #00eaff;
-            border-radius: 6px;
-            white-space: nowrap;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.18s ease;
-            box-shadow: 0 0 18px rgba(0,0,0,0.85);
-            z-index: 80;
-        }
-        .submenu-widgets.is-open {
-            opacity: 1;
-            pointer-events: auto;
-        }
-        .submenu-widgets a {
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.16em;
-            opacity: 0.9;
-            transition: 0.16s ease;
-        }
-        .submenu-widgets a:hover {
-            color: #d4af37;
-            opacity: 1;
-        }
-
-        .overlay {
-            width: 100%;
-            padding: 40px 0 60px;
-            display: flex;
-            justify-content: center;
-        }
-        .overlay-inner {
-            width: 92%;
-            padding: 32px 40px 40px;
-            background: radial-gradient(circle at top, #151922 0, #050608 65%);
-            border-radius: 10px;
-            border: 1px solid rgba(0,234,255,0.25);
-            box-shadow: 0 0 26px rgba(0,0,0,0.9);
-        }
-        .overlay-title {
-            font-size: 30px;
-            font-weight: 700;
-            text-align: center;
-            margin-bottom: 24px;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-        }
-
-        .content-area {
-            width: 100%;
-            height: 650px;
-            position: relative;
-            background: radial-gradient(circle at top left, #151922 0, #050608 60%);
-            border-radius: 10px;
-            overflow: hidden;
-            border: 1px solid rgba(212,175,55,0.45);
-            box-shadow: 0 0 30px rgba(0,0,0,0.95);
-            z-index: 10;
-        }
-
-        #player-container {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 70%;
-            height: 100%;
-            transition: width 0.3s ease;
-        }
-        #chat-container {
-            position: absolute;
-            right: 0;
-            top: 0;
-            width: 30%;
-            height: 100%;
-            transition: width 0.3s ease;
-            border-left: 1px solid rgba(0,234,255,0.25);
-            background: rgba(3,5,8,0.9);
-        }
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        #widgets-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 20;
-        }
-        .widget-box {
-            position: absolute;
-            background: radial-gradient(circle at top, rgba(10,18,28,0.96) 0, rgba(3,5,8,0.96) 60%);
-            padding: 14px 18px 16px;
-            border-radius: 10px;
-            border: 1px solid rgba(0,234,255,0.55);
-            box-shadow: 0 0 18px rgba(0,0,0,0.9), 0 0 22px rgba(0,234,255,0.25);
-            color: #e6e6e6;
-            pointer-events: auto;
-            font-size: 13px;
-            min-width: 260px;
-            max-width: 320px;
-            overflow: hidden;
-        }
-        .widget-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 6px;
-        }
-        .widget-title {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.18em;
-            color: #d4af37;
-            opacity: 0.95;
-        }
-        .widget-tag {
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.16em;
-            color: #00eaff;
-            opacity: 0.8;
-        }
-        .widget-main {
-            font-size: 15px;
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-        .widget-sub {
-            font-size: 11px;
-            opacity: 0.8;
-        }
-        .widget-bar {
-            margin-top: 8px;
-            width: 100%;
-            height: 5px;
-            border-radius: 999px;
-            background: rgba(255,255,255,0.06);
-            overflow: hidden;
-        }
-        .widget-bar-fill {
-            height: 100%;
-            border-radius: 999px;
-            background: linear-gradient(90deg, #d4af37, #00eaff);
-            width: 0%;
-            transition: width 0.4s ease;
-        }
-
-        #w-subs { top: 20px; left: 20px; }
-        #w-donates { top: 20px; right: 20px; }
-        #w-goal { top: 130px; left: 20px; }
-        #w-day { top: 130px; right: 20px; }
-        #w-month { bottom: 130px; left: 20px; }
-        #w-year { bottom: 130px; right: 130px; }
-        #w-history { bottom: 20px; left: 20px; }
-        #w-top { bottom: 20px; right: 20px; }
-
-        .btn-donate {
-            margin-top: 8px;
-            display: inline-block;
-            padding: 6px 12px;
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.16em;
-            border-radius: 999px;
-            border: 1px solid #d4af37;
-            color: #050608;
-            background: linear-gradient(135deg, #d4af37, #ffea9a);
-            cursor: pointer;
-        }
-        .btn-donate:hover {
-            filter: brightness(1.05);
-        }
-
-        .btn-donate-alt {
-            margin-top: 8px;
-            display: inline-block;
-            padding: 6px 12px;
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.16em;
-            border-radius: 999px;
-            border: 1px solid #d4af37;
-            color: #050608;
-            background: linear-gradient(135deg, #d4af37, #ffea9a);
-            cursor: pointer;
-            transition: 0.18s ease;
-        }
-        .btn-donate-alt:hover {
-            filter: brightness(1.1);
+        .stat-counter {
+            font-variant-numeric: tabular-nums;
         }
     </style>
+
+    <!-- Open Graph / Twitter -->
+    <meta property="og:title" content="СайтСотика - Игры про гонки">
+    <meta property="og:description" content="СайтСотика - всё о гоночных играх, включая Forza Motorsport и аналоги">
+    <meta property="og:image" content="/img/og.png">
+    <meta property="og:image:width" content="4800">
+    <meta property="og:image:height" content="2520">
+    <meta name="twitter:image" content="/img/og.png">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- SDK -->
+    <script src="/_sdk/element_sdk.js" defer></script>
+    <script src="/_sdk/data_sdk.js" defer></script>
 </head>
-
-<body>
-
-<header class="header">
-    <div class="header-frame">
-
-        <div class="logo-box gold-border">
-            <div class="logo gold-text">СайтСотика</div>
-        </div>
-
-        <div class="ticker-box">
-            <div class="ticker">
-                Добро пожаловать на стрим СайтСотика • Скорость • Контроль • Точность • Симрейсинг без компромиссов
+<body class="h-full w-full body-font overflow-auto" style="background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%)">
+    <!-- Navigation -->
+    <nav class="w-full fixed top-0 z-50" style="background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(10px); border-bottom: 2px solid #ef4444;">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="racing-font text-3xl font-bold" style="color: #ef4444;">
+                    🏎️ САЙТСОТИКА
+                </div>
+                <div class="hidden md:flex space-x-8 body-font font-semibold">
+                    <a href="#games" class="hover:text-red-500 transition" style="color: #f5f5f5;">Игры</a>
+                    <a href="#news" class="hover:text-red-500 transition" style="color: #f5f5f5;">Новости</a>
+                    <a href="#reviews" class="hover:text-red-500 transition" style="color: #f5f5f5;">Обзоры</a>
+                    <a href="#community" class="hover:text-red-500 transition" style="color: #f5f5f5;">Сообщество</a>
+                </div>
             </div>
         </div>
+    </nav>
 
-        <nav class="menu-box gold-border">
-            <a href="#">Главная</a>
-            <a href="#">Обо мне</a>
-            <a href="#">Игры</a>
+    <!-- 1. Hero -->
+    <section class="w-full pt-32 pb-20 px-4">
+        <div class="max-w-7xl mx-auto text-center">
+            <h1 id="hero-title" class="racing-font text-6xl md:text-8xl font-black mb-6 animate-slide-in-left" style="color: #ef4444; text-shadow: 0 0 30px rgba(239, 68, 68, 0.5);">
+                ГОНОЧНАЯ СТРАСТЬ
+            </h1>
+            <p id="hero-subtitle" class="text-2xl md:text-3xl mb-12 animate-slide-in-right delay-1 body-font" style="color: #d1d5db;">
+                Всё о лучших гоночных играх мира
+            </p>
+            <button class="px-8 py-4 racing-font text-xl font-bold rounded-lg pulse-glow animate-fade-in-up delay-2" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: #ffffff; border: none; cursor: pointer;">
+                НАЧАТЬ ГОНКУ
+            </button>
+        </div>
+    </section>
 
-            <span class="stream-wrapper">
-                <a class="gold-text gold-underline" id="btn-stream">Стрим</a>
-                <a href="/donationalerts.html" class="btn-donate-alt" style="margin-left: 15px;" target="_blank">DonationAlerts</a>
-
-                <div class="submenu-main" id="submenu-main">
-                    <a id="btn-chat">Чат</a>
-                    <a id="btn-player">Плеер</a>
-
-                    <span class="widgets-wrapper">
-                        <a id="btn-widgets-toggle">Виджеты</a>
-
-                        <div class="submenu-widgets" id="submenu-widgets">
-                            <a data-widget="subs">Последние подписчики</a>
-                            <a data-widget="donates">Последние донаты</a>
-                            <a data-widget="history">История донатов</a>
-                            <a data-widget="top">Топ донат</a>
-                            <a data-widget="day">Донаты за день</a>
-                            <a data-widget="month">Донаты за месяц</a>
-                            <a data-widget="year">Донаты за год</a>
-                        </div>
-                    </span>
+    <!-- 2. Featured Games -->
+    <section id="games" class="w-full py-20 px-4" style="background: linear-gradient(180deg, rgba(239, 68, 68, 0.05) 0%, transparent 100%);">
+        <div class="max-w-7xl mx-auto">
+            <h2 id="games-title" class="accent-font text-5xl md:text-6xl text-center mb-16" style="color: #f5f5f5;">ТОПОВЫЕ ИГРЫ</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="game-card gradient-border rounded-xl p-6">
+                    <div class="text-6xl mb-4 text-center">🏁</div>
+                    <h3 class="racing-font text-2xl font-bold mb-3 text-center" style="color: #ef4444;">Forza Motorsport</h3>
+                    <p class="body-font text-center" style="color: #9ca3af;">Реалистичные гонки от Xbox с невероятной графикой</p>
                 </div>
-            </span>
+                <div class="game-card gradient-border rounded-xl p-6">
+                    <div class="text-6xl mb-4 text-center">🏎️</div>
+                    <h3 class="racing-font text-2xl font-bold mb-3 text-center" style="color: #ef4444;">Assetto Corsa</h3>
+                    <p class="body-font text-center" style="color: #9ca3af;">Любимец симуляторов с поддержкой модов</p>
+                </div>
+                <div class="game-card gradient-border rounded-xl p-6">
+                    <div class="text-6xl mb-4 text-center">🏆</div>
+                    <h3 class="racing-font text-2xl font-bold mb-3 text-center" style="color: #ef4444;">Gran Turismo 7</h3>
+                    <p class="body-font text-center" style="color: #9ca3af;">Легендарная серия от PlayStation</p>
+                </div>
+                <div class="game-card gradient-border rounded-xl p-6">
+                    <div class="text-6xl mb-4 text-center">⚡</div>
+                    <h3 class="racing-font text-2xl font-bold mb-3 text-center" style="color: #ef4444;">Need for Speed</h3>
+                    <p class="body-font text-center" style="color: #9ca3af;">Уличные гонки и адреналин</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-            <a href="#">Команда</a>
-            <a href="#">Партнёры</a>
-        </nav>
-    </div>
-</header>
+    <!-- 3. Latest News -->
+    <section id="news" class="w-full py-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <h2 id="news-title" class="accent-font text-5xl md:text-6xl text-center mb-16" style="color: #f5f5f5;">ПОСЛЕДНИЕ НОВОСТИ</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <article class="news-card rounded-xl overflow-hidden" style="background: linear-gradient(135deg, #1f1f1f 0%, #2a2a2a 100%); border: 1px solid #404040;">
+                    <div class="h-48 flex items-center justify-center text-7xl" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
+                        🎮
+                    </div>
+                    <div class="p-6">
+                        <h3 class="racing-font text-xl font-bold mb-3" style="color: #ef4444;">Новое DLC для Forza</h3>
+                        <p class="body-font mb-4" style="color: #d1d5db;">Добавлены 20 новых автомобилей и 5 трасс из разных уголков мира</p>
+                        <span class="body-font text-sm" style="color: #9ca3af;">2 дня назад</span>
+                    </div>
+                </article>
+                <article class="news-card rounded-xl overflow-hidden" style="background: linear-gradient(135deg, #1f1f1f 0%, #2a2a2a 100%); border: 1px solid #404040;">
+                    <div class="h-48 flex items-center justify-center text-7xl" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+                        🏁
+                    </div>
+                    <div class="p-6">
+                        <h3 class="racing-font text-xl font-bold mb-3" style="color: #f59e0b;">Чемпионат стартует</h3>
+                        <p class="body-font mb-4" style="color: #d1d5db;">Международный онлайн-турнир по Gran Turismo 7 начинается в марте</p>
+                        <span class="body-font text-sm" style="color: #9ca3af;">5 дней назад</span>
+                    </div>
+                </article>
+                <article class="news-card rounded-xl overflow-hidden" style="background: linear-gradient(135deg, #1f1f1f 0%, #2a2a2a 100%); border: 1px solid #404040;">
+                    <div class="h-48 flex items-center justify-center text-7xl" style="background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);">
+                        🚗
+                    </div>
+                    <div class="p-6">
+                        <h3 class="racing-font text-xl font-bold mb-3" style="color: #8b5cf6;">Assetto Corsa EVO</h3>
+                        <p class="body-font mb-4" style="color: #d1d5db;">Анонсирована следующая часть культового симулятора гонок</p>
+                        <span class="body-font text-sm" style="color: #9ca3af;">1 неделю назад</span>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
 
-<section>
-    <div class="overlay">
-        <div class="overlay-inner">
-
-            <div class="overlay-title gold-text">FSB Sotik</div>
-
-            <div class="content-area">
-
-                <div id="player-container">
-                    <iframe src="https://player.twitch.tv/?channel=fsbsotik&parent=localhost&parent=127.0.0.1&parent=sotikdima1975-star.github.io&autoplay=false"></iframe>
-
-                    <div id="widgets-overlay">
-
-                        <div class="widget-box" id="w-subs">
-                            <div class="widget-header">
-                                <div class="widget-title">Последние подписчики</div>
-                                <div class="widget-tag">subs</div>
-                            </div>
-                            <div class="widget-main" id="w-subs-main"></div>
-                            <div class="widget-sub" id="w-subs-sub"></div>
+    <!-- 4. Reviews -->
+    <section id="reviews" class="w-full py-20 px-4" style="background: linear-gradient(180deg, transparent 0%, rgba(239, 68, 68, 0.05) 50%, transparent 100%);">
+        <div class="max-w-7xl mx-auto">
+            <h2 id="reviews-title" class="accent-font text-5xl md:text-6xl text-center mb-16" style="color: #f5f5f5;">ОБЗОРЫ ЭКСПЕРТОВ</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="rounded-xl p-8" style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); border-left: 4px solid #ef4444;">
+                    <div class="flex items-center mb-6">
+                        <div class="text-5xl mr-4">⭐</div>
+                        <div>
+                            <div class="racing-font text-3xl font-bold" style="color: #ef4444;">9.5/10</div>
+                            <div class="body-font" style="color: #9ca3af;">Forza Horizon 5</div>
                         </div>
-
-                        <div class="widget-box" id="w-donates">
-                            <div class="widget-header">
-                                <div class="widget-title">Последние донаты</div>
-                                <div class="widget-tag">donations</div>
-                            </div>
-                            <div class="widget-main" id="w-donates-main"></div>
-                            <div class="widget-sub" id="w-donates-sub"></div>
+                    </div>
+                    <p class="body-font text-lg" style="color: #d1d5db;">"Невероятный мир открытых гонок с потрясающей графикой и множеством активностей"</p>
+                </div>
+                <div class="rounded-xl p-8" style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); border-left: 4px solid #f59e0b;">
+                    <div class="flex items-center mb-6">
+                        <div class="text-5xl mr-4">⭐</div>
+                        <div>
+                            <div class="racing-font text-3xl font-bold" style="color: #f59e0b;">9.2/10</div>
+                            <div class="body-font" style="color: #9ca3af;">Gran Turismo 7</div>
                         </div>
+                    </div>
+                    <p class="body-font text-lg" style="color: #d1d5db;">"Классический симулятор в новом обличии с идеальным балансом реализма и удовольствия"</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-                        <div class="widget-box" id="w-goal">
-                            <div class="widget-header">
-                                <div class="widget-title">Цель стрима</div>
-                                <div class="widget-tag" id="w-goal-tag"></div>
-                            </div>
-                            <div class="widget-main" id="w-goal-main"></div>
-                            <div class="widget-sub" id="w-goal-sub"></div>
-                            <div class="widget-bar">
-                                <div class="widget-bar-fill" id="w-goal-bar"></div>
-                            </div>
-                        </div>
+    <!-- 5. Statistics -->
+    <section class="w-full py-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <h2 id="stats-title" class="accent-font text-5xl md:text-6xl text-center mb-16" style="color: #f5f5f5;">В ЦИФРАХ</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div class="text-center">
+                    <div class="racing-font text-5xl md:text-6xl font-black mb-3 stat-counter" style="color: #ef4444;">150+</div>
+                    <div class="body-font text-lg" style="color: #9ca3af;">Обзоров игр</div>
+                </div>
+                <div class="text-center">
+                    <div class="racing-font text-5xl md:text-6xl font-black mb-3 stat-counter" style="color: #f59e0b;">500K</div>
+                    <div class="body-font text-lg" style="color: #9ca3af;">Читателей</div>
+                </div>
+                <div class="text-center">
+                    <div class="racing-font text-5xl md:text-6xl font-black mb-3 stat-counter" style="color: #8b5cf6;">1000+</div>
+                    <div class="body-font text-lg" style="color: #9ca3af;">Гайдов</div>
+                </div>
+                <div class="text-center">
+                    <div class="racing-font text-5xl md:text-6xl font-black mb-3 stat-counter" style="color: #10b981;">24/7</div>
+                    <div class="body-font text-lg" style="color: #9ca3af;">Онлайн</div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-                        <div class="widget-box" id="w-day">
-                            <div class="widget-header">
-                                <div class="widget-title">Донаты за день</div>
-                                <div class="widget-tag">today</div>
-                            </div>
-                            <div class="widget-main" id="w-day-main"></div>
-                            <div class="widget-sub" id="w-day-sub"></div>
-                        </div>
-
-                        <div class="widget-box" id="w-month">
-                            <div class="widget-header">
-                                <div class="widget-title">Донаты за месяц</div>
-                                <div class="widget-tag">month</div>
-                            </div>
-                            <div class="widget-main" id="w-month-main"></div>
-                            <div class="widget-sub" id="w-month-sub"></div>
-                        </div>
-
-                        <div class="widget-box" id="w-year">
-                            <div class="widget-header">
-                                <div class="widget-title">Донаты за год</div>
-                                <div class="widget-tag">year</div>
-                            </div>
-                            <div class="widget-main" id="w-year-main"></div>
-                            <div class="widget-sub" id="w-year-sub"></div>
-                        </div>
-
-                        <div class="widget-box" id="w-history">
-                            <div class="widget-header">
-                                <div class="widget-title">История донатов</div>
-                                <div class="widget-tag">history</div>
-                            </div>
-                            <div class="widget-main" id="w-history-main"></div>
-                            <div class="widget-sub" id="w-history-sub"></div>
-                        </div>
-
-                        <div class="widget-box" id="w-top">
-                            <div class="widget-header">
-                                <div class="widget-title">Топ донат</div>
-                                <div class="widget-tag">top</div>
-                            </div>
-                            <div class="widget-main" id="w-top-main"></div>
-                            <div class="widget-sub" id="w-top-sub"></div>
-                        </div>
-
+    <!-- 6. Video Gallery -->
+    <section class="w-full py-20 px-4" style="background: linear-gradient(180deg, rgba(239, 68, 68, 0.05) 0%, transparent 100%);">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="accent-font text-5xl md:text-6xl text-center mb-16" style="color: #f5f5f5;">ВИДЕО ГАЛЕРЕЯ</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="rounded-xl overflow-hidden" style="background: #1a1a1a; border: 2px solid #404040;">
+                    <div class="aspect-video flex items-center justify-center text-7xl" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
+                        ▶️
+                    </div>
+                    <div class="p-4">
+                        <h4 class="racing-font text-lg font-bold" style="color: #f5f5f5;">Топ-10 машин 2024</h4>
                     </div>
                 </div>
-
-                <div id="chat-container">
-                    <iframe src="https://www.twitch.tv/embed/fsbsotik/chat?parent=localhost&parent=127.0.0.1&parent=sotikdima1975-star.github.io&darkpopout"></iframe>
+                <div class="rounded-xl overflow-hidden" style="background: #1a1a1a; border: 2px solid #404040;">
+                    <div class="aspect-video flex items-center justify-center text-7xl" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+                        ▶️
+                    </div>
+                    <div class="p-4">
+                        <h4 class="racing-font text-lg font-bold" style="color: #f5f5f5;">Гайд по Forza</h4>
+                    </div>
                 </div>
-
+                <div class="rounded-xl overflow-hidden" style="background: #1a1a1a; border: 2px solid #404040;">
+                    <div class="aspect-video flex items-center justify-center text-7xl" style="background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);">
+                        ▶️
+                    </div>
+                    <div class="p-4">
+                        <h4 class="racing-font text-lg font-bold" style="color: #f5f5f5;">Онлайн турнир</h4>
+                    </div>
+                </div>
             </div>
         </div>
+    </section>
+
+    <!-- 7. Community -->
+    <section id="community" class="w-full py-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <h2 id="community-title" class="accent-font text-5xl md:text-6xl text-center mb-16" style="color: #f5f5f5;">СООБЩЕСТВО</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="text-center p-8 rounded-xl" style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); border: 2px solid #ef4444;">
+                    <div class="text-6xl mb-4">💬</div>
+                    <h3 class="racing-font text-2xl font-bold mb-4" style="color: #ef4444;">Форум</h3>
+                    <p class="body-font mb-6" style="color: #d1d5db;">Обсуждай тактики и делись опытом с тысячами игроков</p>
+                    <button class="px-6 py-3 racing-font font-bold rounded-lg" style="background: #ef4444; color: #ffffff; border: none; cursor: pointer;">ПРИСОЕДИНИТЬСЯ</button>
+                </div>
+                <div class="text-center p-8 rounded-xl" style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); border: 2px solid #f59e0b;">
+                    <div class="text-6xl mb-4">🎯</div>
+                    <h3 class="racing-font text-2xl font-bold mb-4" style="color: #f59e0b;">Турниры</h3>
+                    <p class="body-font mb-6" style="color: #d1d5db;">Участвуй в еженедельных соревнованиях и выигрывай призы</p>
+                    <button class="px-6 py-3 racing-font font-bold rounded-lg" style="background: #f59e0b; color: #ffffff; border: none; cursor: pointer;">УЧАСТВОВАТЬ</button>
+                </div>
+                <div class="text-center p-8 rounded-xl" style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); border: 2px solid #8b5cf6;">
+                    <div class="text-6xl mb-4">📱</div>
+                    <h3 class="racing-font text-2xl font-bold mb-4" style="color: #8b5cf6;">Discord</h3>
+                    <p class="body-font mb-6" style="color: #d1d5db;">Общайся с единомышленниками в нашем активном сервере</p>
+                    <button class="px-6 py-3 racing-font font-bold rounded-lg" style="background: #8b5cf6; color: #ffffff; border: none; cursor: pointer;">ВОЙТИ</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. Newsletter -->
+<section class="w-full py-20 px-4" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
+    <div class="max-w-4xl mx-auto text-center">
+        <h2 id="newsletter-title" class="accent-font text-5xl md:text-6xl mb-8" style="color: #ffffff;">ПОДПИШИСЬ НА НОВОСТИ</h2>
+        <p class="body-font text-xl mb-8" style="color: #fee2e2;">Получай свежие обзоры, новости и эксклюзивные материалы каждую неделю</p>
+        <form class="flex flex-col md:flex-row gap-4 max-w-2xl mx-auto" onsubmit="handleNewsletterSubmit(event)">
+            <label for="email-input" class="sr-only">Email адрес</label>
+            <input id="email-input" type="email" placeholder="Введите ваш email" required class="flex-1 px-6 py-4 rounded-lg body-font text-lg" style="background: #ffffff; color: #1a1a1a; border: none;">
+            <button type="submit" class="px-8 py-4 racing-font text-xl font-bold rounded-lg" style="background: #1a1a1a; color: #ffffff; border: none; cursor: pointer;">ПОДПИСАТЬСЯ</button>
+        </form>
+        <div id="newsletter-message" class="mt-4 body-font text-lg" style="color: #fee2e2; min-height: 24px;"></div>
     </div>
 </section>
 
-<script src="/script.js" defer></script>
+<!-- Footer -->
+<footer class="w-full py-12 px-4" style="background: #0a0a0a; border-top: 2px solid #ef4444;">
+    <div class="max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+            <div>
+                <h3 class="racing-font text-2xl font-bold mb-4" style="color: #ef4444;">САЙТСОТИКА</h3>
+                <p class="body-font" style="color: #9ca3af;">Всё о гоночных играх</p>
+            </div>
+            <div>
+                <h4 class="racing-font text-lg font-bold mb-4" style="color: #f5f5f5;">РАЗДЕЛЫ</h4>
+                <ul class="body-font space-y-2" style="color: #9ca3af;">
+                    <li><a href="#games" class="hover:text-red-500 transition">Игры</a></li>
+                    <li><a href="#news" class="hover:text-red-500 transition">Новости</a></li>
+                    <li><a href="#reviews" class="hover:text-red-500 transition">Обзоры</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="racing-font text-lg font-bold mb-4" style="color: #f5f5f5;">СООБЩЕСТВО</h4>
+                <ul class="body-font space-y-2" style="color: #9ca3af;">
+                    <li><a href="#" class="hover:text-red-500 transition">Форум</a></li>
+                    <li><a href="#" class="hover:text-red-500 transition">Discord</a></li>
+                    <li><a href="#" class="hover:text-red-500 transition">Турниры</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="racing-font text-lg font-bold mb-4" style="color: #f5f5f5;">КОНТАКТЫ</h4>
+                <p class="body-font" style="color: #9ca3af;"><a href="mailto:info@sait-sotika.ru" class="hover:text-red-500 transition">info@sait-sotika.ru</a></p>
+            </div>
+        </div>
+        <div class="border-t pt-8 text-center body-font" style="border-color: #404040; color: #9ca3af;">
+            <p id="footer-text">© 2025 СайтСотика | Все права защищены</p>
+        </div>
+    </div>
+</footer>
+
+<!-- JavaScript -->
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const $ = (sel, scope = document) => scope.querySelector(sel);
-        const formatNumber = num => num.toLocaleString('ru-RU');
+    const defaultConfig = {
+        hero_title: "ГОНОЧНАЯ СТРАСТЬ",
+        hero_subtitle: "Всё о лучших гоночных играх мира",
+        games_title: "ТОПОВЫЕ ИГРЫ",
+        news_title: "ПОСЛЕДНИЕ НОВОСТИ",
+        reviews_title: "ОБЗОРЫ ЭКСПЕРТОВ",
+        stats_title: "В ЦИФРАХ",
+        community_title: "СООБЩЕСТВО",
+        newsletter_title: "ПОДПИШИСЬ НА НОВОСТИ",
+        footer_text: "© 2025 СайтСотика | Все права защищены",
+        background_color: "#0a0a0a",
+        accent_color: "#ef4444",
+        text_color: "#f5f5f5",
+        secondary_color: "#1a1a1a",
+        highlight_color: "#f59e0b",
+        font_family: "Orbitron",
+        font_size: 16
+    };
 
-        const btnStream = $('#btn-stream');
-        const submenuMain = $('#submenu-main');
-        const btnWidgetsToggle = $('#btn-widgets-toggle');
-        const submenuWidgets = $('#submenu-widgets');
+    async function onConfigChange(config) {
+        const elements = {
+            hero_title: 'hero-title',
+            hero_subtitle: 'hero-subtitle',
+            games_title: 'games-title',
+            news_title: 'news-title',
+            reviews_title: 'reviews-title',
+            stats_title: 'stats-title',
+            community_title: 'community-title',
+            newsletter_title: 'newsletter-title',
+            footer_text: 'footer-text'
+        };
 
-        if (btnStream && submenuMain) {
-            btnStream.addEventListener('click', (e) => {
-                e.stopPropagation();
-                submenuMain.classList.toggle('is-open');
-            });
-            document.addEventListener('click', (e) => {
-                if (!submenuMain.contains(e.target) && e.target !== btnStream) {
-                    submenuMain.classList.remove('is-open');
+        Object.entries(elements).forEach(([key, id]) => {
+            const el = document.getElementById(id);
+            if (el) el.textContent = config[key] || defaultConfig[key];
+        });
+
+        const bgColor = config.background_color || defaultConfig.background_color;
+        const accentColor = config.accent_color || defaultConfig.accent_color;
+        const textColor = config.text_color || defaultConfig.text_color;
+
+        document.body.style.background = `linear-gradient(135deg, ${bgColor} 0%, ${config.secondary_color || defaultConfig.secondary_color} 50%, ${bgColor} 100%)`;
+
+        document.querySelectorAll('[style*="color: #ef4444"]').forEach(el => {
+            if (el.style.color) el.style.color = accentColor;
+        });
+
+        document.querySelectorAll('[style*="color: #f5f5f5"]').forEach(el => {
+            el.style.color = textColor;
+        });
+    }
+
+    function handleNewsletterSubmit(event) {
+        event.preventDefault();
+        const messageEl = document.getElementById('newsletter-message');
+        const emailInput = document.getElementById('email-input');
+
+        messageEl.textContent = '✅ Спасибо за подписку! Проверьте вашу почту.';
+        emailInput.value = '';
+
+        setTimeout(() => messageEl.textContent = '', 5000);
+    }
+
+    if (window.elementSdk) {
+        window.elementSdk.init({
+            defaultConfig,
+            onConfigChange,
+            mapToCapabilities: (config) => ({
+                recolorables: [
+                    { get: () => config.background_color || defaultConfig.background_color, set: (v) => window.elementSdk?.setConfig({ background_color: v }) },
+                    { get: () => config.accent_color || defaultConfig.accent_color, set: (v) => window.elementSdk?.setConfig({ accent_color: v }) },
+                    { get: () => config.text_color || defaultConfig.text_color, set: (v) => window.elementSdk?.setConfig({ text_color: v }) }
+                ],
+                fontEditable: {
+                    get: () => config.font_family || defaultConfig.font_family,
+                    set: (v) => window.elementSdk?.setConfig({ font_family: v })
+                },
+                fontSizeable: {
+                    get: () => config.font_size || defaultConfig.font_size,
+                    set: (v) => window.elementSdk?.setConfig({ font_size: v })
                 }
-            });
-        }
-
-        if (btnWidgetsToggle && submenuWidgets) {
-            btnWidgetsToggle.addEventListener('click', (e) => {
-                e.stopPropagation();
-                submenuWidgets.classList.toggle('is-open');
-            });
-            document.addEventListener('click', (e) => {
-                if (!submenuWidgets.contains(e.target) && e.target !== btnWidgetsToggle) {
-                    submenuWidgets.classList.remove('is-open');
-                }
-            });
-        }
-
-        // Проверка существования элемента перед добавлением обработчика
-        const btnDonate = $('#btn-donate');
-        if (btnDonate) {
-            btnDonate.addEventListener('click', () => {
-                const modal = document.createElement('div');
-                modal.style.position = 'fixed';
-                modal.style.top = '0';
-                modal.style.left = '0';
-                modal.style.width = '100%';
-                modal.style.height = '100%';
-                modal.style.backgroundColor = 'rgba(0, 0, 0, 0.85)';
-                modal.style.display = 'flex';
-                modal.style.alignItems = 'center';
-                modal.style.justifyContent = 'center';
-                modal.style.zIndex = '1000';
-                modal.style.backdropFilter = 'blur(10px)';
-
-                const content = document.createElement('div');
-                content.style.textAlign = 'center';
-                content.style.padding = '20px';
-                content.style.borderRadius = '15px';
-                content.style.backgroundColor = '#050608';
-                content.style.border = '1px solid #00eaff';
-                content.style.boxShadow = '0 0 20px rgba(0, 234, 255, 0.3)';
-
-                const qrImg = document.createElement('img');
-                qrImg.src = 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=https://dalink.to/fsbsotik';
-                qrImg.alt = 'QR Code for donations';
-                qrImg.style.width = '250px';
-                qrImg.style.height = '250px';
-                qrImg.style.borderRadius = '12px';
-                qrImg.style.marginBottom = '15px';
-
-                const closeBtn = document.createElement('button');
-                closeBtn.textContent = 'Закрыть';
-                closeBtn.style.marginTop = '10px';
-                closeBtn.style.padding = '8px 16px';
-                closeBtn.style.fontSize = '12px';
-                closeBtn.style.borderRadius = '8px';
-                closeBtn.style.border = '1px solid #d4af37';
-                closeBtn.style.backgroundColor = 'transparent';
-                closeBtn.style.color = '#d4af37';
-                closeBtn.style.cursor = 'pointer';
-                closeBtn.style.transition = '0.2s';
-                closeBtn.onmouseover = () => closeBtn.style.backgroundColor = 'rgba(212, 175, 55, 0.2)';
-                closeBtn.onmouseout = () => closeBtn.style.backgroundColor = 'transparent';
-                closeBtn.onclick = () => document.body.removeChild(modal);
-
-                const donateBtn = document.createElement('button');
-                donateBtn.textContent = 'Перейти к донату';
-                donateBtn.style.marginTop = '10px';
-                donateBtn.style.padding = '8px 16px';
-                donateBtn.style.fontSize = '12px';
-                donateBtn.style.borderRadius = '8px';
-                donateBtn.style.border = '1px solid #d4af37';
-                donateBtn.style.backgroundColor = 'linear-gradient(135deg, #d4af37, #ffea9a)';
-                donateBtn.style.color = '#050608';
-                donateBtn.style.cursor = 'pointer';
-                donateBtn.style.transition = '0.2s';
-                donateBtn.onclick = () => {
-                    // Закрываем текущее модальное окно
-                    document.body.removeChild(modal);
-                    
-                    // Все ссылки на донаты удалены
-                    // Доступ к внешним ресурсам запрещён
-                }
-
-                content.appendChild(qrImg);
-                content.appendChild(donateBtn);
-                content.appendChild(closeBtn);
-                modal.appendChild(content);
-                document.body.appendChild(modal);
-            });
-        }
-
-        const goalBar = $('#w-goal-bar');
-        const goalTag = $('#w-goal-tag');
-        const goalSub = $('#w-goal-sub');
-        const goalMain = $('#w-goal-main');
-
-        function renderGoal(goal) {
-            if (!goal) {
-                goalBar.style.width = '0%';
-                goalTag.textContent = '0% выполнено';
-                goalSub.textContent = 'Цель не задана';
-                goalMain.textContent = '';
-                return;
-            }
-            const raised = goal.raised_amount || 0;
-            const total = goal.goal_amount || 0;
-            const percent = total > 0 ? Math.min(Math.round((raised / total) * 100), 100) : 0;
-            goalBar.style.width = percent + '%';
-            goalTag.textContent = percent + '% выполнено';
-            goalSub.textContent = `Собрано: ${formatNumber(raised)}₽ / ${formatNumber(total)}₽`;
-            goalMain.textContent = goal.title || '';
-        }
-
-        async function loadGoal() {
-            try {
-                const res = await fetch('/api/goal');
-                const data = await res.json();
-                renderGoal(data.ok ? data.goal : null);
-            } catch {
-                renderGoal(null);
-            }
-        }
-
-        const dayMain = $('#w-day-main');
-        const daySub = $('#w-day-sub');
-        const monthMain = $('#w-month-main');
-        const monthSub = $('#w-month-sub');
-        const yearMain = $('#w-year-main');
-        const yearSub = $('#w-year-sub');
-
-        async function loadStats() {
-            try {
-                const res = await fetch('/api/stats');
-                const data = await res.json();
-                if (!data.ok) return;
-                if (dayMain) dayMain.textContent = `${formatNumber(data.day.sum)}₽`;
-                if (daySub) daySub.textContent = `${data.day.count} транзакций`;
-                if (monthMain) monthMain.textContent = `${formatNumber(data.month.sum)}₽`;
-                if (monthSub) monthSub.textContent = '';
-                if (yearMain) yearMain.textContent = `${formatNumber(data.year.sum)}₽`;
-                if (yearSub) yearSub.textContent = '';
-            } catch {}
-        }
-
-        const subsMain = $('#w-subs-main');
-        const subsSub = $('#w-subs-sub');
-        const donMain = $('#w-donates-main');
-        const donSub = $('#w-donates-sub');
-        const histMain = $('#w-history-main');
-        const histSub = $('#w-history-sub');
-        const topMain = $('#w-top-main');
-        const topSub = $('#w-top-sub');
-
-        let subsList = [];
-        let donsList = [];
-
-        async function loadSubs() {
-            try {
-                const res = await fetch('/api/subs/list');
-                const data = await res.json();
-                if (!data.ok || !Array.isArray(data.list)) {
-                    subsList = [];
-                    return;
-                }
-                subsList = data.list;
-            } catch {
-                subsList = [];
-            }
-        }
-
-        async function loadDonations() {
-            try {
-                const res = await fetch('/api/donations/list');
-                const data = await res.json();
-                if (!data.ok || !Array.isArray(data.list)) {
-                    donsList = [];
-                    return;
-                }
-                donsList = data.list;
-            } catch {
-                donsList = [];
-            }
-        }
-
-        function sliderFactory(listGetter, renderFn, interval = 4000) {
-            let idx = 0;
-            setInterval(() => {
-                const list = listGetter();
-                if (!list || list.length === 0) return;
-                idx = (idx + 1) % list.length;
-                renderFn(list[idx], idx, list.length);
-            }, interval);
-        }
-
-        function renderSubsItem(item, index, total) {
-            if (!subsMain || !subsSub) return;
-            if (!item) {
-                subsMain.textContent = 'Нет подписчиков';
-                subsSub.textContent = '';
-                return;
-            }
-            subsMain.textContent = item.username || 'Anon';
-            subsSub.textContent = `Подписка #${index + 1} из ${total}`;
-        }
-
-        function renderDonItem(item, index, total) {
-            if (!donMain || !donSub) return;
-            if (!item) {
-                donMain.textContent = 'Нет донатов';
-                donSub.textContent = '';
-                return;
-            }
-            donMain.textContent = `${item.username || 'Anon'}: +${formatNumber(item.amount || 0)}₽`;
-            donSub.textContent = item.message || `Донат #${index + 1} из ${total}`;
-        }
-
-        function renderHistoryItem(item, index, total) {
-            if (!histMain || !histSub) return;
-            if (!item) {
-                histMain.textContent = 'История пуста';
-                histSub.textContent = '';
-                return;
-            }
-            histMain.textContent = `${item.username || 'Anon'} — ${formatNumber(item.amount || 0)}₽`;
-            histSub.textContent = `#${index + 1} из ${total}`;
-        }
-
-        function renderTopItem() {
-            if (!topMain || !topSub) return;
-            if (!donsList || donsList.length === 0) {
-                topMain.textContent = 'Топ донат отсутствует';
-                topSub.textContent = '';
-                return;
-            }
-            const top = donsList.reduce((max, d) => (d.amount > max.amount ? d : max), donsList[0]);
-            topMain.textContent = `${top.username || 'Anon'} — ${formatNumber(top.amount || 0)}₽`;
-            topSub.textContent = top.message || '';
-        }
-
-        loadGoal();
-        loadStats();
-        loadSubs();
-        loadDonations();
-
-        setInterval(loadGoal, 30000);
-        setInterval(loadStats, 60000);
-        setInterval(loadSubs, 30000);
-        setInterval(loadDonations, 30000);
-
-        sliderFactory(() => subsList, renderSubsItem, 4000);
-        sliderFactory(() => donsList, renderDonItem, 4000);
-        sliderFactory(() => donsList, renderHistoryItem, 5000);
-        setInterval(renderTopItem, 5000);
-    });
+            }),
+            mapToEditPanelValues: (config) => new Map(Object.entries(defaultConfig).map(([k, v]) => [k, config[k] || v]))
+        });
+    }
 </script>
-
 </body>
 </html>
