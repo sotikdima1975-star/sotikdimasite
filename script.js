@@ -1,156 +1,193 @@
-import express from 'express';
-import fetch from 'node-fetch';
-import dotenv from 'dotenv';
-import dayjs from 'dayjs';
+document.addEventListener('DOMContentLoaded', () => {
 
-dotenv.config();
+    // =====================================================================
+    // УТИЛИТЫ
+    // =====================================================================
 
-const app = express();
-const PORT = process.env.PORT || 3000;
-const DA_TOKEN = process.env.DA_ACCESS_TOKEN;
+    const $ = (sel, scope = document) => scope.querySelector(sel);
+    const $all = (sel, scope = document) => Array.from(scope.querySelectorAll(sel));
 
-if (!DA_TOKEN) {
-    console.error('❌ DA_ACCESS_TOKEN не задан в .env');
-    process.exit(1);
-}
+    const formatNumber = num => num.toLocaleString('ru-RU');
+    const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
-const DA_API = 'https://www.donationalerts.com/api/v1';
+    const throttle = (fn, delay) => {
+        let last = 0;
+        return (...args) => {
+            const now = Date.now();
+            if (now - last >= delay) {
+                last = now;
+                fn(...args);
+            }
+        };
+    };
 
-// Универсальный запрос к DonationAlerts
-async function daGet(path, params = {}) {
-    const url = new URL(DA_API + path);
-    Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v));
+    // =====================================================================
+    // ФИКСИРОВАННЫЙ ХЕДЕР
+    // =====================================================================
 
-    try {
-        const res = await fetch(url.toString(), {
-            headers: {
-                'Authorization': `Bearer ${DA_TOKEN}`
+    const header = $('header');
+    if (header) {
+        const onScrollHeader = throttle(() => {
+            if (window.scrollY > 40) header.classList.add('header--scrolled');
+            else header.classList.remove('header--scrolled');
+        }, 50);
+
+        window.addEventListener('scroll', onScrollHeader);
+        onScrollHeader();
+    }
+
+    // =====================================================================
+    // КНОПКА "СТРИМ" — ПОДМЕНЮ
+    // =====================================================================
+
+    const btnStream = $('#btn-stream');
+    const submenuMain = $('#submenu-main');
+
+    if (btnStream && submenuMain) {
+        btnStream.addEventListener('click', (e) => {
+            e.stopPropagation();
+            submenuMain.classList.toggle('is-open');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!submenuMain.contains(e.target) && e.target !== btnStream) {
+                submenuMain.classList.remove('is-open');
             }
         });
-
-        if (!res.ok) {
-            const text = await res.text();
-            console.error('❌ DonationAlerts error:', res.status, text);
-            return null;
-        }
-
-        return await res.json();
-    } catch (e) {
-        console.error('❌ Ошибка запроса к DonationAlerts:', e);
-        return null;
     }
-}
 
-// =====================================================================
-// ПОСЛЕДНИЙ ДОНАТ
-// =====================================================================
-app.get('/api/donations/latest', async (req, res) => {
-    const data = await daGet('/alerts/donations', { page: 1 });
+    // =====================================================================
+    // ПЛАВНЫЙ СКРОЛЛ ПО ЯКОРЯМ
+    // =====================================================================
 
-    if (!data || !data.data) {
-        return res.json({
-            ok: true,
-            latest: null
+    $all('a[href^="#"]').forEach(link => {
+        link.addEventListener('click', e => {
+            const targetId = link.getAttribute('href');
+            if (!targetId || targetId === '#') return;
+
+            const target = document.querySelector(targetId);
+            if (!target) return;
+
+            e.preventDefault();
+            const top = target.getBoundingClientRect().top + window.scrollY - 80;
+
+            window.scrollTo({ top, behavior: 'smooth' });
         });
-    }
-
-    const latest = data.data[0] || null;
-
-    res.json({
-        ok: true,
-        latest: latest ? {
-            username: latest.username,
-            amount: latest.amount,
-            currency: latest.currency,
-            message: latest.message,
-            created_at: latest.created_at
-        } : null
     });
-});
 
-// =====================================================================
-// СТАТИСТИКА: ДЕНЬ / МЕСЯЦ / ГОД
-// =====================================================================
-app.get('/api/stats', async (req, res) => {
-    const data = await daGet('/alerts/donations', { page: 1 });
+    // =====================================================================
+    // ЦЕЛЬ СТРИМА — /api/goal
+    // =====================================================================
 
-    if (!data || !data.data) {
-        return res.json({
-            ok: true,
-            day: { sum: 0, count: 0 },
-            month: { sum: 0 },
-            year: { sum: 0 }
-        });
+    const goalBar = $('#w-goal-bar');
+    const goalTag = $('#w-goal-tag');
+    const goalSub = $('#w-goal-sub');
+    const goalMain = $('#w-goal-main');
+
+    function renderGoal(goal) {
+        if (!goalBar || !goalTag || !goalSub || !goalMain) return;
+
+        if (!goal) {
+            goalBar.style.width = '0%';
+            goalTag.textContent = '0% выполнено';
+            goalSub.textContent = 'Цель не задана';
+            goalMain.textContent = '';
+            return;
+        }
+
+        const raised = goal.raised_amount || 0;
+        const total = goal.goal_amount || 0;
+        const percent = total > 0 ? Math.min(Math.round((raised / total) * 100), 100) : 0;
+
+        goalBar.style.width = percent + '%';
+        goalTag.textContent = percent + '% выполнено';
+        goalSub.textContent = `Собрано: ${formatNumber(raised)}₽ / ${formatNumber(total)}₽`;
+        goalMain.textContent = goal.title || '';
     }
 
-    const now = dayjs();
-    const today = now.startOf('day');
-    const monthStart = now.startOf('month');
-    const yearStart = now.startOf('year');
-
-    let sumDay = 0;
-    let countDay = 0;
-    let sumMonth = 0;
-    let sumYear = 0;
-
-    for (const d of data.data) {
-        const t = dayjs(d.created_at);
-
-        if (t.isAfter(today)) {
-            sumDay += d.amount;
-            countDay++;
-        }
-        if (t.isAfter(monthStart)) {
-            sumMonth += d.amount;
-        }
-        if (t.isAfter(yearStart)) {
-            sumYear += d.amount;
+    async function loadGoal() {
+        try {
+            const res = await fetch('/api/goal');
+            const data = await res.json();
+            renderGoal(data.ok ? data.goal : null);
+        } catch {
+            renderGoal(null);
         }
     }
 
-    res.json({
-        ok: true,
-        day: { sum: sumDay, count: countDay },
-        month: { sum: sumMonth },
-        year: { sum: sumYear }
-    });
-});
+    loadGoal();
+    setInterval(loadGoal, 30000);
 
-// =====================================================================
-// ЦЕЛЬ СТРИМА
-// =====================================================================
-app.get('/api/goal', async (req, res) => {
-    const data = await daGet('/goals');
+    // =====================================================================
+    // ПОСЛЕДНИЙ ДОНАТ — /api/donations/latest
+    // =====================================================================
 
-    if (!data || !data.data || data.data.length === 0) {
-        return res.json({
-            ok: true,
-            goal: null
-        });
+    const lastDonationBox = $('#w-donates-main');
+    const lastDonationSub = $('#w-donates-sub');
+
+    async function loadLatestDonation() {
+        if (!lastDonationBox || !lastDonationSub) return;
+
+        try {
+            const res = await fetch('/api/donations/latest');
+            const data = await res.json();
+
+            if (!data.ok || !data.latest) {
+                lastDonationBox.textContent = 'Пока нет донатов';
+                lastDonationSub.textContent = '';
+                return;
+            }
+
+            const d = data.latest;
+            lastDonationBox.textContent = `${d.username}: +${formatNumber(d.amount)}₽`;
+            lastDonationSub.textContent = d.message || '';
+
+        } catch {
+            lastDonationBox.textContent = 'Ошибка загрузки';
+            lastDonationSub.textContent = '';
+        }
     }
 
-    const active = data.data.find(g => g.is_active) || data.data[0];
+    loadLatestDonation();
+    setInterval(loadLatestDonation, 15000);
 
-    const progress = active.goal_amount > 0
-        ? Math.round((active.raised_amount / active.goal_amount) * 100)
-        : 0;
+    // =====================================================================
+    // СТАТИСТИКА — /api/stats
+    // =====================================================================
 
-    res.json({
-        ok: true,
-        goal: {
-            title: active.title,
-            currency: active.currency,
-            start_amount: active.start_amount,
-            raised_amount: active.raised_amount,
-            goal_amount: active.goal_amount,
-            progress
-        }
-    });
-});
+    const dayMain = $('#w-day-main');
+    const daySub = $('#w-day-sub');
+    const monthMain = $('#w-month-main');
+    const monthSub = $('#w-month-sub');
+    const yearMain = $('#w-year-main');
+    const yearSub = $('#w-year-sub');
 
-// =====================================================================
-// СТАРТ СЕРВЕРА
-// =====================================================================
-app.listen(PORT, () => {
-    console.log(`🚀 Sotik backend running on port ${PORT}`);
+    async function loadStats() {
+        try {
+            const res = await fetch('/api/stats');
+            const data = await res.json();
+
+            if (!data.ok) return;
+
+            if (dayMain) dayMain.textContent = `${formatNumber(data.day.sum)}₽`;
+            if (daySub) daySub.textContent = `${data.day.count} транзакций`;
+
+            if (monthMain) monthMain.textContent = `${formatNumber(data.month.sum)}₽`;
+            if (monthSub) monthSub.textContent = '';
+
+            if (yearMain) yearMain.textContent = `${formatNumber(data.year.sum)}₽`;
+            if (yearSub) yearSub.textContent = '';
+        } catch {}
+    }
+
+    loadStats();
+    setInterval(loadStats, 60000);
+
+    // =====================================================================
+    // ГОД В ФУТЕРЕ (если есть)
+    // =====================================================================
+
+    const yearEl = $('.js-year');
+    if (yearEl) yearEl.textContent = String(new Date().getFullYear());
+
 });
