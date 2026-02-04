@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forza Motorsport 7 - Обзор | СайтСотика</title>
+    <meta name="description" content="Подробный обзор Forza Motorsport 7: особенности, геймплей, графика и физика">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: #0a0a0a;
+            color: #f5f5f5;
+        }
+        .racing-font {
+            font-family: 'Orbitron', sans-serif;
+        }
+        .review-card {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            border-left: 4px solid #ef4444;
+            transition: all 0.3s ease;
+        }
+        .review-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(239, 68, 68, 0.3);
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <div class="container mx-auto px-4 py-16">
+        <!-- Удалена навигация с кнопкой "Назад" -->
+
+        <article class="max-w-4xl mx-auto">
+            <header class="mb-12 text-center">
+                <div class="racing-font text-6xl text-red-500 mb-4">Forza Motorsport 7</div>
+                <div class="flex justify-center items-center mb-6">
+                    <div class="text-4xl mr-4">⭐</div>
+                    <div class="racing-font text-3xl font-bold" style="color: #ef4444;">9.4/10</div>
+                </div>
+                <div class="text-gray-400">Обновлено: 15 марта 2024</div>
+            </header>
+
+            <div class="review-card p-8 rounded-xl mb-12">
+                <h2 class="racing-font text-3xl text-red-500 mb-6">Обзор эксперта</h2>
+                <p class="text-lg mb-4">«Forza Motorsport 7 остается одной из самых стабильных частей серии. Игра предлагает предсказуемую физику, честное управление и идеальную читаемость трасс.»</p>
+                <p class="text-lg mb-4">Разработчики сумели найти идеальный баланс между аркадой и симулятором, что делает игру доступной для новичков и интересной для опытных гонщиков.</p>
+                <p class="text-lg">Особенно стоит отметить продвинутую систему освещения и погоды, которая влияет на сцепление и видимость, добавляя стратегический элемент в гонки.</p>
+            </div>
+
+            <section class="mb-12">
+                <h2 class="racing-font text-3xl text-red-500 mb-6">Ключевые особенности</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-gray-900 p-6 rounded-xl">
+                        <h3 class="racing-font text-xl text-red-500 mb-3">Фотографическая графика</h3>
+                        <p>Игра использует технологию рендеринга, основанную на измерениях реального света, что делает трассы и автомобили невероятно реалистичными.</p>
+                    </div>
+                    <div class="bg-gray-900 p-6 rounded-xl">
+                        <h3 class="racing-font text-xl text-red-500 mb-3">Динамическая погода</h3>
+                        <p>Погодные условия меняются во время гонки, влияя на сцепление и видимость, что требует от гонщика адаптации стратегии.</p>
+                    </div>
+                    <div class="bg-gray-900 p-6 rounded-xl">
+                        <h3 class="racing-font text-xl text-red-500 mb-3">Режим карьеры</h3>
+                        <p>Богатый карьерный режим с более чем 500 заданиями, включая специальные серии и челленджи.</p>
+                    </div>
+                    <div class="bg-gray-900 p-6 rounded-xl">
+                        <h3 class="racing-font text-xl text-red-500 mb-3">Сетевые гонки</h3>
+                        <p>Стабильные онлайн-гонки с системой ранжирования и соревнованиями в реальном времени.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <h2 class="racing-font text-3xl text-red-500 mb-6">Сильные и слабые стороны</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="racing-font text-2xl text-green-500 mb-4">✅ Преимущества</h3>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <span class="text-green-500 mr-2">✓</span>
+                                <span>Отличная физика вождения</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-green-500 mr-2">✓</span>
+                                <span>Фотографическая графика</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-green-500 mr-2">✓</span>
+                                <span>Богатый карьерный режим</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-green-500 mr-2">✓</span>
+                                <span>Стабильные онлайн-гонки</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="racing-font text-2xl text-yellow-500 mb-4">❌ Недостатки</h3>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <span class="text-yellow-500 mr-2">✗</span>
+                                <span>Меньше автомобилей, чем у конкурентов</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-yellow-500 mr-2">✗</span>
+                                <span>Ограниченный выбор треков</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-yellow-500 mr-2">✗</span>
+                                <span>Высокие системные требования</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <h2 class="racing-font text-3xl text-red-500 mb-6">Советы по прохождению</h2>
+                <div class="bg-gray-900 p-6 rounded-xl">
+                    <ol class="list-decimal list-inside space-y-3">
+                        <li>Всегда настраивайте подвеску под конкретный трек и погодные условия</li>
+                        <li>Используйте систему помощи, если только начинаете</li>
+                        <li>Уделяйте внимание экономии шин на длинных гонках</li>
+                        <li>Изучите траектории перед гонкой в режиме тренировки</li>
+                        <li>Регулярно обновляйте автомобиль в гараже</li>
+                    </ol>
+                </div>
+            </section>
+
+            <footer class="text-center pt-8 border-t border-gray-800">
+                <p>Автор обзора: СайтСотика</p>
+                <p class="text-gray-500 text-sm">Последнее обновление: 15 марта 2024</p>
+            </footer>
+        </article>
+    </div>
+</body>
+</html>
