@@ -7,13 +7,14 @@
     <meta name="description" content="Подробный обзор Forza Motorsport 2023: особенности, геймплей, графика и физика нового поколения">
     <meta property="og:title" content="Forza Motorsport (2023) - Глубокий обзор">
     <meta property="og:description" content="Разбор физики, графики и мультиплеера в новом Forza Motorsport">
-    <meta property="og:image" content="./images/forza2023-banner.jpg">
+    <meta property="og:image" content="/sotikdimasite/Games/images/forza2023-banner.jpg">
     <meta property="og:type" content="article">
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- ⚠️ Tailwind CDN not recommended for production. Build with Tailwind CLI or PostCSS for smaller, optimized CSS: https://tailwindcss.com/docs/installation -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
     <style>
         body {
             font-family: 'Rajdhani', sans-serif;
@@ -58,11 +59,11 @@
             <header class="mb-12 text-center relative anchor-link" id="top">
                 <!-- Логотип Forza -->
                 <div class="mb-4">
-                    <img src="./images/forza-logo.png" alt="Логотип Forza Motorsport" class="h-12 mx-auto opacity-90">
+                    <img src="/sotikdimasite/Games/images/forza-logo.png" alt="Логотип Forza Motorsport" class="h-12 mx-auto opacity-90">
                 </div>
 
                 <!-- Баннер -->
-                <img src="./images/forza2023-banner.jpg"
+                <img src="/sotikdimasite/Games/images/forza2023-banner.jpg"
                      alt="Forza Motorsport 2023 — реалистичный автосимулятор от Xbox Game Studios"
                      class="w-full h-96 object-cover rounded-xl mb-6 shadow-2xl"
                      loading="lazy">
@@ -153,11 +154,11 @@
                 </div>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
                     <div>
-                        <img src="./images/forza2023-screenshot1.jpg" alt="Геймплей Forza Motorsport 2023 — заезд на трассе под вечерним светом" class="w-full rounded-xl shadow-lg" loading="lazy">
+                        <img src="/sotikdimasite/Games/images/forza2023-banner.jpg" alt="Геймплей Forza Motorsport 2023 — заезд на трассе под вечерним светом" class="w-full rounded-xl shadow-lg" loading="lazy">
                     </div>
                     <div class="space-y-6">
-                        <img src="./images/forza2023-screenshot2.jpg" alt="Вид из кабины в Forza Motorsport 2023 — детализация салона" class="w-full rounded-xl shadow-lg" loading="lazy">
-                        <img src="./images/forza2023-screenshot3.jpg" alt="Гонка под дождём в Forza Motorsport 2023 — эффекты брызг и отражений" class="w-full rounded-xl shadow-lg" loading="lazy">
+                        <img src="/sotikdimasite/Games/images/forza2023-banner.jpg" alt="Вид из кабины в Forza Motorsport 2023 — детализация салона" class="w-full rounded-xl shadow-lg" loading="lazy">
+                        <img src="/sotikdimasite/Games/images/forza2023-banner.jpg" alt="Гонка под дождём в Forza Motorsport 2023 — эффекты брызг и отражений" class="w-full rounded-xl shadow-lg" loading="lazy">
                     </div>
                 </div>
 
