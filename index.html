@@ -3,99 +3,371 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Сайт Сотика - Пожертвования</title>
-    <link rel="stylesheet" href="style.css">
-    <style>
-        .logo .logo-img {
-            width: 40px;
-            height: 40px;
-            margin-right: 10px;
-            vertical-align: middle;
-        }
-    </style>
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <title>Сайт Сотика — Главная</title>
+
+    <!-- Внешние стили (адаптивность и визуалка выносится в style.css) -->
+    <link rel="stylesheet" href="./css/style.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 </head>
+
 <body>
-    
-    <header class="header">
-        <a href="#" class="logo"><img src="images/logo/logo.png" alt="Логотип Сайт Сотика" class="logo-img">Сайт<span>Сотика</span></a>
-        <div class="bx bx-menu" id="menu-icon"></div>
-        <nav class="navbar">
-            <a href="#home" class="active">Главная</a>
-            <a href="#about">О нас</a>
-            <a href="#donate">Пожертвовать</a>
-            <span class="active-nav"></span>
-        </nav>
-    </header>
 
-    <section class="home show-animate" id="home">
+<!-- HEADER -->
+<header class="header">
+    <a href="index.html" class="logo">
+        <img src="./images/logo/logo.png" class="logo-img" alt="Логотип">
+        Сайт<span>Сотика</span>
+    </a>
+
+    <div class="bx bx-menu" id="menu-icon"></div>
+
+    <nav class="navbar">
+        <a href="index.html" class="active">Главная</a>
+        <a href="./about-me/index.html">Обо мне</a>
+        <a href="./games/index.html">Игры</a>
+        <a href="./stream/index.html">Стрим</a>
+        <a href="./team/index.html">Команда</a>
+        <a href="./partners/index.html">Партнёры</a>
+        <span class="active-nav"></span>
+    </nav>
+</header>
+
+<!-- HERO / HOME -->
+<section class="home" id="home">
+    <div class="home-inner">
         <div class="home-content">
-            <h1>Поддержите <span>Сайт Сотика</span></h1>
+            <h1>Добро пожаловать на <span>СайтСотика</span></h1>
+
             <div class="text-animate">
-                <h3>Пожертвуйте сегодня</h3>
+                <h3>Стримы. Контент. Комьюнити. Развитие.</h3>
             </div>
-            <p>Ваше пожертвование помогает нам развивать проект и создавать качественный контент.</p>
-            
-            <div class="btn-box">
-                <a href="https://www.sberbank.com/sms/pbpn?requisiteNumber=79873927902" class="btn" target="_blank">Пожертвовать</a>
-                <a href="#about" class="btn">Узнать больше</a>
-            </div>
-        </div>
-        
-        <div class="home-img">
-            <img src="images/image/im1_no_bg.png" alt="Изображение">
-        </div>
-        
 
-        
-        <div class="home-imgHover"></div>
-    </section>
+            <p>
+                Это центральная точка проекта Сотика. Здесь собраны все направления: личная информация, игры, стримы,
+                команда, партнёры и поддержка. Главная страница — не витрина, а рабочий центр экосистемы.
+            </p>
 
-    <section class="about" id="about">
-        <h2 class="heading">О <span>Нас</span></h2>
-        
-        <div class="about-content">
-            <p>Сайт Сотика — это независимый проект, посвященный созданию качественного контента для нашей аудитории. Мы стремимся к развитию и улучшению наших материалов, и ваша поддержка играет важную роль в этом процессе.</p>
-            
+            <p>
+                Проект строится на честности, уважении и постоянном росте. Никаких накруток, фальши и искусственных цифр —
+                только реальные люди, реальные эмоции и реальная работа.
+            </p>
+
             <div class="btn-box btns">
-                <a href="https://www.sberbank.com/sms/pbpn?requisiteNumber=79873927902" class="btn" target="_blank">Поддержать проект</a>
+                <a href="https://www.sberbank.com/sms/pbpn?requisiteNumber=79873927902" class="btn">Поддержать проект</a>
             </div>
         </div>
-    </section>
 
-    <section class="contact" id="donate">
-        <h2 class="heading">Сделать <span>Пожертвование</span></h2>
-        
-        <form action="https://www.sberbank.com/sms/pbpn?requisiteNumber=79873927902" method="get" target="_blank" onsubmit="this.action += '&amount=' + document.getElementsByName('amount')[0].value">
-            <div class="input-box">
-                <div class="input-field">
-                    <input type="hidden" name="name" value="">
-                    <input type="hidden" name="email" value="">
+        <div class="home-media">
+            <div class="home-img">
+                <img src="./images/image/im1_no_bg.png" alt="Главное изображение">
             </div>
-            
-            <div class="input-box">
-                <div class="input-field">
-                    <input type="number" name="amount" placeholder="Сумма (₽)" min="1" required>
-                    <span class="focus"></span>
+
+            <div class="home-stats">
+                <div class="stat-item">
+                    <span class="stat-value">3+</span>
+                    <span class="stat-label">года стриминга</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">1000+</span>
+                    <span class="stat-label">часов эфира</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">∞</span>
+                    <span class="stat-label">планов на развитие</span>
                 </div>
             </div>
-            
-            <div class="btn-box btns">
-                <a href="https://www.sberbank.com/sms/pbpn?requisiteNumber=79873927902" class="btn" target="_blank">Отправить пожертвование</a>
-            </div>
-        </form>
-    </section>
+        </div>
+    </div>
+</section>
 
-    <footer class="footer">
-        <div class="footer-text">
-            <p>Сайт Сотика &copy; 2026 - Все права защищены</p>
+<!-- SECTION: КТО Я -->
+<section class="section section-dark">
+    <div class="section-inner">
+        <h2 class="heading">Кто <span>я</span></h2>
+
+        <div class="section-grid section-grid-2">
+            <div class="section-block">
+                <p>
+                    Я — Сотик. Стример, который строит проект не вокруг алгоритмов, а вокруг людей. Я не гонюсь за
+                    искусственными цифрами, не использую накрутки и не пытаюсь быть «как все». Моя цель — создать
+                    пространство, где зритель чувствует себя не фоном, а участником.
+                </p>
+                <p>
+                    Я люблю гонки, симуляторы, сложные игры и честные разговоры. Мне важны детали: звук, картинка,
+                    подача, атмосфера. Я не делаю «контент ради контента» — каждый стрим и каждый формат имеют смысл.
+                </p>
+            </div>
+
+            <div class="section-block">
+                <p>
+                    Этот сайт — не просто визитка. Это рабочий инструмент: здесь можно узнать обо мне, посмотреть
+                    актуальные направления, понять философию проекта и решить, хотите ли вы стать частью комьюнити.
+                </p>
+                <p>
+                    Если вы цените честность, спокойную подачу, отсутствие токсичности и уважение к зрителю — вы по адресу.
+                </p>
+            </div>
         </div>
-        
-        <div class="footer-iconTop">
-            <a href="#home"><i class='bx bx-up-arrow-alt'></i></a>
+    </div>
+</section>
+
+<!-- SECTION: ЧТО Я ДЕЛАЮ -->
+<section class="section section-light">
+    <div class="section-inner">
+        <h2 class="heading">Что я <span>делаю</span></h2>
+
+        <div class="section-grid section-grid-3">
+            <div class="card">
+                <h3>Стримы</h3>
+                <p>
+                    Регулярные трансляции с упором на атмосферу, общение и честный игровой процесс. Без постановок,
+                    без фальши, без искусственного драматизма.
+                </p>
+                <ul>
+                    <li>Гонки и симуляторы;</li>
+                    <li>Сложные игры и челленджи;</li>
+                    <li>Общение с чатом;</li>
+                    <li>Эксперименты с форматами.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>Контент</h3>
+                <p>
+                    Обзоры, разборы, обсуждения, реакции. Я не делаю «обзор ради обзора» — каждый материал должен
+                    приносить пользу или эмоцию.
+                </p>
+                <ul>
+                    <li>Обзоры игр и устройств;</li>
+                    <li>Разборы ситуаций и механик;</li>
+                    <li>Истории и опыт из стриминга;</li>
+                    <li>Планы и закулисье проекта.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>Комьюнити</h3>
+                <p>
+                    Комьюнити — это не чат на стриме, а люди, которые остаются и вне эфира. Я строю пространство,
+                    где можно общаться, предлагать идеи и влиять на развитие проекта.
+                </p>
+                <ul>
+                    <li>Общение без токсичности;</li>
+                    <li>Совместные идеи и активности;</li>
+                    <li>Поддержка и обратная связь;</li>
+                    <li>Планы на оффлайн‑движ.</li>
+                </ul>
+            </div>
         </div>
-    </footer>
-    
-    <script src="script.js"></script>
+    </div>
+</section>
+
+<!-- SECTION: ПОДХОД -->
+<section class="section section-dark">
+    <div class="section-inner">
+        <h2 class="heading">Мой <span>подход</span></h2>
+
+        <div class="section-grid section-grid-3">
+            <div class="pill">
+                <h3>Честность</h3>
+                <p>
+                    Никаких накруток, фейковых цифр и искусственных «успехов». Всё, что есть — результат реальной работы
+                    и поддержки реальных людей.
+                </p>
+            </div>
+
+            <div class="pill">
+                <h3>Уважение</h3>
+                <p>
+                    Зритель — не статистика. Я не терплю токсичность, унижение и агрессию. Нормальное общение — базовый стандарт.
+                </p>
+            </div>
+
+            <div class="pill">
+                <h3>Развитие</h3>
+                <p>
+                    Каждый стрим, каждый формат, каждое решение — шаг вперёд. Я не застреваю в одном и том же, а постоянно
+                    ищу, что можно улучшить.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SECTION: ОБОРУДОВАНИЕ -->
+<section class="section section-light">
+    <div class="section-inner">
+        <h2 class="heading">Оборудование <span>проекта</span></h2>
+
+        <div class="section-grid section-grid-2">
+            <div class="section-block">
+                <p>
+                    Качество стрима — это не только игра и настроение, но и железо. Я использую оборудование, которое
+                    даёт стабильность, точность и профессиональный уровень подачи.
+                </p>
+
+                <ul class="equipment-list">
+                    <li><strong>Руль Fanatec WRC</strong> — профессиональный уровень для симрейсинга.</li>
+                    <li><strong>Педали Fanatec ClubSport</strong> — точная обратная связь и стабильность.</li>
+                    <li><strong>ПК для стриминга</strong> — оптимизированная система под трансляции.</li>
+                    <li><strong>Микрофон студийного уровня</strong> — чистый звук без шумов.</li>
+                    <li><strong>Камера FullHD</strong> — чёткая картинка и стабильный FPS.</li>
+                </ul>
+            </div>
+
+            <div class="section-block">
+                <p>
+                    Всё оборудование настроено вручную. Я не полагаюсь на случайные пресеты и «автонастройки».
+                    Каждая деталь — результат тестов, ошибок и доработок.
+                </p>
+                <p>
+                    Это не про «дорогое железо ради статуса», а про инструмент, который позволяет делать стабильный,
+                    качественный и приятный для зрителя стрим.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SECTION: КОМЬЮНИТИ -->
+<section class="section section-dark">
+    <div class="section-inner">
+        <h2 class="heading">Комьюнити <span>проекта</span></h2>
+
+        <div class="section-grid section-grid-2">
+            <div class="section-block">
+                <p>
+                    Комьюнити — это люди, которые остаются. Те, кто приходит не только «на игру», но и на атмосферу,
+                    общение и ощущение, что они здесь не лишние.
+                </p>
+                <p>
+                    У нас нет места токсичности, бессмысленным конфликтам и агрессии. Нормальное общение, юмор,
+                    поддержка и адекватность — базовый уровень.
+                </p>
+            </div>
+
+            <div class="section-block">
+                <p>
+                    Я хочу, чтобы комьюнити было не просто «чатом на стриме», а живым организмом, который влияет на
+                    развитие проекта: предлагает идеи, участвует в решениях, помогает тестировать форматы.
+                </p>
+
+                <div class="btn-box btns">
+                    <a href="#" class="btn">Вступить в комьюнити</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SECTION: МИССИЯ -->
+<section class="section section-light">
+    <div class="section-inner">
+        <h2 class="heading">Миссия <span>проекта</span></h2>
+
+        <div class="section-grid section-grid-2">
+            <div class="section-block">
+                <p>
+                    Миссия проекта — создать пространство, где контент делается честно, без фальши и без попыток
+                    подстроиться под алгоритмы любой ценой.
+                </p>
+                <p>
+                    Я не хочу быть «ещё одним каналом», который пытается понравиться всем. Я строю проект для тех,
+                    кому важны атмосфера, уважение и реальность происходящего.
+                </p>
+            </div>
+
+            <div class="section-block">
+                <p>
+                    Я хочу, чтобы зрители чувствовали, что их время не тратят впустую. Чтобы каждый стрим, каждый ролик
+                    и каждый формат имели смысл.
+                </p>
+                <p>
+                    Если вы разделяете этот подход — вы уже часть миссии.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SECTION: ПЛАНЫ -->
+<section class="section section-dark">
+    <div class="section-inner">
+        <h2 class="heading">Планы <span>развития</span></h2>
+
+        <div class="section-grid section-grid-3">
+            <div class="card">
+                <h3>Контент</h3>
+                <ul>
+                    <li>Новые форматы стримов;</li>
+                    <li>Серии тематических эфиров;</li>
+                    <li>Обучающие материалы по симрейсингу;</li>
+                    <li>Разборы игр и механик.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>Комьюнити</h3>
+                <ul>
+                    <li>Расширение Discord‑сервера;</li>
+                    <li>Совместные ивенты и активности;</li>
+                    <li>Система ролей и уровней участия;</li>
+                    <li>Оффлайн‑встречи в будущем.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>Проект</h3>
+                <ul>
+                    <li>Партнёрские проекты с брендами;</li>
+                    <li>Разработка собственного мерча;</li>
+                    <li>Улучшение качества трансляций;</li>
+                    <li>Мини‑документалка о развитии канала.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SECTION: ПОДДЕРЖКА -->
+<section class="section section-light">
+    <div class="section-inner">
+        <h2 class="heading">Поддержка <span>проекта</span></h2>
+
+        <div class="section-grid section-grid-2">
+            <div class="section-block">
+                <p>
+                    Если вы хотите поддержать развитие проекта, вы можете сделать это через отдельную страницу
+                    пожертвований. Любая поддержка — это вклад в новые стримы, оборудование, идеи и развитие комьюнити.
+                </p>
+                <p>
+                    Поддержка — это не только деньги. Это время, внимание, участие, идеи и обратная связь. Но финансовая
+                    поддержка позволяет двигаться быстрее и смелее.
+                </p>
+            </div>
+
+            <div class="section-block">
+                <div class="btn-box btns">
+                    <img src="images/donsqrcode.png" height="800" width="800"/><a href="https://www.sberbank.com/sms/pbpn?requisiteNumber=79873927902" class="btn">Перейти к поддержке</a>
+                </div>
+                <p>
+                    Если вы уже поддерживаете проект — спасибо. Это чувствуется в каждом стриме.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="footer-text">
+        <p>Сайт Сотика © 2026 — Все права защищены</p>
+    </div>
+
+    <div class="footer-iconTop">
+        <a href="#home"><i class='bx bx-up-arrow-alt'></i></a>
+    </div>
+</footer>
+
 </body>
 </html>
