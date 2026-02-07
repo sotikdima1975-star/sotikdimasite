@@ -556,7 +556,6 @@ span {
     background: var(--main-color);
 }
 
-/* Пример заполнения прогресса (можешь менять под себя) */
 .skills-column:nth-child(1) .skills-content .progress:nth-child(1) .bar span {
     width: 90%;
 }
@@ -674,6 +673,49 @@ span {
 }
 
 /* ===========================
+   VIDEO (NO COLUMNS)
+=========================== */
+
+.video {
+    min-height: auto;
+    padding: 10rem 9% 7rem;
+    background: var(--second-bg-color);
+    text-align: center;
+    position: relative;
+}
+
+.video .heading {
+    font-size: 5rem;
+    margin-bottom: 4rem;
+}
+
+.video-box {
+    width: 100%;
+    max-width: 100rem;
+    margin: 0 auto 3rem auto;
+    border-radius: 1.2rem;
+    overflow: hidden;
+    border: .25rem solid var(--main-color);
+    background: #000;
+    box-shadow: 0 0 2rem rgba(0, 171, 240, 0.25);
+}
+
+.video-box video {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+}
+
+.video-description {
+    font-size: 1.7rem;
+    color: var(--text-color);
+    max-width: 80rem;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+
+/* ===========================
    FOOTER
 =========================== */
 
@@ -732,53 +774,6 @@ span {
 
 .footer-iconTop a:hover i {
     color: var(--main-color);
-}
-
-/* ===========================
-   VIDEO SECTION (NEW)
-=========================== */
-
-.video {
-    min-height: auto;
-    padding: 10rem 9% 7rem;
-    background: var(--second-bg-color);
-    text-align: center;
-    position: relative;
-}
-
-.video .heading {
-    font-size: 5rem;
-    margin-bottom: 4rem;
-}
-
-.video-container {
-    max-width: 100rem;
-    margin: 0 auto;
-}
-
-.video-box {
-    width: 100%;
-    border-radius: 1.2rem;
-    overflow: hidden;
-    border: .25rem solid var(--main-color);
-    box-shadow: 0 0 2rem rgba(0, 171, 240, 0.25);
-    margin-bottom: 3rem;
-    background: #000;
-}
-
-.video-box video {
-    width: 100%;
-    height: auto;
-    display: block;
-    object-fit: cover;
-}
-
-.video-description {
-    font-size: 1.7rem;
-    color: var(--text-color);
-    max-width: 80rem;
-    margin: 0 auto;
-    line-height: 1.7;
 }
 
 /* ===========================
