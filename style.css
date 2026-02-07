@@ -125,6 +125,20 @@ section {
     -webkit-background-clip: text;
     background-position: -33rem 0;
 }
+.home-video {
+    margin-top: 40px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 0 25px rgba(255, 180, 0, 0.15);
+}
+
+.home-video video {
+    width: 100%;
+    height: auto;
+    display: block;
+    background: #000;
+}
+
 
 .home.show-animate .home-content .text-animate h3 {
     animation: homeBgText 6s linear infinite;
