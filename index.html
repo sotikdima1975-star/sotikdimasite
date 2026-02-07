@@ -82,8 +82,76 @@
 
 </div>
 
-</section>
-    <section class="video" id="video">
+<section class="video" id="video">
+
+<style>
+.video {
+    min-height: auto;
+    padding: 10rem 9% 5rem;
+    background: var(--second-bg-color);
+    text-align: center;
+    position: relative;
+}
+
+.video .heading {
+    font-size: 5rem;
+    margin-bottom: 4rem;
+}
+
+.video-container {
+    max-width: 100rem;
+    margin: 0 auto;
+}
+
+.video-box {
+    width: 100%;
+    border-radius: 1.2rem;
+    overflow: hidden;
+    border: .25rem solid var(--main-color);
+    box-shadow: 0 0 2rem rgba(0, 171, 240, 0.25);
+    margin-bottom: 3rem;
+}
+
+.video-box video {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+}
+
+.video-description {
+    font-size: 1.7rem;
+    color: var(--text-color);
+    max-width: 80rem;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+
+@media (max-width: 768px) {
+    .video {
+        padding: 8rem 4% 4rem;
+    }
+
+    .video .heading {
+        font-size: 4rem;
+    }
+
+    .video-description {
+        font-size: 1.6rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .video .heading {
+        font-size: 3.4rem;
+    }
+
+    .video-description {
+        font-size: 1.5rem;
+    }
+}
+</style>
+
     <h2 class="heading">Видео <span>проекта</span></h2>
 
     <div class="video-container">
@@ -94,13 +162,13 @@
         </div>
 
         <p class="video-description">
-            Короткий фрагмент, передающий атмосферу проекта: динамику, стиль и настроение.
-            Видео встроено напрямую, без плеера — чистая визуальная подача.
+            Короткий фрагмент, передающий атмосферу проекта.
         </p>
     </div>
 
     <span class="animate scroll" style="--i:1;"></span>
 </section>
+
 
 
 <!-- SECTION: КТО Я -->
