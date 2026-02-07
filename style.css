@@ -32,6 +32,19 @@ body {
     line-height: 1.6;
 }
 
+/* Базово: никакого flex/grid на всём body и секциях */
+
+body,
+body > * {
+    display: block;
+}
+
+section,
+.section {
+    display: block;
+    width: 100%;
+}
+
 /* GLOBAL ELEMENTS */
 
 img {
@@ -432,7 +445,7 @@ section {
     box-shadow: 0 10px 30px rgba(0, 171, 240, 0.35);
 }
 
-/* VIDEO SECTION (ПОСЛЕ HOME) — НА БУДУЩЕЕ */
+/* VIDEO SECTION (ПОСЛЕ HOME) */
 
 .video {
     padding: 10rem 9% 7rem;
