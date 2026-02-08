@@ -85,27 +85,35 @@
 </section>
 
 <!-- 🔥 ВИДЕО-СЕКЦИЯ (ПОСЛЕ HOME — КАК ТЫ СКАЗАЛ) -->
-<section class="video" id="video">
-    <h2 class="heading">Видео <span>проекта</span></h2>
+<section class="section section-dark">
+    <div class="section-inner">
 
-    <div class="video-container">
-        <div class="video-box" style="display:flex; justify-content:center;">
-            <iframe 
-                src="https://vkvideo.ru/video_ext.php?oid=-228236168&id=456239023&hash=ed8ca01f46770be8&hd=3&autoplay=1" 
-                width="1280" 
-                height="720" 
-                allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;" 
-                frameborder="0" 
-                allowfullscreen
-                style="border-radius:18px;">
-            </iframe>
+        <h2 class="heading"><span>Видео</span> и ссылка</h2>
+
+        <div class="section-grid" style="grid-template-columns: 1fr 1fr; gap:40px;">
+
+            <!-- ЛЕВАЯ КОЛОНКА — VK VIDEO -->
+            <div class="card" style="padding:0; overflow:hidden;">
+                <iframe
+                    src="https://vkvideo.ru/video_ext.php?oid=-228236168&id=456239022&hash=0ee123d9be5f2cd6"
+                    width="100%" height="420"
+                    allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;"
+                    frameborder="0" allowfullscreen>
+                </iframe>
+            </div>
+
+            <!-- ПРАВАЯ КОЛОНКА — ВТОРОЕ ОКНО / ССЫЛКА -->
+            <div class="card" style="padding:20px; text-align:center;">
+                <a href="pages/stream/index.html" class="btn">
+                    Перейти на страницу
+                </a>
+            </div>
+
         </div>
 
-        <p class="video-description">
-            Короткий фрагмент, передающий атмосферу проекта.
-        </p>
     </div>
 </section>
+
 
 
 
