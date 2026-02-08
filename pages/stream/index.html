@@ -2,158 +2,97 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>СайтСотика — Стрим</title>
+    <title>Стрим — СайтСотика</title>
 
-    <!-- Подключаем внешние стили -->
     <link rel="stylesheet" href="../../css/style.css">
-
-
-
-    <!-- Подключаем иконку сайта -->
     <link rel="icon" href="../../favicon.ico" type="image/x-icon">
 </head>
 
 <body>
 
-    <!-- ШАПКА САЙТА -->
+    <!-- ШАПКА -->
     <header class="header">
-        <div class="header-frame">
-            <!-- Логотип -->
-            <div class="logo-box gold-border">
-                <div class="logo gold-text">СайтСотика</div>
-            </div>
+        <a href="../../index.html" class="logo">
+            <img src="../../img/logo.png" class="logo-img" alt="">
+            Сайт<span>Сотика</span>
+        </a>
 
-            <!-- Бегущая строка -->
-            <div class="ticker-box">
-                <div class="ticker">
-                    Добро пожаловать на стрим СайтСотика • Скорость • Контроль • Точность • Симрейсинг без компромиссов
-                </div>
-            </div>
+        <nav class="navbar">
+            <a href="../../index.html">Главная</a>
+            <a href="../../about.html">Обо мне</a>
+            <a href="../../games.html">Игры</a>
+            <a class="active">Стрим</a>
+            <a href="../../team.html">Команда</a>
+            <a href="../../partners.html">Партнёры</a>
+        </nav>
 
-            <!-- Меню навигации -->
-            <nav class="menu-box gold-border">
-                <a href="../../index.html">Главная</a>
-                <a href="../../about.html">Обо мне</a>
-                <a href="../../games.html">Игры</a>
-
-                <!-- Подменю "Стрим" -->
-                <span class="stream-wrapper">
-                    <a class="gold-text gold-underline" id="btn-stream">Стрим</a>
-                    <div class="submenu-main" id="submenu-main">
-                        <a id="btn-chat">Чат</a>
-                        <a id="btn-player">Плеер</a>
-
-                        <!-- Подменю виджетов -->
-                        <span class="widgets-wrapper">
-                            <a id="btn-widgets-toggle">Виджеты</a>
-                            <div class="submenu-widgets" id="submenu-widgets">
-                                <a data-widget="subs">Последние подписчики</a>
-                                <a data-widget="donates">Последние донаты</a>
-                                <a data-widget="goal">Цель стрима</a>
-                                <a data-widget="day">Донаты за день</a>
-                                <a data-widget="month">Донаты за месяц</a>
-                                <a data-widget="year">Донаты за год</a>
-                            </div>
-                        </span>
-                    </div>
-                </span>
-
-                <a href="../../team.html">Команда</a>
-                <a href="../../partners.html">Партнёры</a>
-            </nav>
-        </div>
+        <div id="menu-icon">☰</div>
     </header>
 
-    <!-- ОСНОВНАЯ ОБЛАСТЬ СТРИМА -->
-    <section>
-        <div class="overlay">
-            <div class="overlay-inner">
-                <div class="overlay-title gold-text">FSB Sotik</div>
-                <div class="content-area">
+    <!-- СЕКЦИЯ: Плеер + Чат -->
+    <section class="section section-dark" style="padding-top:140px;">
+        <div class="section-inner">
 
-                    <!-- Плеер Twitch -->
-                    <div id="player-container">
-                        <iframe
-                            src="https://player.twitch.tv/?channel=fsbsotik&parent=sotikdima1975-star.github.io&autoplay=false">
-                        </iframe>
-                    </div>
+            <h2 class="heading"><span>Прямой</span> эфир</h2>
 
-                    <!-- Чат Twitch -->
-                    <div id="chat-container">
-                        <iframe
-                            src="https://www.twitch.tv/embed/fsbsotik/chat?parent=sotikdima1975-star.github.io&darkpopout">
-                        </iframe>
-                    </div>
+            <div class="section-grid section-grid-2">
 
-                    <!-- HUD-СЛОЙ ВИДЖЕТОВ -->
-                    <div id="widgets-overlay">
-
-                        <div class="widget-box" id="w-subs">
-                            <div class="widget-header">
-                                <div class="widget-title">Последние подписчики</div>
-                                <div class="widget-tag">live feed</div>
-                            </div>
-                            <div class="widget-main" id="w-subs-main">user123</div>
-                            <div class="widget-sub" id="w-subs-sub">Только что подписался</div>
-                        </div>
-
-                        <div class="widget-box" id="w-donates">
-                            <div class="widget-header">
-                                <div class="widget-title">Последние донаты</div>
-                                <div class="widget-tag">stream events</div>
-                            </div>
-                            <div class="widget-main" id="w-donates-main">Vasya — 150₽</div>
-                            <div class="widget-sub" id="w-donates-sub">«Удачи на трассе!»</div>
-                        </div>
-
-                        <div class="widget-box" id="w-goal">
-                            <div class="widget-header">
-                                <div class="widget-title">Цель стрима</div>
-                                <div class="widget-tag" id="w-goal-tag">37% выполнено</div>
-                            </div>
-                            <div class="widget-main" id="w-goal-main">Новый руль Fanatec</div>
-                            <div class="widget-sub" id="w-goal-sub">Собрано: 7 400₽ / 20 000₽</div>
-                            <div class="widget-bar">
-                                <div class="widget-bar-fill" id="w-goal-bar"></div>
-                            </div>
-                            <div class="widget-donate-btn" id="w-goal-donate">Донат</div>
-                        </div>
-
-                        <div class="widget-box" id="w-day">
-                            <div class="widget-header">
-                                <div class="widget-title">Донаты за день</div>
-                                <div class="widget-tag">today</div>
-                            </div>
-                            <div class="widget-main" id="w-day-main">1 240₽</div>
-                            <div class="widget-sub" id="w-day-sub">7 транзакций за сегодня</div>
-                        </div>
-
-                        <div class="widget-box" id="w-month">
-                            <div class="widget-header">
-                                <div class="widget-title">Донаты за месяц</div>
-                                <div class="widget-tag">this month</div>
-                            </div>
-                            <div class="widget-main" id="w-month-main">8 420₽</div>
-                            <div class="widget-sub" id="w-month-sub">Средний донат: 210₽</div>
-                        </div>
-
-                        <div class="widget-box" id="w-year">
-                            <div class="widget-header">
-                                <div class="widget-title">Донаты за год</div>
-                                <div class="widget-tag">year total</div>
-                            </div>
-                            <div class="widget-main" id="w-year-main">152 300₽</div>
-                            <div class="widget-sub" id="w-year-sub">Поддержка за весь год</div>
-                        </div>
-
-                    </div> <!-- widgets-overlay -->
-
+                <!-- ПЛЕЕР -->
+                <div class="card" style="padding:0; overflow:hidden;">
+                    <iframe
+                        src="https://player.twitch.tv/?channel=fsbsotik&parent=sotikdima1975-star.github.io&autoplay=false"
+                        style="width:100%; height:500px; border:0;">
+                    </iframe>
                 </div>
+
+                <!-- ЧАТ -->
+                <div class="card" style="padding:0; overflow:hidden;">
+                    <iframe
+                        src="https://www.twitch.tv/embed/fsbsotik/chat?parent=sotikdima1975-star.github.io&darkpopout"
+                        style="width:100%; height:500px; border:0;">
+                    </iframe>
+                </div>
+
             </div>
+
         </div>
     </section>
 
-    <!-- Подключаем JavaScript -->
+    <!-- СЕКЦИЯ: Виджеты -->
+    <section class="section section-light">
+        <div class="section-inner">
+
+            <h2 class="heading"><span>Стримовые</span> события</h2>
+
+            <div class="section-grid section-grid-3">
+
+                <div class="card">
+                    <h3>Последние подписчики</h3>
+                    <p id="w-subs-main">user123</p>
+                </div>
+
+                <div class="card">
+                    <h3>Последние донаты</h3>
+                    <p id="w-donates-main">Vasya — 150₽</p>
+                </div>
+
+                <div class="card">
+                    <h3>Цель стрима</h3>
+                    <p id="w-goal-main">Новый руль Fanatec</p>
+                    <p id="w-goal-sub">7 400₽ / 20 000₽</p>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-text">© 2026 СайтСотика</div>
+        <div class="footer-iconTop"><a href="#">↑</a></div>
+    </footer>
+
     <script src="../../script.js"></script>
 </body>
 </html>
