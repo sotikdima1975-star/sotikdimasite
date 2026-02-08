@@ -84,29 +84,26 @@
     </div>
 </section>
 
-<!-- 🔥 ВИДЕО-СЕКЦИЯ (ПОСЛЕ HOME — КАК ТЫ СКАЗАЛ) -->
 <section class="section section-dark">
     <div class="section-inner">
 
-        <h2 class="heading"><span>Видео</span> и ссылка</h2>
+        <h2 class="heading"><span>Видео</span> галерея</h2>
 
-        <div class="section-grid" style="grid-template-columns: 1fr 1fr; gap:40px;">
+        <div class="section-grid" style="grid-template-columns: repeat(3, 1fr); gap:30px;">
 
-            <!-- ЛЕВАЯ КОЛОНКА — VK VIDEO -->
-            <div class="card" style="padding:0; overflow:hidden;">
-                <iframe
-                    src="https://vkvideo.ru/video_ext.php?oid=-228236168&id=456239022&hash=0ee123d9be5f2cd6"
-                    width="100%" height="420"
-                    allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;"
-                    frameborder="0" allowfullscreen>
-                </iframe>
+            <!-- ОКНО 1 -->
+            <div class="card video-thumb" data-video="vk1" style="padding:0; cursor:pointer;">
+                <img src="images/placeholders/video1.jpg" alt="" style="width:100%; display:block;">
             </div>
 
-            <!-- ПРАВАЯ КОЛОНКА — ВТОРОЕ ОКНО / ССЫЛКА -->
-            <div class="card" style="padding:20px; text-align:center;">
-                <a href="pages/stream/index.html" class="btn">
-                    Перейти на страницу
-                </a>
+            <!-- ОКНО 2 -->
+            <div class="card video-thumb" data-video="vk2" style="padding:0; cursor:pointer;">
+                <img src="images/placeholders/video2.jpg" alt="" style="width:100%; display:block;">
+            </div>
+
+            <!-- ОКНО 3 -->
+            <div class="card video-thumb" data-video="vk3" style="padding:0; cursor:pointer;">
+                <img src="images/placeholders/video3.jpg" alt="" style="width:100%; display:block;">
             </div>
 
         </div>
