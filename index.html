@@ -96,7 +96,7 @@
         /* MOBILE MENU */
 
         .mobile-toggle {
-            position: fixed;
+            position: sticky;
             top: 16px;
             right: 16px;
             width: 42px;
@@ -129,7 +129,7 @@
         }
 
         .mobile-menu {
-            position: fixed;
+            position: sticky;
             top: 0;
             right: 0;
             width: 260px;
@@ -351,7 +351,7 @@
         /* Модалка */
 
         #videoModal {
-            position: fixed;
+            position: sticky;
             inset: 0;
             background: rgba(0,0,0,0.85);
             display: none;
@@ -483,22 +483,21 @@
         <a href="team/index.html">Команда</a>
         <a href="partners/index.html">Партнёры</a>
     </nav>
+    <button class="mobile-toggle" aria-label="Открыть меню">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+    <nav class="mobile-menu">
+        <a href="index.html">Главная</a>
+        <a href="about-me/index.html">Обо мне</a>
+        <a href="games/index.html">Игры</a>
+        <a href="pages/stream/index.html">Стрим</a>
+        <a href="team/index.html">Команда</a>
+        <a href="partners/index.html">Партнёры</a>
+    </nav>
 </header>
 
-<button class="mobile-toggle" aria-label="Открыть меню">
-    <span></span>
-    <span></span>
-    <span></span>
-</button>
-
-<nav class="mobile-menu">
-    <a href="index.html">Главная</a>
-    <a href="about-me/index.html">Обо мне</a>
-    <a href="games/index.html">Игры</a>
-    <a href="pages/stream/index.html">Стрим</a>
-    <a href="team/index.html">Команда</a>
-    <a href="partners/index.html">Партнёры</a>
-</nav>
 
 <section class="home" id="home">
     <div class="home-inner">
@@ -521,7 +520,7 @@
             </p>
 
             <div class="btn-box btns">
-                <a href="https://www.sberbank.com/sms/pbpn?requisiteNumber=79873927902" class="btn">Поддержать проект</a>
+                <a href="https://www.sberbank.com/sms/pbpn?requisiteNumber=79873927902" class="btn" target="_blank">Поддержать проект</a>
             </div>
         </div>
 
@@ -855,7 +854,7 @@
             <div class="section-block">
                 <div class="support-qr">
                     <img src="images/donsqrcode.png" height="200" width="200" alt="QR-код для доната">
-                    <a href="https://www.sberbank.com/sms/pbpn?requisiteNumber=79873927902" class="btn">Перейти к поддержке</a>
+                    <a href="https://www.sberbank.com/sms/pbpn?requisiteNumber=79873927902" class="btn" target="_blank">Перейти к поддержке</a>
                 </div>
                 <p>
                     Если вы уже поддерживаете проект — спасибо. Это чувствуется в каждом стриме.
