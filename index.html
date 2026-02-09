@@ -9,52 +9,138 @@
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 
     <style>
+        /* ДЕСКТОП МЕНЮ */
+        .desktop-menu {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+        .desktop-menu a {
+            color: #fff;
+            font-size: 18px;
+            text-decoration: none;
+            position: relative;
+        }
+        .desktop-menu a:hover {
+            color: var(--accent);
+        }
+
+        /* Прячем десктоп меню на mobile + laptop */
+        @media (max-width: 1280px) {
+            .desktop-menu {
+                display: none;
+            }
+        }
+
+        /* Мобильное меню — только mobile + laptop */
+        .mobile-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            border: 2px solid var(--accent);
+            background: rgba(0,0,0,0.7);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            z-index: 10001;
+        }
+        .mobile-toggle span {
+            width: 22px;
+            height: 2px;
+            background: var(--accent);
+            transition: 0.25s;
+        }
+        .mobile-toggle.active span:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+        .mobile-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .mobile-toggle.active span:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 260px;
+            height: 100vh;
+            background: rgba(5, 10, 20, 0.98);
+            border-left: 1px solid rgba(0, 212, 255, 0.3);
+            display: none;
+            flex-direction: column;
+            padding: 80px 30px 30px;
+            gap: 18px;
+            z-index: 10000;
+        }
+        .mobile-menu a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        .mobile-menu.open {
+            display: flex;
+        }
+
+        @media (max-width: 1280px) {
+            .mobile-toggle {
+                display: flex;
+            }
+            .mobile-menu {
+                display: none;
+            }
+        }
+        @media (min-width: 1281px) {
+            .mobile-toggle,
+            .mobile-menu {
+                display: none !important;
+            }
+        }
+
+        /* Hover эффекты видео */
         .video-card:hover {
             transform: translateY(-12px) scale(1.02);
             box-shadow: 0 40px 80px rgba(0, 212, 255, 0.3);
         }
-
-        .video-card:hover .video-overlay {
-            opacity: 1;
-        }
-
         #closeModal:hover {
             background: #00d4ff;
             color: #1a1a2e;
             transform: rotate(90deg);
-        }
-
-        @keyframes scaleIn {
-            from {
-                opacity: 0;
-                transform: scale(0.9);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
         }
     </style>
 </head>
 
 <body>
 
-<!-- HEADER -->
 <header class="header">
     <a href="index.html" class="logo">
         <img src="./images/logo/logo.png" class="logo-img" alt="Логотип">
         Сайт<span>Сотика</span>
     </a>
+
+    <nav class="desktop-menu">
+        <a href="index.html">Главная</a>
+        <a href="about-me/index.html">Обо мне</a>
+        <a href="games/index.html">Игры</a>
+        <a href="pages/stream/index.html">Стрим</a>
+        <a href="team/index.html">Команда</a>
+        <a href="partners/index.html">Партнёры</a>
+    </nav>
 </header>
 
-<!-- MOBILE MENU TOGGLE -->
 <button class="mobile-toggle" aria-label="Открыть меню">
     <span></span>
     <span></span>
     <span></span>
 </button>
 
-<!-- MOBILE MENU PANEL -->
 <nav class="mobile-menu">
     <a href="index.html">Главная</a>
     <a href="about-me/index.html">Обо мне</a>
@@ -64,7 +150,6 @@
     <a href="partners/index.html">Партнёры</a>
 </nav>
 
-<!-- HOME -->
 <section class="home" id="home">
     <div class="home-inner">
 
@@ -114,7 +199,6 @@
     </div>
 </section>
 
-<!-- ВИДЕО-СЕКЦИЯ -->
 <section class="section section-dark" style="padding:60px 40px;">
     <div class="section-inner" style="max-width:1200px; margin:0 auto;">
 
@@ -127,127 +211,44 @@
         </h2>
 
         <div class="section-grid"
-             style="
-                display:grid;
-                grid-template-columns:repeat(3, 1fr);
-                gap:30px;
-             ">
+             style="display:grid; grid-template-columns:repeat(3, 1fr); gap:30px;">
 
-            <!-- КАРТОЧКА 1 -->
             <div class="card video-thumb"
-                data-video="https://vkvideo.ru/video_ext.php?oid=-228236168&id=456239023&hash=ed8ca01f46770be8&hd=1"
-                style="
-                    padding:0;
-                    border:4px solid var(--accent);
-                    border-radius:var(--radius);
-                    cursor:pointer;
-                    height:220px;
-                    overflow:hidden;
-                    display:flex;
-                    align-items:center;
-                    justify-content:center;
-                ">
+                 data-video="https://vkvideo.ru/video_ext.php?oid=-228236168&id=456239023&hash=ed8ca01f46770be8&hd=1"
+                 style="padding:0; border:4px solid var(--accent); border-radius:var(--radius); cursor:pointer; height:220px; overflow:hidden; display:flex; align-items:center; justify-content:center;">
                 <img src="images/Cayman.png"
-                    style="
-                        height:220px;
-                        width:auto;
-                        object-fit:cover;
-                        border-radius:var(--radius);
-                    ">
+                     style="height:220px; width:auto; object-fit:cover; border-radius:var(--radius);">
             </div>
 
-            <!-- КАРТОЧКА 2 -->
             <div class="card video-thumb"
-                data-video=""
-                style="
-                    padding:0;
-                    border:4px solid var(--accent);
-                    border-radius:var(--radius);
-                    cursor:pointer;
-                    height:220px;
-                    overflow:hidden;
-                    display:flex;
-                    align-items:center;
-                    justify-content:center;
-                ">
+                 data-video=""
+                 style="padding:0; border:4px solid var(--accent); border-radius:var(--radius); cursor:pointer; height:220px; overflow:hidden; display:flex; align-items:center; justify-content:center;">
                 <img src="images/placeholder2.jpg"
-                    style="
-                        height:220px;
-                        width:auto;
-                        object-fit:cover;
-                        border-radius:var(--radius);
-                    ">
+                     style="height:220px; width:auto; object-fit:cover; border-radius:var(--radius);">
             </div>
 
-            <!-- КАРТОЧКА 3 -->
             <div class="card video-thumb"
-                data-video=""
-                style="
-                    padding:0;
-                    border:4px solid var(--accent);
-                    border-radius:var(--radius);
-                    cursor:pointer;
-                    height:220px;
-                    overflow:hidden;
-                    display:flex;
-                    align-items:center;
-                    justify-content:center;
-                ">
+                 data-video=""
+                 style="padding:0; border:4px solid var(--accent); border-radius:var(--radius); cursor:pointer; height:220px; overflow:hidden; display:flex; align-items:center; justify-content:center;">
                 <img src="images/placeholder3.jpg"
-                    style="
-                        height:220px;
-                        width:auto;
-                        object-fit:cover;
-                        border-radius:var(--radius);
-                    ">
+                     style="height:220px; width:auto; object-fit:cover; border-radius:var(--radius);">
             </div>
 
         </div>
 
-        <!-- МОДАЛКА -->
         <div id="videoModal"
-            style="
-                position:fixed;
-                top:0; left:0;
-                width:100%; height:100%;
-                background:rgba(0,0,0,0.85);
-                display:none;
-                align-items:center;
-                justify-content:center;
-                z-index:9999;
-            ">
+             style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); display:none; align-items:center; justify-content:center; z-index:9999;">
 
-            <div style="
-                position:relative;
-                width:900px;
-                height:506px; /* 16:9 */
-                border:4px solid var(--accent);
-                border-radius:var(--radius);
-                background:#000;
-                overflow:hidden;
-            ">
+            <div style="position:relative; width:900px; height:506px; border:4px solid var(--accent); border-radius:var(--radius); background:#000; overflow:hidden;">
                 <iframe id="modalVideo"
-                    src=""
-                    style="width:100%; height:100%; border:none;"
-                    allow="autoplay; encrypted-media"
-                    allowfullscreen>
+                        src=""
+                        style="width:100%; height:100%; border:none;"
+                        allow="autoplay; encrypted-media"
+                        allowfullscreen>
                 </iframe>
 
                 <div id="closeModal"
-                    style="
-                        position:absolute;
-                        top:10px; right:10px;
-                        width:40px; height:40px;
-                        border:3px solid var(--accent);
-                        border-radius:var(--radius);
-                        color:var(--accent);
-                        font-size:26px;
-                        display:flex;
-                        align-items:center;
-                        justify-content:center;
-                        cursor:pointer;
-                        background:rgba(0,0,0,0.4);
-                    ">
+                     style="position:absolute; top:10px; right:10px; width:40px; height:40px; border:3px solid var(--accent); border-radius:var(--radius); color:var(--accent); font-size:26px; display:flex; align-items:center; justify-content:center; cursor:pointer; background:rgba(0,0,0,0.4);">
                     ×
                 </div>
             </div>
@@ -257,7 +258,6 @@
     </div>
 </section>
 
-<!-- SECTION: КТО Я -->
 <section class="section section-dark">
     <div class="section-inner">
         <h2 class="heading">Кто <span>я</span></h2>
@@ -288,7 +288,6 @@
     </div>
 </section>
 
-<!-- SECTION: ЧТО Я ДЕЛАЮ -->
 <section class="section section-light">
     <div class="section-inner">
         <h2 class="heading">Что я <span>делаю</span></h2>
@@ -339,7 +338,6 @@
     </div>
 </section>
 
-<!-- SECTION: ПОДХОД -->
 <section class="section section-dark">
     <div class="section-inner">
         <h2 class="heading">Мой <span>подход</span></h2>
@@ -371,7 +369,6 @@
     </div>
 </section>
 
-<!-- SECTION: ОБОРУДОВАНИЕ -->
 <section class="section section-light">
     <div class="section-inner">
         <h2 class="heading">Оборудование <span>проекта</span></h2>
@@ -406,7 +403,6 @@
     </div>
 </section>
 
-<!-- SECTION: КОМЬЮНИТИ -->
 <section class="section section-dark">
     <div class="section-inner">
         <h2 class="heading">Комьюнити <span>проекта</span></h2>
@@ -437,7 +433,6 @@
     </div>
 </section>
 
-<!-- SECTION: МИССИЯ -->
 <section class="section section-light">
     <div class="section-inner">
         <h2 class="heading">Миссия <span>проекта</span></h2>
@@ -467,7 +462,6 @@
     </div>
 </section>
 
-<!-- SECTION: ПЛАНЫ -->
 <section class="section section-dark">
     <div class="section-inner">
         <h2 class="heading">Планы <span>развития</span></h2>
@@ -506,7 +500,6 @@
     </div>
 </section>
 
-<!-- SECTION: ПОДДЕРЖКА -->
 <section class="section section-light">
     <div class="section-inner">
         <h2 class="heading">Поддержка <span>проекта</span></h2>
@@ -524,8 +517,8 @@
             </div>
 
             <div class="section-block">
-                <div class="btn-box btns">
-                    <img src="images/donsqrcode.png" height="800" width="800"/>
+                <div class="btn-box btns" style="flex-direction:column; align-items:flex-start; gap:20px;">
+                    <img src="images/donsqrcode.png" height="200" width="200" alt="QR-код для доната"/>
                     <a href="https://www.sberbank.com/sms/pbpn?requisiteNumber=79873927902" class="btn">Перейти к поддержке</a>
                 </div>
                 <p>
@@ -536,7 +529,6 @@
     </div>
 </section>
 
-<!-- FOOTER -->
 <footer class="footer">
     <div class="footer-text">
         <p>Сайт Сотика © 2026 — Все права защищены</p>
@@ -547,7 +539,6 @@
     </div>
 </footer>
 
-<!-- JS: MOBILE MENU -->
 <script>
 document.addEventListener("DOMContentLoaded", () => {
     const toggle = document.querySelector(".mobile-toggle");
@@ -562,7 +553,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 </script>
 
-<!-- JS: VIDEO MODAL -->
 <script>
 document.addEventListener("DOMContentLoaded", () => {
     const cards = document.querySelectorAll('.video-thumb');
