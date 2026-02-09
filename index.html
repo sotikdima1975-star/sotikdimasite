@@ -21,6 +21,8 @@
             color: #f5f5f5;
         }
 
+        /* HEADER */
+
         .header {
             position: sticky;
             top: 0;
@@ -54,7 +56,8 @@
             color: var(--accent);
         }
 
-        /* ДЕСКТОП МЕНЮ */
+        /* DESKTOP MENU */
+
         .desktop-menu {
             display: flex;
             gap: 30px;
@@ -84,14 +87,14 @@
             color: var(--accent);
         }
 
-        /* Прячем десктоп меню на mobile + laptop */
         @media (max-width: 1280px) {
             .desktop-menu {
                 display: none;
             }
         }
 
-        /* Мобильное меню — только mobile + laptop */
+        /* MOBILE MENU */
+
         .mobile-toggle {
             position: fixed;
             top: 16px;
@@ -163,7 +166,8 @@
             }
         }
 
-        /* Базовые секции */
+        /* BASE SECTIONS */
+
         .home {
             padding: 80px 40px 60px;
             background: radial-gradient(circle at top left, #102040 0, #050814 55%, #02040a 100%);
@@ -317,43 +321,38 @@
             margin-bottom: 6px;
         }
 
-        /* Видео */
+        /* VIDEO GALLERY — КАРТОЧКИ */
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 30px;
+        }
+
         .video-thumb {
-            padding: 0;
+            position: relative;
+            border-radius: var(--radius);
             border: 4px solid var(--accent);
-            border-radius: var(--radius);
-            cursor: pointer;
-            height: 220px;
             overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            cursor: pointer;
             background: #000;
+            /* ключ: фиксируем соотношение сторон, а не высоту */
+            aspect-ratio: 16 / 9;
         }
+
         .video-thumb img {
-            height: 220px;
-            width: auto;
-            object-fit: cover;
-            border-radius: var(--radius);
-        }
-
-        .video-card:hover {
-            transform: translateY(-12px) scale(1.02);
-            box-shadow: 0 40px 80px rgba(0, 212, 255, 0.3);
-        }
-        #closeModal:hover {
-            background: #00d4ff;
-            color: #1a1a2e;
-            transform: rotate(90deg);
-        }
-
-        /* Модалка видео */
-        #videoModal {
-            position: fixed;
-            top: 0;
-            left: 0;
+            position: absolute;
+            inset: 0;
             width: 100%;
             height: 100%;
+            object-fit: cover;
+        }
+
+        /* Модалка */
+
+        #videoModal {
+            position: fixed;
+            inset: 0;
             background: rgba(0,0,0,0.85);
             display: none;
             align-items: center;
@@ -391,8 +390,14 @@
             cursor: pointer;
             background: rgba(0,0,0,0.4);
         }
+        #closeModal:hover {
+            background: #00d4ff;
+            color: #1a1a2e;
+            transform: rotate(90deg);
+        }
 
-        /* Поддержка */
+        /* SUPPORT */
+
         .support-qr {
             display: flex;
             flex-direction: column;
@@ -400,7 +405,8 @@
             gap: 20px;
         }
 
-        /* Футер */
+        /* FOOTER */
+
         .footer {
             padding: 18px 40px;
             background: #02040a;
@@ -423,13 +429,20 @@
             text-decoration: none;
         }
 
-        /* 🔥 ГОРИЗОНТАЛЬНЫЕ КАРТОЧКИ НА МОБИЛЬНЫХ */
+        /* ADAPTIVE — ЧЁТКИЕ КАРТОЧКИ НА МОБИЛЬНЫХ */
+
+        @media (max-width: 1024px) {
+            .home-inner {
+                grid-template-columns: minmax(0, 1fr);
+            }
+            .video-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
         @media (max-width: 768px) {
             .home {
                 padding: 70px 18px 40px;
-            }
-            .home-inner {
-                grid-template-columns: minmax(0, 1fr);
             }
             .section {
                 padding: 40px 18px;
@@ -438,17 +451,17 @@
             .section-grid-3 {
                 grid-template-columns: minmax(0, 1fr);
             }
-
-            .section.section-dark .section-grid {
-                grid-template-columns: 1fr !important;
+            .video-grid {
+                grid-template-columns: minmax(0, 1fr);
             }
+            /* карточка всегда 16:9, без «растягивания» по высоте */
             .video-thumb {
-                height: 180px !important;
+                aspect-ratio: 16 / 9;
             }
             .video-thumb img {
-                width: 100% !important;
-                height: 100% !important;
-                object-fit: cover !important;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
             }
         }
     </style>
@@ -536,8 +549,8 @@
     </div>
 </section>
 
-<section class="section section-dark" style="padding:60px 40px;">
-    <div class="section-inner" style="max-width:1200px; margin:0 auto;">
+<section class="section section-dark">
+    <div class="section-inner">
 
         <h2 class="heading" style="text-align:center; margin-bottom:50px;">
             <span style="
@@ -547,8 +560,7 @@
             ">Видео</span> галерея
         </h2>
 
-        <div class="section-grid"
-             style="display:grid; grid-template-columns:repeat(3, 1fr); gap:30px;">
+        <div class="video-grid">
 
             <div class="card video-thumb"
                  data-video="https://vkvideo.ru/video_ext.php?oid=-228236168&id=456239023&hash=ed8ca01f46770be8&hd=1">
