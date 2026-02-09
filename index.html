@@ -96,72 +96,83 @@
             ">Видео</span> галерея
         </h2>
 
-        <!-- КАРТОЧКА 1 -->
-<div class="card video-thumb"
-    data-video="https://vkvideo.ru/video_ext.php?oid=-228236168&id=456239023&hash=ed8ca01f46770be8&hd=1"
-    style="
-        padding:0;
-        border:4px solid var(--accent);
-        border-radius:var(--radius);
-        cursor:pointer;
-        height:220px;
-        overflow:hidden;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-    ">
-    <img src="images/Cayman.png"
-         style="
-             height:220px;
-             width:auto;
-             object-fit:cover;
-             border-radius:var(--radius);
-         ">
+        <div class="section-grid"
+     style="
+        display:grid;
+        grid-template-columns:repeat(3, 1fr);
+        gap:30px;
+     ">
+
+    <!-- КАРТОЧКА 1 -->
+    <div class="card video-thumb"
+        data-video="https://vkvideo.ru/video_ext.php?oid=-228236168&id=456239023&hash=ed8ca01f46770be8&hd=1"
+        style="
+            padding:0;
+            border:4px solid var(--accent);
+            border-radius:var(--radius);
+            cursor:pointer;
+            height:220px;
+            overflow:hidden;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+        ">
+        <img src="images/Cayman.png"
+             style="
+                 height:220px;
+                 width:auto;
+                 object-fit:cover;
+                 border-radius:var(--radius);
+             ">
+    </div>
+
+    <!-- КАРТОЧКА 2 -->
+    <div class="card video-thumb"
+        data-video=""
+        style="
+            padding:0;
+            border:4px solid var(--accent);
+            border-radius:var(--radius);
+            cursor:pointer;
+            height:220px;
+            overflow:hidden;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+        ">
+        <img src="images/placeholder2.jpg"
+             style="
+                 height:220px;
+                 width:auto;
+                 object-fit:cover;
+                 border-radius:var(--radius);
+             ">
+    </div>
+
+    <!-- КАРТОЧКА 3 -->
+    <div class="card video-thumb"
+        data-video=""
+        style="
+            padding:0;
+            border:4px solid var(--accent);
+            border-radius:var(--radius);
+            cursor:pointer;
+            height:220px;
+            overflow:hidden;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+        ">
+        <img src="images/placeholder3.jpg"
+             style="
+                 height:220px;
+                 width:auto;
+                 object-fit:cover;
+                 border-radius:var(--radius);
+             ">
+    </div>
+
 </div>
-
-
-
-            <!-- КАРТОЧКА 2 (пустая под замену) -->
-            <div class="card video-thumb"
-                data-video=""
-                style="
-                    padding:20px;
-                    border:4px solid var(--accent);
-                    border-radius:var(--radius);
-                    cursor:pointer;
-                    height:220px;
-                    overflow:hidden;
-                ">
-                <img src="images/placeholder2.jpg"
-                     style="
-                         height:220px;
-                         width:auto;
-                         object-fit:cover;
-                         border-radius:var(--radius);
-                     ">
-            </div>
-
-            <!-- КАРТОЧКА 3 (пустая под замену) -->
-            <div class="card video-thumb"
-                data-video=""
-                style="
-                    padding:20px;
-                    border:4px solid var(--accent);
-                    border-radius:var(--radius);
-                    cursor:pointer;
-                    height:220px;
-                    overflow:hidden;
-                ">
-                <img src="images/placeholder3.jpg"
-                     style="
-                         height:220px;
-                         width:auto;
-                         object-fit:cover;
-                         border-radius:var(--radius);
-                     ">
-            </div>
-
-        </div>
 
         <!-- МОДАЛКА -->
         <div id="videoModal"
