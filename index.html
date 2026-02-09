@@ -49,6 +49,17 @@
     <a href="#team">Команда</a>
     <a href="#partners">Партнёры</a>
 </nav>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const toggle = document.querySelector(".mobile-toggle");
+    const menu = document.querySelector(".mobile-menu");
+
+    toggle.addEventListener("click", () => {
+        toggle.classList.toggle("active");
+        menu.classList.toggle("open");
+    });
+});
+</script>
 
 <!-- HOME -->
 <section class="home" id="home">
