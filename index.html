@@ -9,6 +9,51 @@
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 
     <style>
+        :root {
+            --accent: #00d4ff;
+            --radius: 14px;
+        }
+
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: #050814;
+            color: #f5f5f5;
+        }
+
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 9000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 40px;
+            background: rgba(5, 8, 20, 0.96);
+            border-bottom: 1px solid rgba(0, 212, 255, 0.18);
+            backdrop-filter: blur(18px);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+        }
+
+        .logo-img {
+            height: 40px;
+            width: auto;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
         /* ДЕСКТОП МЕНЮ */
         .desktop-menu {
             display: flex;
@@ -17,9 +62,23 @@
         }
         .desktop-menu a {
             color: #fff;
-            font-size: 18px;
+            font-size: 16px;
             text-decoration: none;
             position: relative;
+            letter-spacing: 0.03em;
+        }
+        .desktop-menu a::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -4px;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.25s ease;
+        }
+        .desktop-menu a:hover::after {
+            width: 100%;
         }
         .desktop-menu a:hover {
             color: var(--accent);
@@ -35,8 +94,8 @@
         /* Мобильное меню — только mobile + laptop */
         .mobile-toggle {
             position: fixed;
-            top: 20px;
-            right: 20px;
+            top: 16px;
+            right: 16px;
             width: 42px;
             height: 42px;
             border-radius: 10px;
@@ -104,7 +163,180 @@
             }
         }
 
-        /* Hover эффекты видео */
+        /* Базовые секции */
+        .home {
+            padding: 80px 40px 60px;
+            background: radial-gradient(circle at top left, #102040 0, #050814 55%, #02040a 100%);
+        }
+        .home-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.2fr);
+            gap: 40px;
+            align-items: center;
+        }
+        .home-content h1 {
+            font-size: 40px;
+            margin: 0 0 16px;
+        }
+        .home-content h1 span {
+            color: var(--accent);
+        }
+        .text-animate h3 {
+            margin: 0 0 20px;
+            font-size: 20px;
+            color: #c0eaff;
+        }
+        .home-content p {
+            margin: 0 0 14px;
+            line-height: 1.6;
+            color: #d0d4e0;
+        }
+        .btn-box {
+            display: flex;
+            gap: 14px;
+            margin-top: 18px;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 22px;
+            border-radius: 999px;
+            border: 1px solid var(--accent);
+            color: #050814;
+            background: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+        .btn:hover {
+            background: transparent;
+            color: var(--accent);
+        }
+
+        .home-media {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            align-items: center;
+        }
+        .home-img img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+        .home-stats {
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .stat-item {
+            padding: 10px 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 212, 255, 0.4);
+            background: radial-gradient(circle at top, rgba(0, 212, 255, 0.12), rgba(0, 0, 0, 0.7));
+            min-width: 120px;
+            text-align: center;
+        }
+        .stat-value {
+            display: block;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        .stat-label {
+            font-size: 12px;
+            color: #c0c4d0;
+        }
+
+        .section {
+            padding: 60px 40px;
+        }
+        .section-dark {
+            background: #050814;
+        }
+        .section-light {
+            background: #0b1020;
+        }
+        .section-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .heading {
+            font-size: 26px;
+            margin: 0 0 30px;
+        }
+        .heading span {
+            color: var(--accent);
+        }
+
+        .section-grid {
+            display: grid;
+            gap: 24px;
+        }
+        .section-grid-2 {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .section-grid-3 {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .section-block,
+        .card,
+        .pill {
+            border-radius: var(--radius);
+            border: 1px solid rgba(0, 212, 255, 0.18);
+            background: radial-gradient(circle at top left, rgba(0, 212, 255, 0.08), rgba(0, 0, 0, 0.9));
+            padding: 18px 20px;
+        }
+        .section-block p,
+        .card p,
+        .pill p {
+            margin: 0 0 12px;
+            line-height: 1.6;
+            color: #d0d4e0;
+        }
+        .card h3,
+        .pill h3 {
+            margin: 0 0 10px;
+            font-size: 18px;
+        }
+        .card ul,
+        .section-block ul {
+            margin: 0;
+            padding-left: 18px;
+            color: #c8ccda;
+        }
+
+        .equipment-list li {
+            margin-bottom: 6px;
+        }
+
+        /* Видео */
+        .video-thumb {
+            padding: 0;
+            border: 4px solid var(--accent);
+            border-radius: var(--radius);
+            cursor: pointer;
+            height: 220px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+        }
+        .video-thumb img {
+            height: 220px;
+            width: auto;
+            object-fit: cover;
+            border-radius: var(--radius);
+        }
+
         .video-card:hover {
             transform: translateY(-12px) scale(1.02);
             box-shadow: 0 40px 80px rgba(0, 212, 255, 0.3);
@@ -113,6 +345,111 @@
             background: #00d4ff;
             color: #1a1a2e;
             transform: rotate(90deg);
+        }
+
+        /* Модалка видео */
+        #videoModal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        #videoModal-inner {
+            position: relative;
+            width: 900px;
+            max-width: 96vw;
+            aspect-ratio: 16 / 9;
+            border: 4px solid var(--accent);
+            border-radius: var(--radius);
+            background: #000;
+            overflow: hidden;
+        }
+        #modalVideo {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        #closeModal {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--accent);
+            border-radius: var(--radius);
+            color: var(--accent);
+            font-size: 26px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            background: rgba(0,0,0,0.4);
+        }
+
+        /* Поддержка */
+        .support-qr {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        /* Футер */
+        .footer {
+            padding: 18px 40px;
+            background: #02040a;
+            border-top: 1px solid rgba(0, 212, 255, 0.18);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #9aa0b5;
+        }
+        .footer-iconTop a {
+            display: inline-flex;
+            width: 32px;
+            height: 32px;
+            border-radius: 999px;
+            border: 1px solid var(--accent);
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        /* 🔥 ГОРИЗОНТАЛЬНЫЕ КАРТОЧКИ НА МОБИЛЬНЫХ */
+        @media (max-width: 768px) {
+            .home {
+                padding: 70px 18px 40px;
+            }
+            .home-inner {
+                grid-template-columns: minmax(0, 1fr);
+            }
+            .section {
+                padding: 40px 18px;
+            }
+            .section-grid-2,
+            .section-grid-3 {
+                grid-template-columns: minmax(0, 1fr);
+            }
+
+            .section.section-dark .section-grid {
+                grid-template-columns: 1fr !important;
+            }
+            .video-thumb {
+                height: 180px !important;
+            }
+            .video-thumb img {
+                width: 100% !important;
+                height: 100% !important;
+                object-fit: cover !important;
+            }
         }
     </style>
 </head>
@@ -214,45 +551,32 @@
              style="display:grid; grid-template-columns:repeat(3, 1fr); gap:30px;">
 
             <div class="card video-thumb"
-                 data-video="https://vkvideo.ru/video_ext.php?oid=-228236168&id=456239023&hash=ed8ca01f46770be8&hd=1"
-                 style="padding:0; border:4px solid var(--accent); border-radius:var(--radius); cursor:pointer; height:220px; overflow:hidden; display:flex; align-items:center; justify-content:center;">
-                <img src="images/Cayman.png"
-                     style="height:220px; width:auto; object-fit:cover; border-radius:var(--radius);">
+                 data-video="https://vkvideo.ru/video_ext.php?oid=-228236168&id=456239023&hash=ed8ca01f46770be8&hd=1">
+                <img src="images/Cayman.png" alt="Видео 1">
             </div>
 
             <div class="card video-thumb"
-                 data-video=""
-                 style="padding:0; border:4px solid var(--accent); border-radius:var(--radius); cursor:pointer; height:220px; overflow:hidden; display:flex; align-items:center; justify-content:center;">
-                <img src="images/placeholder2.jpg"
-                     style="height:220px; width:auto; object-fit:cover; border-radius:var(--radius);">
+                 data-video="">
+                <img src="images/placeholder2.jpg" alt="Видео 2">
             </div>
 
             <div class="card video-thumb"
-                 data-video=""
-                 style="padding:0; border:4px solid var(--accent); border-radius:var(--radius); cursor:pointer; height:220px; overflow:hidden; display:flex; align-items:center; justify-content:center;">
-                <img src="images/placeholder3.jpg"
-                     style="height:220px; width:auto; object-fit:cover; border-radius:var(--radius);">
+                 data-video="">
+                <img src="images/placeholder3.jpg" alt="Видео 3">
             </div>
 
         </div>
 
-        <div id="videoModal"
-             style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); display:none; align-items:center; justify-content:center; z-index:9999;">
-
-            <div style="position:relative; width:900px; height:506px; border:4px solid var(--accent); border-radius:var(--radius); background:#000; overflow:hidden;">
+        <div id="videoModal">
+            <div id="videoModal-inner">
                 <iframe id="modalVideo"
                         src=""
-                        style="width:100%; height:100%; border:none;"
                         allow="autoplay; encrypted-media"
                         allowfullscreen>
                 </iframe>
 
-                <div id="closeModal"
-                     style="position:absolute; top:10px; right:10px; width:40px; height:40px; border:3px solid var(--accent); border-radius:var(--radius); color:var(--accent); font-size:26px; display:flex; align-items:center; justify-content:center; cursor:pointer; background:rgba(0,0,0,0.4);">
-                    ×
-                </div>
+                <div id="closeModal">×</div>
             </div>
-
         </div>
 
     </div>
@@ -517,8 +841,8 @@
             </div>
 
             <div class="section-block">
-                <div class="btn-box btns" style="flex-direction:column; align-items:flex-start; gap:20px;">
-                    <img src="images/donsqrcode.png" height="200" width="200" alt="QR-код для доната"/>
+                <div class="support-qr">
+                    <img src="images/donsqrcode.png" height="200" width="200" alt="QR-код для доната">
                     <a href="https://www.sberbank.com/sms/pbpn?requisiteNumber=79873927902" class="btn">Перейти к поддержке</a>
                 </div>
                 <p>
