@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Сайт Сотика — Обо мне</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <title>Сайт Сотика — Главная</title>
+
+    <link rel="stylesheet" href="css/style.css">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 
     <style>
@@ -84,15 +85,6 @@
         }
         .desktop-menu a:hover {
             color: var(--accent);
-        }
-        
-        .desktop-menu a.active,
-        .mobile-menu a.active {
-            color: var(--accent);
-        }
-        
-        .desktop-menu a.active::after {
-            width: 100%;
         }
 
         @media (max-width: 1280px) {
@@ -176,6 +168,96 @@
 
         /* BASE SECTIONS */
 
+        .home {
+            padding: 80px 40px 60px;
+            background: radial-gradient(circle at top left, #102040 0, #050814 55%, #02040a 100%);
+        }
+        .home-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.2fr);
+            gap: 40px;
+            align-items: center;
+        }
+        .home-content h1 {
+            font-size: 40px;
+            margin: 0 0 16px;
+        }
+        .home-content h1 span {
+            color: var(--accent);
+        }
+        .text-animate h3 {
+            margin: 0 0 20px;
+            font-size: 20px;
+            color: #c0eaff;
+        }
+        .home-content p {
+            margin: 0 0 14px;
+            line-height: 1.6;
+            color: #d0d4e0;
+        }
+        .btn-box {
+            display: flex;
+            gap: 14px;
+            margin-top: 18px;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 22px;
+            border-radius: 999px;
+            border: 1px solid var(--accent);
+            color: #050814;
+            background: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+        .btn:hover {
+            background: transparent;
+            color: var(--accent);
+        }
+
+        .home-media {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            align-items: center;
+        }
+        .home-img img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+        .home-stats {
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .stat-item {
+            padding: 10px 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 212, 255, 0.4);
+            background: radial-gradient(circle at top, rgba(0, 212, 255, 0.12), rgba(0, 0, 0, 0.7));
+            min-width: 120px;
+            text-align: center;
+        }
+        .stat-value {
+            display: block;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        .stat-label {
+            font-size: 12px;
+            color: #c0c4d0;
+        }
+
         .section {
             padding: 60px 40px;
         }
@@ -235,6 +317,94 @@
             color: #c8ccda;
         }
 
+        .equipment-list li {
+            margin-bottom: 6px;
+        }
+
+        /* VIDEO GALLERY — КАРТОЧКИ */
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 30px;
+        }
+
+        .video-thumb {
+            position: relative;
+            border-radius: var(--radius);
+            border: 4px solid var(--accent);
+            overflow: hidden;
+            cursor: pointer;
+            background: #000;
+            /* ключ: фиксируем соотношение сторон, а не высоту */
+            aspect-ratio: 16 / 9;
+        }
+
+        .video-thumb img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Модалка */
+
+        #videoModal {
+            position: sticky;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        #videoModal-inner {
+            position: relative;
+            width: 900px;
+            max-width: 96vw;
+            aspect-ratio: 16 / 9;
+            border: 4px solid var(--accent);
+            border-radius: var(--radius);
+            background: #000;
+            overflow: hidden;
+        }
+        #modalVideo {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        #closeModal {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--accent);
+            border-radius: var(--radius);
+            color: var(--accent);
+            font-size: 26px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            background: rgba(0,0,0,0.4);
+        }
+        #closeModal:hover {
+            background: #00d4ff;
+            color: #1a1a2e;
+            transform: rotate(90deg);
+        }
+
+        /* SUPPORT */
+
+        .support-qr {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
         /* FOOTER */
 
         .footer {
@@ -259,11 +429,39 @@
             text-decoration: none;
         }
 
-        /* ADAPTIVE */
+        /* ADAPTIVE — ЧЁТКИЕ КАРТОЧКИ НА МОБИЛЬНЫХ */
+
+        @media (max-width: 1024px) {
+            .home-inner {
+                grid-template-columns: minmax(0, 1fr);
+            }
+            .video-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
 
         @media (max-width: 768px) {
+            .home {
+                padding: 70px 18px 40px;
+            }
             .section {
                 padding: 40px 18px;
+            }
+            .section-grid-2,
+            .section-grid-3 {
+                grid-template-columns: minmax(0, 1fr);
+            }
+            .video-grid {
+                grid-template-columns: minmax(0, 1fr);
+            }
+            /* карточка всегда 16:9, без «растягивания» по высоте */
+            .video-thumb {
+                aspect-ratio: 16 / 9;
+            }
+            .video-thumb img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
             }
         }
     </style>
@@ -273,17 +471,17 @@
 
 <header class="header">
     <a href="/" class="logo">
-        <img src="../../images/logo/logo.png" class="logo-img" alt="Логотип">
+        <img src="images/logo/logo.png" class="logo-img" alt="Логотип">
         <span>СайтСотика</span>
     </a>
 
     <nav class="desktop-menu">
         <a href="/">Главная</a>
-        <a href="/pages/about-me/" class="active">Обо мне</a>
-        <a href="/pages/games">Игры</a>
-        <a href="/pages/stream">Стрим</a>
-        <a href="/pages/team">Команда</a>
-        <a href="/pages/partners">Партнёры</a>
+        <a href="/pages/about-me/">Обо мне</a>
+        <a href="/pages/games/">Игры</a>
+        <a href="/pages/stream/">Стрим</a>
+        <a href="/pages/team/">Команда</a>
+        <a href="/pages/partners/">Партнёры</a>
     </nav>
     <button class="mobile-toggle" aria-label="Открыть меню">
         <span></span>
@@ -292,44 +490,134 @@
     </button>
     <nav class="mobile-menu">
         <a href="/">Главная</a>
-        <a href="/pages/about-me/" class="active">Обо мне</a>
-        <a href="/pages/games">Игры</a>
-        <a href="/pages/stream">Стрим</a>
-        <a href="/pages/team">Команда</a>
-        <a href="/pages/partners">Партнёры</a>
+        <a href="/pages/about-me/">Обо мне</a>
+        <a href="/pages/games/">Игры</a>
+        <a href="/pages/stream/">Стрим</a>
+        <a href="/pages/team/">Команда</a>
+        <a href="/pages/partners/">Партнёры</a>
     </nav>
 </header>
 
+
+<section class="home" id="home">
+    <div class="home-inner">
+
+        <div class="home-content">
+            <h1>Добро пожаловать на <span>СайтСотика</span></h1>
+
+            <div class="text-animate">
+                <h3>Стримы. Контент. Комьюнити. Развитие.</h3>
+            </div>
+
+            <p>
+                Это центральная точка проекта Сотика. Здесь собраны все направления: личная информация, игры, стримы,
+                команда, партнёры и поддержка. Главная страница — не витрина, а рабочий центр экосистемы.
+            </p>
+
+            <p>
+                Проект строится на честности, уважении и постоянном росте. Никаких накруток, фальши и искусственных цифр —
+                только реальные люди, реальные эмоции и реальная работа.
+            </p>
+
+            <div class="btn-box btns">
+                <a href="https://www.sberbank.com/sms/pbpn?requisiteNumber=79873927902" class="btn" target="_blank">Поддержать проект</a>
+            </div>
+        </div>
+
+        <div class="home-media">
+            <div class="home-img">
+                <img src="images/image/im1_no_bg.png" alt="Главное изображение">
+            </div>
+
+            <div class="home-stats">
+                <div class="stat-item">
+                    <span class="stat-value">3+</span>
+                    <span class="stat-label">года стриминга</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">1000+</span>
+                    <span class="stat-label">часов эфира</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">∞</span>
+                    <span class="stat-label">планов на развитие</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
 <section class="section section-dark">
-    <!-- Обо мне -->
     <div class="section-inner">
+
         <h2 class="heading" style="text-align:center; margin-bottom:50px;">
-            <span style="background:linear-gradient(135deg, var(--accent), #0066aa); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">Обо мне</span>
+            <span style="
+                background:linear-gradient(135deg, var(--accent), #0066aa);
+                -webkit-background-clip:text;
+                -webkit-text-fill-color:transparent;
+            ">Видео</span> галерея
         </h2>
 
-        <!-- Сетка из 3 колонок: фото в третьей -->
-        <div class="section-grid section-grid-3">
+        <div class="video-grid">
+
+            <div class="card video-thumb"
+                 data-video="https://vkvideo.ru/video_ext.php?oid=-228236168&id=456239023&hash=ed8ca01f46770be8&hd=1">
+                <img src="images/Cayman.png" alt="Видео 1">
+            </div>
+
+            <div class="card video-thumb"
+                 data-video="">
+                <img src="images/placeholder2.jpg" alt="Видео 2">
+            </div>
+
+            <div class="card video-thumb"
+                 data-video="">
+                <img src="images/placeholder3.jpg" alt="Видео 3">
+            </div>
+
+        </div>
+
+        <div id="videoModal">
+            <div id="videoModal-inner">
+                <iframe id="modalVideo"
+                        src=""
+                        allow="autoplay; encrypted-media"
+                        allowfullscreen>
+                </iframe>
+
+                <div id="closeModal">×</div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<section class="section section-dark">
+    <div class="section-inner">
+        <h2 class="heading">Кто <span>я</span></h2>
+
+        <div class="section-grid section-grid-2">
             <div class="section-block">
                 <p>
-                    Привет! Меня зовут Сотик, и это мой сайт.
+                    Я — Сотик. Стример, который строит проект не вокруг алгоритмов, а вокруг людей. Я не гонюсь за
+                    искусственными цифрами, не использую накрутки и не пытаюсь быть «как все». Моя цель — создать
+                    пространство, где зритель чувствует себя не фоном, а участником.
                 </p>
                 <p>
-                    Здесь вы можете узнать обо мне больше.
+                    Я люблю гонки, симуляторы, сложные игры и честные разговоры. Мне важны детали: звук, картинка,
+                    подача, атмосфера. Я не делаю «контент ради контента» — каждый стрим и каждый формат имеют смысл.
                 </p>
             </div>
 
             <div class="section-block">
                 <p>
-                    Я стример, который строит проект не вокруг алгоритмов, а вокруг людей. Я не гонюсь за искусственными цифрами, не использую накрутки и не пытаюсь быть «как все». Моя цель — создать пространство, где зритель чувствует себя не фоном, а участником.
+                    Этот сайт — не просто визитка. Это рабочий инструмент: здесь можно узнать обо мне, посмотреть
+                    актуальные направления, понять философию проекта и решить, хотите ли вы стать частью комьюнити.
                 </p>
                 <p>
-                    Я люблю гонки, симуляторы, сложные игры и честные разговоры. Мне важны детали: звук, картинка, подача, атмосфера. Я не делаю «контент ради контента» — каждый стрим и каждый формат имеют смысл.
+                    Если вы цените честность, спокойную подачу, отсутствие токсичности и уважение к зрителю — вы по адресу.
                 </p>
-            </div>
-
-            <!-- Третья колонка — фото -->
-            <div style="display: flex; justify-content: center; align-items: flex-start;">
-                <img src="../../images/image/im1_no_bg.png" alt="Сотик" height="1248" width="832" style="max-width: 100%; height: auto; border-radius: var(--radius);" />
             </div>
         </div>
     </div>
@@ -343,7 +631,8 @@
             <div class="card">
                 <h3>Стримы</h3>
                 <p>
-                    Регулярные трансляции с упором на атмосферу, общение и честный игровой процесс. Без постановок, без фальши, без искусственного драматизма.
+                    Регулярные трансляции с упором на атмосферу, общение и честный игровой процесс. Без постановок,
+                    без фальши, без искусственного драматизма.
                 </p>
                 <ul>
                     <li>Гонки и симуляторы;</li>
@@ -356,7 +645,8 @@
             <div class="card">
                 <h3>Контент</h3>
                 <p>
-                    Обзоры, разборы, обсуждения, реакции. Я не делаю «обзор ради обзора» — каждый материал должен приносить пользу или эмоцию.
+                    Обзоры, разборы, обсуждения, реакции. Я не делаю «обзор ради обзора» — каждый материал должен
+                    приносить пользу или эмоцию.
                 </p>
                 <ul>
                     <li>Обзоры игр и устройств;</li>
@@ -369,7 +659,8 @@
             <div class="card">
                 <h3>Комьюнити</h3>
                 <p>
-                    Комьюнити — это не чат на стриме, а люди, которые остаются и вне эфира. Я строю пространство, где можно общаться, предлагать идеи и влиять на развитие проекта.
+                    Комьюнити — это не чат на стриме, а люди, которые остаются и вне эфира. Я строю пространство,
+                    где можно общаться, предлагать идеи и влиять на развитие проекта.
                 </p>
                 <ul>
                     <li>Общение без токсичности;</li>
@@ -390,7 +681,8 @@
             <div class="pill">
                 <h3>Честность</h3>
                 <p>
-                    Никаких накруток, фейковых цифр и искусственных «успехов». Всё, что есть — результат реальной работы и поддержки реальных людей.
+                    Никаких накруток, фейковых цифр и искусственных «успехов». Всё, что есть — результат реальной работы
+                    и поддержки реальных людей.
                 </p>
             </div>
 
@@ -404,7 +696,8 @@
             <div class="pill">
                 <h3>Развитие</h3>
                 <p>
-                    Каждый стрим, каждый формат, каждое решение — шаг вперёд. Я не застреваю в одном и том же, а постоянно ищу, что можно улучшить.
+                    Каждый стрим, каждый формат, каждое решение — шаг вперёд. Я не застреваю в одном и том же, а постоянно
+                    ищу, что можно улучшить.
                 </p>
             </div>
         </div>
@@ -418,7 +711,8 @@
         <div class="section-grid section-grid-2">
             <div class="section-block">
                 <p>
-                    Качество стрима — это не только игра и настроение, но и железо. Я использую оборудование, которое даёт стабильность, точность и профессиональный уровень подачи.
+                    Качество стрима — это не только игра и настроение, но и железо. Я использую оборудование, которое
+                    даёт стабильность, точность и профессиональный уровень подачи.
                 </p>
 
                 <ul class="equipment-list">
@@ -432,10 +726,12 @@
 
             <div class="section-block">
                 <p>
-                    Всё оборудование настроено вручную. Я не полагаюсь на случайные пресеты и «автонастройки». Каждая деталь — результат тестов, ошибок и доработок.
+                    Всё оборудование настроено вручную. Я не полагаюсь на случайные пресеты и «автонастройки».
+                    Каждая деталь — результат тестов, ошибок и доработок.
                 </p>
                 <p>
-                    Это не про «дорогое железо ради статуса», а про инструмент, который позволяет делать стабильный, качественный и приятный для зрителя стрим.
+                    Это не про «дорогое железо ради статуса», а про инструмент, который позволяет делать стабильный,
+                    качественный и приятный для зрителя стрим.
                 </p>
             </div>
         </div>
@@ -449,21 +745,120 @@
         <div class="section-grid section-grid-2">
             <div class="section-block">
                 <p>
-                    Комьюнити — это люди, которые остаются. Те, кто приходит не только «на игру», но и на атмосферу, общение и ощущение, что они здесь не лишние.
+                    Комьюнити — это люди, которые остаются. Те, кто приходит не только «на игру», но и на атмосферу,
+                    общение и ощущение, что они здесь не лишние.
                 </p>
                 <p>
-                    У нас нет места токсичности, бессмысленным конфликтам и агрессии. Нормальное общение, юмор, поддержка и адекватность — базовый уровень.
+                    У нас нет места токсичности, бессмысленным конфликтам и агрессии. Нормальное общение, юмор,
+                    поддержка и адекватность — базовый уровень.
                 </p>
             </div>
 
             <div class="section-block">
                 <p>
-                    Я хочу, чтобы комьюнити было не просто «чатом на стриме», а живым организмом, который влияет на развитие проекта: предлагает идеи, участвует в решениях, помогает тестировать форматы.
+                    Я хочу, чтобы комьюнити было не просто «чатом на стриме», а живым организмом, который влияет на
+                    развитие проекта: предлагает идеи, участвует в решениях, помогает тестировать форматы.
                 </p>
 
                 <div class="btn-box btns">
                     <a href="#" class="btn">Вступить в комьюнити</a>
                 </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section section-light">
+    <div class="section-inner">
+        <h2 class="heading">Миссия <span>проекта</span></h2>
+
+        <div class="section-grid section-grid-2">
+            <div class="section-block">
+                <p>
+                    Миссия проекта — создать пространство, где контент делается честно, без фальши и без попыток
+                    подстроиться под алгоритмы любой ценой.
+                </p>
+                <p>
+                    Я не хочу быть «ещё одним каналом», который пытается понравиться всем. Я строю проект для тех,
+                    кому важны атмосфера, уважение и реальность происходящего.
+                </p>
+            </div>
+
+            <div class="section-block">
+                <p>
+                    Я хочу, чтобы зрители чувствовали, что их время не тратят впустую. Чтобы каждый стрим, каждый ролик
+                    и каждый формат имели смысл.
+                </p>
+                <p>
+                    Если вы разделяете этот подход — вы уже часть миссии.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section section-dark">
+    <div class="section-inner">
+        <h2 class="heading">Планы <span>развития</span></h2>
+
+        <div class="section-grid section-grid-3">
+            <div class="card">
+                <h3>Контент</h3>
+                <ul>
+                    <li>Новые форматы стримов;</li>
+                    <li>Серии тематических эфиров;</li>
+                    <li>Обучающие материалы по симрейсингу;</li>
+                    <li>Разборы игр и механик.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>Комьюнити</h3>
+                <ul>
+                    <li>Расширение Discord‑сервера;</li>
+                    <li>Совместные ивенты и активности;</li>
+                    <li>Система ролей и уровней участия;</li>
+                    <li>Оффлайн‑встречи в будущем.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>Проект</h3>
+                <ul>
+                    <li>Партнёрские проекты с брендами;</li>
+                    <li>Разработка собственного мерча;</li>
+                    <li>Улучшение качества трансляций;</li>
+                    <li>Мини‑документалка о развитии канала.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section section-light">
+    <div class="section-inner">
+        <h2 class="heading">Поддержка <span>проекта</span></h2>
+
+        <div class="section-grid section-grid-2">
+            <div class="section-block">
+                <p>
+                    Если вы хотите поддержать развитие проекта, вы можете сделать это через отдельную страницу
+                    пожертвований. Любая поддержка — это вклад в новые стримы, оборудование, идеи и развитие комьюнити.
+                </p>
+                <p>
+                    Поддержка — это не только деньги. Это время, внимание, участие, идеи и обратная связь. Но финансовая
+                    поддержка позволяет двигаться быстрее и смелее.
+                </p>
+            </div>
+
+            <div class="section-block">
+                <div class="support-qr">
+                    <img src="/images/donsqrcode.png" height="200" width="200" alt="QR-код для доната">
+                    <a href="https://www.sberbank.com/sms/pbpn?requisiteNumber=79873927902" class="btn" target="_blank">Перейти к поддержке</a>
+                </div>
+                <p>
+                    Если вы уже поддерживаете проект — спасибо. Это чувствуется в каждом стриме.
+                </p>
             </div>
         </div>
     </div>
@@ -492,5 +887,39 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 </script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const cards = document.querySelectorAll('.video-thumb');
+    const modal = document.getElementById('videoModal');
+    const frame = document.getElementById('modalVideo');
+    const closeBtn = document.getElementById('closeModal');
+
+    if (!modal || !frame || !closeBtn) return;
+
+    cards.forEach(card => {
+        card.addEventListener('click', () => {
+            const url = card.dataset.video;
+            if (!url) return;
+            frame.src = url;
+            modal.style.display = 'flex';
+        });
+    });
+
+    function closeModal() {
+        modal.style.display = 'none';
+        frame.src = '';
+    }
+
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', e => {
+        if (e.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') closeModal();
+    });
+});
+</script>
+
 </body>
 </html>
