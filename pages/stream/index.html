@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!doctype html>
 <html lang="ru">
 <head>
@@ -13,3 +14,320 @@
     <p>Мои стримы и трансляции.</p>
 </body>
 </html>
+=======
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Стрим — СайтСотика</title>
+
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="icon" href="../../favicon.ico" type="image/x-icon">
+</head>
+
+<body>
+
+    <!-- ШАПКА -->
+    <header class="header">
+        <a href="../../index.html" class="logo">
+            <img src="../../images/logo/logo.png" class="logo-img" alt="">
+            Сайт<span>Сотика</span>
+        </a>
+
+        <nav class="navbar">
+            <a href="../../index.html">Главная</a>
+            <a href="../../about.html">Обо мне</a>
+            <a href="../../games.html">Игры</a>
+            <a class="active">Стрим</a>
+            <a href="../../team.html">Команда</a>
+            <a href="../../partners.html">Партнёры</a>
+        </nav>
+
+        <div id="menu-icon">☰</div>
+    </header>
+
+    <!-- СЕКЦИЯ: Плеер + Чат -->
+    <section class="section section-dark" style="padding-top:140px;">
+        <div class="section-inner">
+
+            <h2 class="heading"><span>Прямой</span> эфир</h2>
+
+           <div class="section-grid" style="grid-template-columns: 2fr 1fr; gap:40px;">
+
+                <!-- ПЛЕЕР -->
+                <div class="card" style="padding:0; overflow:hidden;">
+                    <iframe
+                        src="https://player.twitch.tv/?channel=fsbsotik&parent=sotikdima1975-star.github.io&autoplay=false"
+                        style="width:100%; height:500px; border:0;">
+                    </iframe>
+                </div>
+
+                <!-- ЧАТ -->
+                <div class="card" style="padding:0; overflow:hidden;">
+                    <iframe
+                        src="https://www.twitch.tv/embed/fsbsotik/chat?parent=sotikdima1975-star.github.io&darkpopout"
+                        style="width:100%; height:500px; border:0;">
+                    </iframe>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- СЕКЦИЯ: Виджеты -->
+    <section class="section section-light">
+        <div class="section-inner">
+
+            <h2 class="heading"><span>Стримовые</span> события</h2>
+
+            <div class="section-grid section-grid-3">
+
+                <div class="card">
+                    <h3>Последние подписчики</h3>
+                    <p id="w-subs-main">user123</p>
+                </div>
+
+                <div class="card">
+                    <h3>Последние донаты</h3>
+                    <p id="w-donates-main">Vasya — 150₽</p>
+                </div>
+
+                <div class="card">
+                    <h3>Цель стрима</h3>
+                    <p id="w-goal-main">Новый руль Fanatec</p>
+                    <p id="w-goal-sub">7 400₽ / 20 000₽</p>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-text">© 2026 СайтСотика</div>
+        <div class="footer-iconTop"><a href="#">↑</a></div>
+    </footer>
+
+    <script src="../../script.js"></script>
+
+
+
+<!-- ========================================================= -->
+<!-- ===============  ВСТРОЕННЫЙ СТРИМ-ОВЕРЛЕЙ  =============== -->
+<!-- ========================================================= -->
+
+<style>
+    /* Весь оверлей поверх сайта */
+    #overlay-root {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9999;
+        color: #fff;
+        font-family: system-ui, sans-serif;
+    }
+
+    .overlay-grid {
+        position: absolute;
+        inset: 0;
+    }
+
+    /* Верхняя панель */
+    .top-bar {
+        position: absolute;
+        top: 24px;
+        left: 48px;
+        right: 48px;
+        height: 64px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        pointer-events: none;
+    }
+
+    .brand-block { display: flex; flex-direction: column; gap: 4px; }
+    .brand-title { font-size: 26px; letter-spacing: 0.16em; text-transform: uppercase; }
+    .brand-sub { font-size: 12px; opacity: 0.7; }
+
+    .status-block { display: flex; gap: 16px; opacity: 0.85; font-size: 13px; }
+    .status-pill {
+        padding: 4px 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(255,215,0,0.6);
+        color: #ffd700;
+        font-size: 10px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+    }
+
+    /* Нижний HUD */
+    .bottom-bar {
+        position: absolute;
+        left: 48px;
+        right: 48px;
+        bottom: 32px;
+        height: 96px;
+        display: flex;
+        justify-content: space-between;
+        pointer-events: none;
+    }
+
+    .hud-left, .hud-center, .hud-right {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .hud-label { font-size: 11px; opacity: 0.6; letter-spacing: 0.18em; }
+    .hud-value { font-size: 18px; }
+    .hud-line {
+        width: 100%;
+        height: 1px;
+        background: linear-gradient(to right, transparent, rgba(255,215,0,0.7), transparent);
+    }
+
+    /* Чат */
+    .chat-panel {
+        position: absolute;
+        top: 120px;
+        left: 48px;
+        width: 360px;
+        max-height: 520px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .chat-title { font-size: 11px; opacity: 0.6; letter-spacing: 0.18em; }
+    .chat-list { display: flex; flex-direction: column; gap: 4px; }
+    .chat-line { background: rgba(5,5,5,0.65); padding: 6px 8px; border-radius: 4px; font-size: 12px; }
+    .chat-user { font-weight: 600; color: #ffd700; }
+
+    /* События */
+    .events-panel {
+        position: absolute;
+        top: 120px;
+        right: 48px;
+        width: 320px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .events-title { font-size: 11px; opacity: 0.6; letter-spacing: 0.18em; }
+    .event-item {
+        background: rgba(5,5,5,0.72);
+        border: 1px solid rgba(255,215,0,0.35);
+        padding: 8px 10px;
+        border-radius: 6px;
+        font-size: 12px;
+    }
+
+    /* Центр */
+    .center-overlay {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .center-mark {
+        padding: 10px 18px;
+        border-radius: 999px;
+        border: 1px solid rgba(255,255,255,0.18);
+        background: rgba(5,5,5,0.72);
+        font-size: 13px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+    }
+</style>
+
+<div id="overlay-root">
+    <div class="overlay-grid">
+
+        <!-- Верхняя панель -->
+        <div class="top-bar">
+            <div class="brand-block">
+                <div class="brand-title">SOTIK STREAM</div>
+                <div class="brand-sub">LIVE OVERLAY</div>
+            </div>
+            <div class="status-block">
+                <div class="status-pill">ON AIR</div>
+                <div>FPS: 60</div>
+                <div>SCENE: MAIN</div>
+            </div>
+        </div>
+
+        <!-- Нижний HUD -->
+        <div class="bottom-bar">
+            <div class="hud-left">
+                <div class="hud-label">Current session</div>
+                <div class="hud-value">Forza Motorsport · Ranked</div>
+                <div class="hud-line"></div>
+            </div>
+
+            <div class="hud-center">
+                <div class="hud-label">Stream status</div>
+                <div class="hud-value">Stable · All systems nominal</div>
+                <div class="hud-line"></div>
+            </div>
+
+            <div class="hud-right">
+                <div class="hud-label">Next segment</div>
+                <div class="hud-value">Q&A · Garage & Setup</div>
+                <div class="hud-line"></div>
+            </div>
+        </div>
+
+        <!-- Чат -->
+        <div class="chat-panel">
+            <div class="chat-title">Chat feed</div>
+            <div class="chat-list" id="chat-list">
+                <div class="chat-line"><span class="chat-user">viewer01:</span> Привет, Сотик!</div>
+            </div>
+        </div>
+
+        <!-- События -->
+        <div class="events-panel">
+            <div class="events-title">Recent events</div>
+            <div id="events-list">
+                <div class="event-item">TopSupporter — ₽1000</div>
+            </div>
+        </div>
+
+        <!-- Центр -->
+        <div class="center-overlay">
+            <div class="center-mark">PRIMARY OVERLAY LAYER</div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    function addEvent(data) {
+        const list = document.getElementById('events-list');
+        const item = document.createElement('div');
+        item.className = 'event-item';
+        item.textContent = `${data.name} — ${data.amount}`;
+        list.prepend(item);
+    }
+
+    function addChatMessage(data) {
+        const list = document.getElementById('chat-list');
+        const line = document.createElement('div');
+        line.className = 'chat-line';
+        line.innerHTML = `<span class="chat-user">${data.user}:</span> ${data.text}`;
+        list.appendChild(line);
+    }
+</script>
+
+<!-- ========================================================= -->
+<!-- ===================== КОНЕЦ ОВЕРЛЕЯ ====================== -->
+<!-- ========================================================= -->
+
+</body>
+</html>
+>>>>>>> cf438fec8e1a16daf4987023ee86c7c815b4a8b9
